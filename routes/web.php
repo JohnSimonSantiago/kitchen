@@ -32,8 +32,9 @@ Route::get("/checkUser", [LoginController::class, "checkLogin"]);
 Route::post("/logout", [LoginController::class, "logout"]);
 
 Route::post('/submit-equipment', [EquipmentController::class, 'submitEquipment'])->name('submitEquipment');
-Route::post('/update-equipment', [EquipmentController::class, 'submitEquipment'])->name('updateEquipment');
-Route::get("/get-equipment", [EquipmentController::class, "getEquipment"]);
+Route::post('/submit-edit-equipment', [EquipmentController::class, 'editEquipment']);
+Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
+Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 
 //kababaan amin

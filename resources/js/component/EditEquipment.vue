@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <h1>Edit Equipment</h1>
-        <form @submit.prevent="updateEquipment">
+        <form @submit.prevent="editEquipment">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div>
                     <label
@@ -95,7 +95,7 @@ export default {
                 this.data = data;
             });
         },
-        updateEquipment() {
+        editEquipment() {
             const { data } = this;
             axios.post("/update-equipment", { data }).then(({ data }) => {
                 this.data = {

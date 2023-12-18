@@ -14,7 +14,7 @@
                     <td>{{ student.course }}</td>
                     <td>
                         <button
-                            class=" bg-blue-500 py-2 px-4 rounded text-white"
+                            class="bg-blue-500 py-2 px-4 rounded text-white"
                             @click="$emit('editStudent', student.id)"
                         >
                             Edit

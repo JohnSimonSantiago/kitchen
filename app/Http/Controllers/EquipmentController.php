@@ -19,6 +19,10 @@ class EquipmentController extends Controller
 
         return $res;
     }
+    public function getEquipments(){
+       return equipment::all();
+    }
+
     public function getEquipment(Request $request){
    
         if(equipment::where('id', $request->edit_id)->exists()){
@@ -28,11 +32,24 @@ class EquipmentController extends Controller
             return $data = (object)[
                 "id"=>0,
                 "equipmentName"=> "",
-                "description"=>"",
                 "quantity"=>"",
-                "barcode"=>"",
+                "description"=>"",
+                "barcode"=>"",  
     
             ];
         }
+    }
+    public function editEquipment (Request $request){
+        $data = $request->data;
+        $updatedInfo = equipment::find($data['id']);
+
+        $updatedInfo->equipmentName=$data['equipmentName'];
+        $updatedInfo->quantity=$data['quantity'];
+        $updatedInfo->descption=$data['description'];
+        $updatedInfo->barcode=$data['barcode'];
+
+        $res = $updatedInfor->save();
+        return $res;
+
     }
 }

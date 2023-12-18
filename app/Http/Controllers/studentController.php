@@ -40,7 +40,6 @@ public function getStudent(Request $request){
     }
 }
 public function updateStudent(Request $request){
-    // dd($request->data); 
     $data = $request->data;
     $updatedInfo = student::find($data['id']);
     

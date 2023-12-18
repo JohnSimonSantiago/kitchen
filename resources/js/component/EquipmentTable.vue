@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(equipment, index) in equipments" key="index0">
+                <tr v-for="equipment in equipments">
                     <td class="py-2 px-4 border-r">
                         {{ equipment.equipmentName }}
                     </td>
