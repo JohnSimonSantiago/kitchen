@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
-            $table->id('reservationNumber');
-            $table->string('customerName');
-            $table->string('customerNumber');
-            $table->tinyInteger('statusID')->default(0);
-            $table->date('dateStart');
-            $table->date('dateEnd');
+        Schema::create('category_table', function (Blueprint $table) {
+            $table->id('categoryID');
+            $table->string('category');
             $table->timestamps();
 
         });
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('category_table');
     }
 };

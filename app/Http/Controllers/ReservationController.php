@@ -10,17 +10,26 @@ use App\Models\reservation_details;
 class ReservationController extends Controller
 {
     public function submitReservation(Request $request){
-        $newReservation = new reservation();
-
-            $newReservation->customerName = $request->customerName;
-            $newReservation->customerNumber = $request->customerNumber;
-            $newReservation->dateStart = $request->dateStart;
-            $newReservation->dateEnd = $request->dateEnd;
-            $newReservation->statusID = 1;
-            $res = $newReservation->save();
+        $request->validate([
+            'customerName' => 'required',
+            'customerNumber' => 'required|numeric|digits:9',
+            'dateStart' => 'required',
+            'dateEnd' => 'required',
+        ]);
     
-            return $res;
-        }
+        $newReservation = new Reservation();
+    
+        $newReservation->customerName = $request->customerName;
+        $newReservation->customerNumber = $request->customerNumber;
+        $newReservation->dateStart = $request->dateStart;
+        $newReservation->dateEnd = $request->dateEnd;
+        $newReservation->statusID = 1;
+    
+        $res = $newReservation->save();
+    
+        return $res;
+    }
+    
         public function getReservations(){
             $getReservation = reservation::all();
             return $getReservation;
@@ -65,7 +74,7 @@ class ReservationController extends Controller
         
 
         
-        public function addToOrder(Request $request)
+        public function addToReservation(Request $request)
         {
             $equipment_id = $request->input('equipment_id');
             $quantity = $request->input('quantity', 1);

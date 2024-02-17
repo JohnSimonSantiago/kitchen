@@ -1,5 +1,5 @@
 <template lang="">
-    <section class="flex top-16 bg-gray-50 dark:bg-gray-900">
+    <section class="flex bg-gray-50 dark:bg-gray-900">
         <div
             class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
         >
@@ -17,23 +17,29 @@
                     <h1
                         class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
                     >
-                        Sign in to your account
+                        Create an account
                     </h1>
-
-                    <div
-                        v-if="errorMsg != ''"
-                        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                        role="alert"
-                    >
-                        <span class="font-medium">Log in failed!</span>
-                        {{ errorMsg }}
-                    </div>
                     <form
                         class="space-y-4 md:space-y-6"
                         action="#"
-                        @submit.prevent="login"
-                        @click="clearErrMsg"
+                        @submit.prevent="signup"
                     >
+                        <div>
+                            <label
+                                for="email"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >Your username</label
+                            >
+                            <input
+                                v-model="name"
+                                type="text"
+                                name="username"
+                                id="username"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Username"
+                                required=""
+                            />
+                        </div>
                         <div>
                             <label
                                 for="email"
@@ -66,25 +72,38 @@
                                 required=""
                             />
                         </div>
-
+                        <div>
+                            <label
+                                for="confirm-password"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >Confirm password</label
+                            >
+                            <input
+                                type="confirm-password"
+                                name="confirm-password"
+                                id="confirm-password"
+                                placeholder="••••••••"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                required=""
+                            />
+                        </div>
                         <button
                             type="submit"
-                            class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         >
-                            Sign in
+                            Create an account
                         </button>
-
                         <p
                             class="text-sm font-light text-gray-500 dark:text-gray-400"
                         >
-                            <RouterLink to="/signup">
-                                Don’t have an account yet?
+                            Already have an account?
+                            <RouterLink to="/">
                                 <a
                                     href="#"
                                     class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                                    >Sign up</a
-                                >
-                            </RouterLink>
+                                    >Login here
+                                </a></RouterLink
+                            >
                         </p>
                     </form>
                 </div>
@@ -97,28 +116,19 @@
 export default {
     data() {
         return {
+            name: "",
             email: "",
             password: "",
-            message: this.$route.query.messageSent,
-            errorMsg: "",
         };
     },
     methods: {
-        login() {
-            const { email, password } = this;
+        signup() {
+            const { email, password, name } = this;
             axios
-                .post("/login", { email, password })
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.$router.push("/inventory");
-                    }
-                })
-                .catch((err) => {
-                    this.errorMsg = err.response.data.message;
+                .post("/signup", { email, password, name })
+                .then(({ data }) => {
+                    this.$router.push("/");
                 });
-        },
-        clearErrMsg() {
-            this.errorMsg = "";
         },
     },
 };

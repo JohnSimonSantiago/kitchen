@@ -13,6 +13,9 @@
                         <CreateEquipment
                             @success="getterEquipment"
                         ></CreateEquipment>
+                        <CreateCategory
+                            @success="getterCategory"
+                        ></CreateCategory>
                     </div>
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
@@ -26,7 +29,7 @@
             </div>
 
             <!-- Right Section -->
-            <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-20">
+            <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-200">
                 <div v-if="showCardDetails === null">
                     (Select Equipment to View Info)
                 </div>
@@ -79,20 +82,24 @@ import EquipmentCard from "../Cards/EquipmentCard.vue";
 import CreateEquipment from "@/component/CreateEquipment.vue";
 import EditEquipment from "@/component/EditEquipment.vue";
 import DeleteEquipment from "@/component/DeleteEquipment.vue";
+import CreateCategory from "../component/CreateCategory.vue";
 
 export default {
     components: {
         CreateEquipment,
         EditEquipment,
         EquipmentCard,
+        CreateCategory,
         DeleteEquipment,
     },
     mounted() {
         this.getterEquipment();
+        this.getterCategory();
     },
     data() {
         return {
             equipments: [],
+            categories: [],
             showCardDetails: null,
         };
     },
@@ -108,6 +115,11 @@ export default {
         DeletedEquipment() {
             this.getterEquipment();
             this.showCardDetails = null;
+        },
+        getterCategory() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
         },
     },
 };

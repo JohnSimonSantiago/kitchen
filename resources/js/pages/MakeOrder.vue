@@ -14,7 +14,7 @@
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="equipment in equipments" class="">
-                        <AddToOrderCard :equipmentDetails="equipment" />
+                        <AddToReservationCard :equipmentDetails="equipment" />
                     </div>
                 </div>
             </div>
@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import AddToOrderCard from "../Cards/AddToOrderCard.vue";
 import EditQuantityCard from "../Card_small/EditQuantityCard.vue";
+import AddToReservationCard from "../Cards/AddToReservationCard.vue";
 
 export default {
     props: ["reservationDetails"],
     components: {
-        AddToOrderCard,
         EditQuantityCard,
+        AddToReservationCard,
     },
     mounted() {
         this.getterEquipment();

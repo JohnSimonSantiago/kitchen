@@ -4,7 +4,7 @@
             title: 'Create Order',
             content: 'Please fill out the form below:',
         }"
-        buttonLabel="Create New Order +"
+        buttonLabel="Create New Reservation +"
         cancelLabel="Cancel"
         saveLabel="Create"
         :saveOption="true"
@@ -33,7 +33,7 @@
                     <label
                         for="customer_number"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Customer Number</label
+                        >Customer Contact Number</label
                     >
 
                     <input
@@ -45,6 +45,7 @@
                         required
                     />
                 </div>
+
                 <div>
                     <label
                         for="datestart"
@@ -113,7 +114,7 @@ export default {
                     this.dateStart = "";
                     this.dateEnd = "";
                     this.$emit("success");
-                    this.$router.push("/orders");
+                    this.$router.push("/reservations");
                 });
         },
     },

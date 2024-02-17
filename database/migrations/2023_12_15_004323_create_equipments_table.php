@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('price');
             $table->string('barcode');
-            $table->string('category');
+            $table->string('categoryID');
             $table->string('location');
             $table->string('condition');
             $table->timestamp('created_at')->nullable();

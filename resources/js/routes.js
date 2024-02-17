@@ -3,8 +3,8 @@ import Calendar from "@/pages/Calendar.vue";
 import Login from "@/pages/Login.vue";
 import Reservations from "@/pages/Reservations.vue";
 import Return from "@/pages/Return.vue";
-import POS from "@/pages/POS.vue";
 import MakeOrder from "@/pages/MakeOrder.vue";
+import Signup from "@/pages/Signup.vue";
 
 export const routes = [
     {
@@ -13,14 +13,14 @@ export const routes = [
         component: Login,
     },
     {
+        path: "/signup",
+        name: "signup",
+        component: Signup,
+    },
+    {
         path: "/makeorder",
         name: "makeOrder",
         component: MakeOrder,
-    },
-    {
-        path: "/pos",
-        name: "POS",
-        component: POS,
     },
     {
         path: "/return",

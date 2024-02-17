@@ -74,7 +74,6 @@ export default {
     mounted() {
         this.getterEquipment();
         this.getterReservation();
-        console.log(this.idReservation);
     },
     methods: {
         submitEquipmentOrder() {

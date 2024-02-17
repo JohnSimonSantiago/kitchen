@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\equipment;
 use App\Models\reservation;
-use App\Models\reservation_details;
 use Illuminate\Http\Request;
+use App\Models\reservation_details;
 use Illuminate\Support\Facades\Auth;
 
 class EquipmentController extends Controller
 {
     public function submitEquipment(Request $request){
     $newEquipment = new equipment();
+    $validatedCategoryData = $request->validate([
+        'categoryID' => 'required|exists:category_table,categoryID',
+    ]);
        
         $newEquipment->equipmentName = $request->equipmentName;
         $newEquipment->quantity = $request->quantity;
@@ -19,12 +22,15 @@ class EquipmentController extends Controller
         $newEquipment->barcode = $request->barcode;
         $newEquipment->price = $request->price;
         $newEquipment->location = $request->location;
-        $newEquipment->category = $request->category;
+        $newEquipment->categoryID = $request->categoryID;
         $newEquipment->condition = $request->condition;
         $res = $newEquipment->save();
 
         return $res;
     }
+
+
+
     public function getEquipments(){
         $getEquipment = equipment::all();
         return $getEquipment;
@@ -76,4 +82,7 @@ class EquipmentController extends Controller
 
         return $res;
     }
+
+
+
 }
