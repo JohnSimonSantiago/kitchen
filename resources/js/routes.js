@@ -5,6 +5,7 @@ import Reservations from "@/pages/Reservations.vue";
 import Return from "@/pages/Return.vue";
 import MakeOrder from "@/pages/MakeOrder.vue";
 import Signup from "@/pages/Signup.vue";
+import Rent from "@/pagesUser/Rent.vue";
 
 export const routes = [
     {
@@ -16,6 +17,11 @@ export const routes = [
         path: "/signup",
         name: "signup",
         component: Signup,
+    },
+    {
+        path: "/rent",
+        name: "rent",
+        component: Rent,
     },
     {
         path: "/makeorder",

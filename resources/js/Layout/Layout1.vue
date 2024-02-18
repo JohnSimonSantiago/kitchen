@@ -105,7 +105,7 @@
                             Calendar</router-link
                         >
                         <button
-                            @click="exit"
+                            @click="logout"
                             class="text-black-500 font-bold block mx-10"
                         >
                             Exit
@@ -140,7 +140,21 @@
 <script>
 export default {
     methods: {
-        exit() {},
+        checkAuth() {
+            axios.get("/checkUser").then(({ data }) => {
+                if (!data) {
+                    this.$router.push("/");
+                }
+            });
+        },
+        logout() {
+            axios.post("/logout").then(() => {
+                this.$router.push("/");
+            });
+        },
+    },
+    mounted() {
+        this.checkAuth();
     },
 };
 </script>

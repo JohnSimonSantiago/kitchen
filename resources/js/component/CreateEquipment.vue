@@ -168,9 +168,9 @@ export default {
             location: "",
             price: "",
             barcode: "",
-            category: "",
             condition: "",
             categoryList: [],
+            categoryID: null,
             selectedCategory: null,
         };
     },
@@ -217,6 +217,7 @@ export default {
         getterCategoryList() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categoryList = data;
+                console.log(this.categoryList);
             });
         },
     },

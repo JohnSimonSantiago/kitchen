@@ -13,13 +13,18 @@ class CategoryController extends Controller
     }
 
     
-    public function submitCategory(Request $request){
+    public function submitCategory(Request $request)
+    {
+        $validatedData = $request->validate([
+            'category' => 'required|string|max:255',
+        ]);
+    
         $newCategory = new category();
-           
-            $newCategory->category = $request->category;
-            $res = $newCategory->save();
-            return $res;
-
-        }
+        $newCategory->category = $request->category;
+        $res = $newCategory->save();
+    
+        return response()->json(['Category Created Successfully' => $res]);
+    }
+    
     
 }

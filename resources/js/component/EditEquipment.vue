@@ -169,7 +169,6 @@ export default {
             const { edit_id } = this;
             axios.post("/get-equipment", { edit_id }).then(({ data }) => {
                 this.data = data;
-                console.log(data);
             });
         },
         updateEquipment() {

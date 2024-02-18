@@ -15,7 +15,6 @@ class EquipmentController extends Controller
     $validatedCategoryData = $request->validate([
         'categoryID' => 'required|exists:category_table,categoryID',
     ]);
-       
         $newEquipment->equipmentName = $request->equipmentName;
         $newEquipment->quantity = $request->quantity;
         $newEquipment->description = $request->description;
@@ -53,8 +52,8 @@ class EquipmentController extends Controller
         $updatedInfo->description = $data['description'];
         $updatedInfo->barcode = $data['barcode'];
         $updatedInfo->price = $data['price'];
-        $updatedInfo->category = $data['category'];
-        $updatedInfo->category = $data['condition'];
+        $updatedInfo->categoryID = $data['categoryID'];
+        $updatedInfo->condition = $data['condition'];
     
         $res = $updatedInfo->save();
     
