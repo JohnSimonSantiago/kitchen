@@ -125,19 +125,19 @@
                         </div>
                     </div>
                     <div class="flex-col self-end">
-                        <ApproveOrder
+                        <ApproveReservation
                             :idReservation="
                                 this.showReservationDetails.reservationNumber
                             "
                             :idEquipment="getEquipmentIdForApproval()"
-                        ></ApproveOrder>
+                        ></ApproveReservation>
                         <DeleteReservation
                             :idReservation="
                                 this.showReservationDetails.reservationNumber
                             "
                             @deleted="DeletedReservation"
                         ></DeleteReservation>
-                        <router-link :to="'/makeOrder/' + reservationNUmber">
+                        <router-link :to="'/makeOrder/' + reservationNumber">
                             <button>Edit Order</button>
                         </router-link>
                     </div>
@@ -148,11 +148,11 @@
 </template>
 
 <script>
-import ReservationCard from "../Cards/ReservationCard.vue";
-import DeleteReservation from "../component/DeleteReservation.vue";
-import ApproveOrder from "../component/ApproveOrder.vue";
-import AddItem from "../component/AddItem.vue";
-import CreateReservation from "../component/CreateReservation.vue";
+import ReservationCard from "../cards/ReservationCard.vue";
+import DeleteReservation from "@/componentreservations/DeleteReservation.vue";
+import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
+import AddItem from "@/componentreservations/AddItem.vue";
+import CreateReservation from "@/componentreservations/CreateReservation.vue";
 
 export default {
     components: {
@@ -160,7 +160,7 @@ export default {
         ReservationCard,
         CreateReservation,
         DeleteReservation,
-        ApproveOrder,
+        ApproveReservation,
     },
     mounted() {
         this.getterReservation();

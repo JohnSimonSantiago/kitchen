@@ -2,32 +2,31 @@
     <Modal
         class=""
         :modalContent="{
-            title: 'Delete Order',
+            title: 'Delete Equipment',
             content: 'Are you sure you want to delete?',
         }"
         buttonLabel="Delete"
         cancelLabel="Cancel"
         saveLabel="Delete"
         :saveOption="true"
-        @save="deleteReservation"
+        @save="deleteEquipment"
     >
     </Modal>
 </template>
 
 <script>
 import axios from "axios";
-import Modal from "./Modal.vue";
-
+import Modal from "../component/Modal.vue";
 export default {
-    props: ["idReservation"],
+    props: ["id"],
     components: {
         Modal,
     },
     methods: {
-        deleteReservation() {
+        deleteEquipment() {
             axios
-                .post("/delete-reservation", { ID: this.idReservation })
-                .then(() => {
+                .post("/delete-equipment", { ID: this.id })
+                .then(({ data }) => {
                     this.$emit("deleted");
                 });
         },

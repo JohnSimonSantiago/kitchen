@@ -141,7 +141,7 @@
 
 <script>
 import axios from "axios";
-import Modal from "./Modal.vue";
+import Modal from "../component/Modal.vue";
 
 export default {
     props: ["equipment_id"],

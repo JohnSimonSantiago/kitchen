@@ -2,7 +2,7 @@
     <Modal
         class=""
         :modalContent="{
-            title: 'Approve Order',
+            title: 'Approve Reservation',
             content: 'Are you sure you want to approve?',
         }"
         buttonLabel="Approve Order"
@@ -16,7 +16,7 @@
 
 <script>
 import axios from "axios";
-import Modal from "./Modal.vue";
+import Modal from "../component/Modal.vue";
 
 export default {
     props: ["idReservation", "idEquipment"],
