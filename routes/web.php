@@ -36,13 +36,14 @@ Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
 
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');
-Route::post("/get-categories", [CategoryController::class, 'getCategories']);
+Route::get("/get-categories", [CategoryController::class, 'getCategories']);
 
 Route::get("/get-reservations", [ReservationController::class, "getReservations"]);
 Route::post("/submit-reservation", [ReservationController::class, 'submitReservation'])->name('submitReservation');
 Route::post("/delete-reservation", [ReservationController::class, "deleteReservation"]);
 Route::get("/get-reservation-orders", [ReservationController::class, "getReservationOrder"]);
 Route::post("/approve-reservation", [ReservationController::class, "approveReservation"]);
+Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
 Route::post('/add-to-reservation', [ReservationController::class, 'addToReservation'])->name("addToReservation");
 
 //kababaan amin

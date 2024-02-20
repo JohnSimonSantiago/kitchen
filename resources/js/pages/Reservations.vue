@@ -16,6 +16,14 @@
                         ></CreateReservation>
                     </div>
                 </div>
+                <div>
+                    <ReservationTable
+                        v-for="reservation in reservations"
+                        class=""
+                        :reservationDetails="reservation"
+                        @clicked="seeReservationDetails"
+                    ></ReservationTable>
+                </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="reservation in reservations" class="">
                         <ReservationCard
@@ -131,12 +139,12 @@
                             "
                             :idEquipment="getEquipmentIdForApproval()"
                         ></ApproveReservation>
-                        <DeleteReservation
+                        <RejectReservation
                             :idReservation="
                                 this.showReservationDetails.reservationNumber
                             "
-                            @deleted="DeletedReservation"
-                        ></DeleteReservation>
+                            @rejected="RejectedReservation"
+                        ></RejectReservation>
                         <router-link :to="'/makeOrder/' + reservationNumber">
                             <button>Edit Order</button>
                         </router-link>
@@ -149,18 +157,20 @@
 
 <script>
 import ReservationCard from "../cards/ReservationCard.vue";
-import DeleteReservation from "@/componentreservations/DeleteReservation.vue";
+import RejectReservation from "@/componentreservations/RejectReservation.vue";
 import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
 import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
+import ReservationTable from "../component/ReservationTable.vue";
 
 export default {
     components: {
         AddItem,
         ReservationCard,
         CreateReservation,
-        DeleteReservation,
+        RejectReservation,
         ApproveReservation,
+        ReservationTable,
     },
     mounted() {
         this.getterReservation();
@@ -201,7 +211,7 @@ export default {
                 this.reservations = data;
             });
         },
-        DeletedReservation() {
+        RejectedReservation() {
             this.getterReservation();
             this.showReservationDetails = null;
         },

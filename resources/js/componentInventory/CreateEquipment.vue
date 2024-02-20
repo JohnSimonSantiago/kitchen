@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import Modal from '../component/Modal.vue';
+import Modal from "../component/Modal.vue";
 export default {
     components: {
         Modal,
@@ -208,7 +208,6 @@ export default {
                     this.price = "";
                     this.location = "";
                     this.barcode = "";
-                    this.categoryID = "";
                     this.condition = "";
                     this.$emit("success");
                     this.$router.push("/inventory");
@@ -217,7 +216,6 @@ export default {
         getterCategoryList() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categoryList = data;
-                console.log(this.categoryList);
             });
         },
     },

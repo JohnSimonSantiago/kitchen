@@ -49,6 +49,7 @@
                         placeholder="Quantity"
                         required
                         min="0"
+                        max="maxStock"
                     />
                 </div>
             </div>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import Modal from '../component/Modal.vue';
+import Modal from "../component/Modal.vue";
 export default {
     components: {
         Modal,
@@ -68,13 +69,15 @@ export default {
             Error: false,
             quantity: "",
             selectedEquipment: null,
-            equipmentList: [],
             reservations: [],
+            equipmentList: [],
+            maxStock: 0,
         };
     },
     mounted() {
         this.getterEquipment();
         this.getterReservation();
+        this.getterMaxStock();
     },
     methods: {
         submitEquipmentOrder() {
@@ -94,11 +97,17 @@ export default {
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
                 this.equipmentList = data;
+                console.log(equipmentList);
             });
         },
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
                 this.reservations = data;
+            });
+        },
+        getterMaxStock() {
+            axios.get("/get-max-stock").then(({ data }) => {
+                this.maxStock = data;
             });
         },
     },

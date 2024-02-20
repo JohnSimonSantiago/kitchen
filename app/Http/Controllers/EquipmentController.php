@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\category;
 use App\Models\equipment;
 use App\Models\reservation;
 use Illuminate\Http\Request;
@@ -28,7 +29,10 @@ class EquipmentController extends Controller
         return $res;
     }
 
-
+    public function getMaxStock(){
+        $getEquipmentStock = equipment::find($quantity['id']);
+        return $getEquipmentStock;
+    }
 
     public function getEquipments(){
         $getEquipment = equipment::all();

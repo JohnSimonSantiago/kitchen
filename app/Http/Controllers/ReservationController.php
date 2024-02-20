@@ -52,25 +52,45 @@ class ReservationController extends Controller
             return $res;
         }
         
-        public function approveReservation(Request $request)
+        // public function approveReservation(Request $request)
+        // {   
+        //     $stockQuantity = equipment::where('equipment_id', $request->id)->first();
+        //     $stockQuantityValue = $stockQuantity->quantity;
+            
+        //     $orderQuantity = reservation_details::where('reservationNumber', $request->ID)->first();
+        //     $orderQuantityValue = $orderQuantity->quantity;
+            
+        //     $approveReservation = reservation::find($request->ID);
+            
+        //     $approveReservation->statusID = 2;
+        //     $res = $approveReservation->save();
+            
+        //     $stockQuantity->quantity = $stockQuantityValue - $orderQuantityValue;
+        //     $stockQuantity->save();
+        
+        //     return response()->json(['message' => 'Reservation approved successfully.']);
+        // }
+        public function rejectReservation(Request $request)
         {   
-            $stockQuantity = equipment::where('equipment_id', $request->id)->first();
-            $stockQuantityValue = $stockQuantity->quantity;
-            
-            $orderQuantity = reservation_details::where('reservationNumber', $request->ID)->first();
-            $orderQuantityValue = $orderQuantity->quantity;
-            
             $approveReservation = reservation::find($request->ID);
-            
-            $approveReservation->statusID = 2;
+            $approveReservation->statusID = 3;
             $res = $approveReservation->save();
             
-            $stockQuantity->quantity = $stockQuantityValue - $orderQuantityValue;
-            $stockQuantity->save();
-        
-            return response()->json(['message' => 'Reservation approved successfully.']);
+            return response()->json(['message' => 'Reservation rejected successfully.']);
         }
-        
+
+        public function returnReservation(Request $request)
+        {   
+            $newReport = new report();
+            $newReport->customerName = $request->customerName;
+
+            $approveReservation = reservation::find($request->ID);
+            $approveReservation->statusID = 4;
+            $res = $approveReservation->save();
+            
+            return response()->json(['message' => 'Reservation returned successfully.']);
+        }
+
         
 
         

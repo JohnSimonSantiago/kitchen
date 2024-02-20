@@ -55,7 +55,7 @@
                             <h1 class="font-bold">Barcode:</h1>
                             <p>{{ this.showCardDetails.barcode }}</p>
                             <h1 class="font-bold">Category:</h1>
-                            <p>{{ this.showCardDetails.category }}</p>
+                            <p>{{ this.showCardDetails.categoryID }}</p>
                             <h1 class="font-bold">Condition:</h1>
                             <p>{{ this.showCardDetails.condition }}</p>
                             <h1 class="font-bold">Description:</h1>

@@ -2,14 +2,14 @@
     <Modal
         class=""
         :modalContent="{
-            title: 'Delete Order',
-            content: 'Are you sure you want to delete?',
+            title: 'Reject Reservation',
+            content: 'Are you sure you want to reject?',
         }"
-        buttonLabel="Delete"
+        buttonLabel="Reject"
         cancelLabel="Cancel"
-        saveLabel="Delete"
+        saveLabel="Reject"
         :saveOption="true"
-        @save="deleteReservation"
+        @save="rejectReservation"
     >
     </Modal>
 </template>
@@ -24,9 +24,9 @@ export default {
         Modal,
     },
     methods: {
-        deleteReservation() {
+        rejectReservation() {
             axios
-                .post("/delete-reservation", { ID: this.idReservation })
+                .post("/reject-reservation", { ID: this.idReservation })
                 .then(() => {
                     this.$emit("deleted");
                 });
