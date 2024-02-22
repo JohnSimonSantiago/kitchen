@@ -121,6 +121,7 @@ export default {
             this.getterEquipment();
             this.showCardDetails = null;
         },
+
         getterCategory() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;

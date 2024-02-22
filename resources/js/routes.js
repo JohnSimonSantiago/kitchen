@@ -2,7 +2,6 @@ import Inventory from "@/pages/Inventory.vue";
 import Calendar from "@/pages/Calendar.vue";
 import Login from "@/pages/Login.vue";
 import Reservations from "@/pages/Reservations.vue";
-import Return from "@/pages/Return.vue";
 import MakeOrder from "@/pages/MakeOrder.vue";
 import Signup from "@/pages/Signup.vue";
 import Rent from "@/pagesUser/Rent.vue";
@@ -27,11 +26,6 @@ export const routes = [
         path: "/makeorder",
         name: "makeOrder",
         component: MakeOrder,
-    },
-    {
-        path: "/return",
-        name: "return",
-        component: Return,
     },
     {
         path: "/reservations",

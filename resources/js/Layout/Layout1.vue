@@ -16,7 +16,7 @@
                 class="w-32 mt-11 border-t border-gray-300 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="items-center">
-                    <div class="space-y-24 text-center py-8">
+                    <div class="space-y-36 text-center py-8">
                         <router-link
                             to="/inventory"
                             class="text-black-500 font-bold block"
@@ -61,29 +61,6 @@
                                 </svg>
                             </p>
                             Reservations</router-link
-                        >
-                        <router-link
-                            to="/return"
-                            class="text-black-500 font-bold block"
-                        >
-                            <p class="mx-10">
-                                <svg
-                                    class="w-6 h-6 text-gray-800 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 16 14"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 7 1 4l3-3m0 12h6.5a4.5 4.5 0 1 0 0-9H2"
-                                    />
-                                </svg>
-                            </p>
-                            Return</router-link
                         >
                         <router-link
                             to="/calendar"

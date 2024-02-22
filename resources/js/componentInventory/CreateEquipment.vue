@@ -148,6 +148,16 @@
                         required
                     ></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="">Upload Image</label>
+                    <input
+                        type="file"
+                        name="image"
+                        @change="handleImageUpload"
+                        required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                </div>
             </div>
         </form>
     </Modal>
@@ -169,6 +179,7 @@ export default {
             price: "",
             barcode: "",
             condition: "",
+            image: "",
             categoryList: [],
             categoryID: null,
             selectedCategory: null,
@@ -189,34 +200,44 @@ export default {
                 location,
                 barcode,
                 condition,
+                image,
             } = this;
-            axios
-                .post("/submit-equipment", {
-                    equipmentName,
-                    quantity,
-                    description,
-                    price,
-                    location,
-                    barcode,
-                    categoryID: selectedCategory,
-                    condition,
-                })
-                .then(({ data }) => {
-                    this.equipmentName = "";
-                    this.quantity = "";
-                    this.description = "";
-                    this.price = "";
-                    this.location = "";
-                    this.barcode = "";
-                    this.condition = "";
-                    this.$emit("success");
-                    this.$router.push("/inventory");
-                });
+
+            let formData = new FormData();
+            formData.append("equipmentName", equipmentName);
+            formData.append("quantity", quantity);
+            formData.append("description", description);
+            formData.append("price", price);
+            formData.append("location", location);
+            formData.append("barcode", barcode);
+            formData.append("categoryID", selectedCategory);
+            formData.append("condition", condition);
+            formData.append("image", this.image);
+
+            axios.post("/submit-equipment", formData).then(({ data }) => {
+                this.resetForm();
+                this.$emit("success");
+                this.$router.push("/inventory");
+            });
+        },
+        resetForm() {
+            // Reset form values, including the image
+            this.equipmentName = "";
+            this.quantity = "";
+            this.description = "";
+            this.price = "";
+            this.location = "";
+            this.barcode = "";
+            this.condition = "";
+            this.image = "";
         },
         getterCategoryList() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categoryList = data;
             });
+        },
+        handleImageUpload(event) {
+            this.image = event.target.files[0];
         },
     },
 };

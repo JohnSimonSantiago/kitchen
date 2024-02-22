@@ -5,6 +5,7 @@
         <a href="#">
             <img class="rounded-t-lg" :src="equipmentDetails.image" alt="" />
         </a>
+
         <div class="p-5">
             <a href="#">
                 <h5
@@ -44,6 +45,7 @@
 
 <script>
 export default {
+    
     props: ["equipmentDetails"],
     methods: {
         readMore() {

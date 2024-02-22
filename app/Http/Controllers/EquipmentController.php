@@ -24,6 +24,16 @@ class EquipmentController extends Controller
         $newEquipment->location = $request->location;
         $newEquipment->categoryID = $request->categoryID;
         $newEquipment->condition = $request->condition;
+        
+        if($request->hasfile('image'))
+        {
+            $file = $request->file('image');
+            $extenstion = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extenstion;
+            $file->move(public_path('/uploads'), $filename);
+            $newEquipment->image = $filename;
+        }
+
         $res = $newEquipment->save();
 
         return $res;

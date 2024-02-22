@@ -134,17 +134,26 @@
                     </div>
                     <div class="flex-col self-end">
                         <ApproveReservation
+                            v-if="this.showReservationDetails.statusID === 1"
                             :idReservation="
                                 this.showReservationDetails.reservationNumber
                             "
                             :idEquipment="getEquipmentIdForApproval()"
                         ></ApproveReservation>
                         <RejectReservation
+                            v-if="this.showReservationDetails.statusID === 1"
                             :idReservation="
                                 this.showReservationDetails.reservationNumber
                             "
                             @rejected="RejectedReservation"
                         ></RejectReservation>
+                        <ReturnReservation
+                            v-if="this.showReservationDetails.statusID === 2"
+                            :idReservation="
+                                this.showReservationDetails.reservationNumber
+                            "
+                            :idEquipment="getEquipmentIdForApproval()"
+                        ></ReturnReservation>
                         <router-link :to="'/makeOrder/' + reservationNumber">
                             <button>Edit Order</button>
                         </router-link>
@@ -158,6 +167,7 @@
 <script>
 import ReservationCard from "../cards/ReservationCard.vue";
 import RejectReservation from "@/componentreservations/RejectReservation.vue";
+import ReturnReservation from "../componentReturn/ReturnReservation.vue";
 import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
 import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
@@ -168,6 +178,7 @@ export default {
         AddItem,
         ReservationCard,
         CreateReservation,
+        ReturnReservation,
         RejectReservation,
         ApproveReservation,
         ReservationTable,

@@ -10,6 +10,7 @@
         saveLabel="Confirm"
         :saveOption="true"
         @save="deleteEquipment"
+        buttonClass="yellow-button"
     >
     </Modal>
 </template>
@@ -33,3 +34,9 @@ export default {
     },
 };
 </script>
+<style scoped>
+.yellow-button button {
+    background-color: yellow !important;
+    /* Add any additional styling you need for the yellow button */
+}
+</style>
