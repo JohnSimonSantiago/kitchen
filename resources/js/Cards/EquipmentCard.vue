@@ -2,10 +2,13 @@
     <div
         class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
-        <a href="#">
-            <img class="rounded-t-lg" :src="equipmentDetails.image" alt="" />
-        </a>
-
+        <div class="flex items-center justify-center p-2">
+            <img
+                class="rounded-t-lg w-52 h-52"
+                :src="`/uploads/${equipmentDetails.image}`"
+                alt=""
+            />
+        </div>
         <div class="p-5">
             <a href="#">
                 <h5
@@ -16,7 +19,7 @@
             </a>
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 Category:
-                {{ equipmentDetails.category }}
+                {{ equipmentDetails.categoryID }}
             </p>
             <button
                 @click="readMore"
@@ -45,7 +48,6 @@
 
 <script>
 export default {
-    
     props: ["equipmentDetails"],
     methods: {
         readMore() {

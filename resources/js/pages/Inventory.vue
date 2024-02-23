@@ -1,10 +1,10 @@
 <template>
     <Layout>
         <div
-            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex"
+            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-white-200 flex"
         >
             <!-- Middle Section -->
-            <div class="flex-1 flex flex-col p-5 bg-gray-300">
+            <div class="flex-1 flex flex-col p-5 bg-gray-200">
                 <div
                     class="border-b border-gray-400 flex items-center justify-between mb-4"
                 >
@@ -32,7 +32,9 @@
             </div>
 
             <!-- Right Section -->
-            <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-200">
+            <div
+                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-100"
+            >
                 <div v-if="showCardDetails === null">
                     (Select Equipment to View Info)
                 </div>

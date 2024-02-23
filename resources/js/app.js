@@ -15,5 +15,4 @@ const app = createApp({});
 app.use(router);
 
 app.component("Layout", Layout1);
-
 app.mount("#app");

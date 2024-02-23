@@ -4,6 +4,7 @@
     >
         <a href="#">
             <img class="rounded-t-lg" :src="reservationDetails.image" alt="" />
+
         </a>
         <div class="p-5">
             <a href="#">
