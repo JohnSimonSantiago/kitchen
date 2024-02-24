@@ -44,6 +44,7 @@ Route::post("/delete-reservation", [ReservationController::class, "deleteReserva
 Route::get("/get-reservation-orders", [ReservationController::class, "getReservationOrder"]);
 Route::post("/approve-reservation", [ReservationController::class, "approveReservation"]);
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
+Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
 Route::post('/add-to-reservation', [ReservationController::class, 'addToReservation'])->name("addToReservation");
 
 //kababaan amin

@@ -19,12 +19,18 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 
 export default {
-    props: ["idReservation", "idEquipment"],
+    props: ["idReservation"],
     components: {
         Modal,
     },
     methods: {
-        returnReservation() {},
+        returnReservation() {
+            axios
+                .post("/return-reservation", { ID: this.idReservation })
+                .then(() => {
+                    this.$emit("returned");
+                });
+        },
     },
 };
 </script>

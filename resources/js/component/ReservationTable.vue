@@ -34,6 +34,12 @@
                     </td>
                     <td class="py-2 px-4">
                         <button
+                            @click="showReturnModal(reservation)"
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        >
+                            Return Reservation
+                        </button>
+                        <button
                             @click="readMore"
                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
@@ -62,7 +68,15 @@
 </template>
 
 <script>
+import axios from "axios";
+import Modal from "../component/Modal.vue";
+import ReturnReservation from "../componentReservations/ReturnReservation.vue";
+
 export default {
+    components: {
+        Modal,
+        ReturnReservation,
+    },
     mounted() {
         this.getterReservations();
     },

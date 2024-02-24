@@ -167,7 +167,7 @@
 <script>
 import ReservationCard from "../cards/ReservationCard.vue";
 import RejectReservation from "@/componentreservations/RejectReservation.vue";
-import ReturnReservation from "../componentReturn/ReturnReservation.vue";
+import ReturnReservation from "../componentReservations/ReturnReservation.vue";
 import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
 import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
