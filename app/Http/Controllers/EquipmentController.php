@@ -59,20 +59,30 @@ class EquipmentController extends Controller
        
         $data = $request->data;
         $updatedInfo = equipment::find($data['id']);
-        
         $updatedInfo->equipmentName = $data['equipmentName'];
-    
         $updatedInfo->quantity = $data['quantity'];
         $updatedInfo->description = $data['description'];
         $updatedInfo->barcode = $data['barcode'];
         $updatedInfo->price = $data['price'];
         $updatedInfo->categoryID = $data['categoryID'];
         $updatedInfo->condition = $data['condition'];
-    
         $res = $updatedInfo->save();
     
         return $res;
     }
+    public function addDisposeEquipment(Request $request){
+       
+        $data = $request->data;
+        $updatedInfo = equipment::find($data['id']);
+        $updatedInfo->quantity = $data['quantity'];
+        $res = $updatedInfo->save();
+
+        return $res;
+    }
+
+
+
+
     public function deleteEquipment(Request $request){
         $deleteEquipment = equipment::find($request->ID);
 

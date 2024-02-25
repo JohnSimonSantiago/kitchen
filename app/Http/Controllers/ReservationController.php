@@ -81,8 +81,8 @@ class ReservationController extends Controller
 
         public function returnReservation(Request $request)
         {   
-            $newReport = new report();
-            $newReport->customerName = $request->customerName;
+            // $newReport = new report();
+            // $newReport->customerName = $request->customerName;
 
             $approveReservation = reservation::find($request->ID);
             $approveReservation->statusID = 4;

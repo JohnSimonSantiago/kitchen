@@ -31,6 +31,7 @@ Route::post("/logout", [LoginController::class, "logout"]);
 Route::post("/submit-equipment", [EquipmentController::class, 'submitEquipment'])->name('submitEquipment');
 Route::post("/update-equipment", [EquipmentController::class, 'updateEquipment']);
 Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
+Route::get("/add-dispose-equipments", [EquipmentController::class, "addDisposeEquipment"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);

@@ -10,7 +10,6 @@
         saveLabel="Confirm"
         :saveOption="true"
         @save="deleteEquipment"
-        buttonClass="yellow-button"
     >
     </Modal>
 </template>
@@ -26,17 +25,12 @@ export default {
     methods: {
         DisposeOrAddStock() {
             axios
-                .post("/delete-equipment", { ID: this.id })
+                .post("/add-dispose-equipment", { ID: this.id })
                 .then(({ data }) => {
-                    this.$emit("deleted");
+                    this.$emit("updated");
                 });
         },
     },
 };
 </script>
-<style scoped>
-.yellow-button button {
-    background-color: yellow !important;
-    /* Add any additional styling you need for the yellow button */
-}
-</style>
+<style></style>

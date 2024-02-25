@@ -33,14 +33,21 @@
                         {{ reservation.dateEnd }}
                     </td>
                     <td class="py-2 px-4">
-                        <button
-                            @click="showReturnModal(reservation)"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        <ApproveReservation
+                            v-if="reservation.statusID === 1"
+                            :idReservation="reservation.reservationNumber"
+                        ></ApproveReservation>
+                        <ReturnReservation
+                            v-if="reservation.statusID === 2"
+                            :idReservation="reservation.reservationNumber"
                         >
-                            Return Reservation
-                        </button>
+                        </ReturnReservation>
+                        <RejectReservation
+                            v-if="reservation.statusID === 1"
+                            :idReservation="reservation.reservationNumber"
+                        ></RejectReservation>
                         <button
-                            @click="readMore"
+                            @click="readMore(reservation)"
                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             See Order Details
@@ -71,11 +78,15 @@
 import axios from "axios";
 import Modal from "../component/Modal.vue";
 import ReturnReservation from "../componentReservations/ReturnReservation.vue";
+import RejectReservation from "../componentReservations/RejectReservation.vue";
+import ApproveReservation from "../componentReservations/ApproveReservation.vue";
 
 export default {
     components: {
         Modal,
         ReturnReservation,
+        RejectReservation,
+        ApproveReservation,
     },
     mounted() {
         this.getterReservations();
@@ -92,8 +103,8 @@ export default {
                 this.reservations = data;
             });
         },
-        readMore() {
-            this.$emit("clicked", this.reservationDetails);
+        readMore(data) {
+            this.$emit("clicked", data);
         },
     },
 };

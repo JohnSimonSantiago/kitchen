@@ -1,10 +1,15 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
-
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
-
 import Layout1 from "@/Layout/Layout1.vue";
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
+import { setupCalendar, Calendar, DatePicker } from "v-calendar";
+import "v-calendar/style.css";
+import PrimeVue from "primevue/config";
+import "primevue/resources/themes/aura-light-green/theme.css";
+import ToastService from "primevue/toastservice";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -12,7 +17,12 @@ const router = createRouter({
 });
 const app = createApp({});
 
+app.use(PrimeVue);
+app.use(setupCalendar, {});
 app.use(router);
-
 app.component("Layout", Layout1);
 app.mount("#app");
+app.use(VCalendar, {});
+app.component("VCalendar", Calendar);
+app.component("VDatePicker", DatePicker);
+app.use(ToastService);

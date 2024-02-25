@@ -18,7 +18,6 @@
                 </div>
                 <div>
                     <ReservationTable
-                        v-for="reservation in reservations"
                         class=""
                         :reservationDetails="reservation"
                         @clicked="seeReservationDetails"
@@ -216,6 +215,7 @@ export default {
         },
         seeReservationDetails(data) {
             this.showReservationDetails = data;
+            console.log(data);
         },
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
