@@ -1,26 +1,44 @@
 <template>
-    <Modal
-        class=""
-        :modalContent="{
-            title: 'Dispose/Add Equipment',
-            content: 'Are you sure you want to Add/Dispose these items?',
-        }"
-        buttonLabel="Dispose/Add Stock"
-        cancelLabel="Cancel"
-        saveLabel="Confirm"
-        :saveOption="true"
-        @save="deleteEquipment"
+    <Button label="Edit" @click="visible = true" />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Edit Profile"
+        :style="{ width: '25rem' }"
     >
-    </Modal>
+        <div class="flex justify-content-end gap-2">
+            <Button
+                type="button"
+                label="Cancel"
+                severity="secondary"
+                @click="visible = false"
+            ></Button>
+            <Button
+                type="button"
+                label="Save"
+                @click="DisposeOrAddStock = false"
+            ></Button>
+        </div>
+    </Dialog>
 </template>
 
 <script>
 import axios from "axios";
 import Modal from "../component/Modal.vue";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+
 export default {
+    data() {
+        return {
+            visible: false,
+        };
+    },
     props: ["id"],
     components: {
         Modal,
+        Dialog,
+        Button,
     },
     methods: {
         DisposeOrAddStock() {

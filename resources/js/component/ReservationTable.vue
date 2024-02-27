@@ -32,7 +32,8 @@
                     <td class="py-2 px-4 border-r">
                         {{ reservation.dateEnd }}
                     </td>
-                    <td class="py-2 px-4">
+                    <td class="py-1 px-2 my-1 grid grid-cols-3 gap-4">
+                        ">
                         <ApproveReservation
                             v-if="reservation.statusID === 1"
                             :idReservation="reservation.reservationNumber"

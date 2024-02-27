@@ -83,8 +83,11 @@
 
 <script>
 import Modal from "../component/Modal.vue";
+import { DatePicker } from "v-calendar";
+
 export default {
     components: {
+        DatePicker,
         Modal,
     },
     data() {

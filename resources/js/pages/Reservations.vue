@@ -23,14 +23,6 @@
                         @clicked="seeReservationDetails"
                     ></ReservationTable>
                 </div>
-                <div class="my-2 grid grid-cols-4 gap-5">
-                    <div v-for="reservation in reservations" class="">
-                        <ReservationCard
-                            :reservationDetails="reservation"
-                            @clicked="seeReservationDetails"
-                        />
-                    </div>
-                </div>
             </div>
 
             <!-- Right Section -->
@@ -164,7 +156,6 @@
 </template>
 
 <script>
-import ReservationCard from "../cards/ReservationCard.vue";
 import RejectReservation from "@/componentreservations/RejectReservation.vue";
 import ReturnReservation from "../componentReservations/ReturnReservation.vue";
 import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
@@ -175,7 +166,6 @@ import ReservationTable from "../component/ReservationTable.vue";
 export default {
     components: {
         AddItem,
-        ReservationCard,
         CreateReservation,
         ReturnReservation,
         RejectReservation,
