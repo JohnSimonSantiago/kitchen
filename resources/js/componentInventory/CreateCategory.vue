@@ -32,14 +32,24 @@
                 </div>
             </div>
         </form>
+        <Button
+            class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+            label="Return"
+            @click="submitCategory()"
+        />
+        <Toast />
     </Modal>
 </template>
 
 <script>
 import Modal from "../component/Modal.vue";
+import Toast from "primevue/toast";
+import Button from "primevue/button";
 export default {
     components: {
         Modal,
+        Button,
+        Toast,
     },
     data() {
         return {
@@ -49,14 +59,19 @@ export default {
     methods: {
         submitCategory() {
             const { category } = this;
-            axios.post("/submit-category", {
-                category,
-            });
-            // .then(({ data }) => {
-            //     this.category = "";
-            //     this.$emit("success");
-            //     this.$router.push("/inventory");
-            // });
+            axios
+                .post("/submit-category", {
+                    category,
+                })
+                .then(() => {
+                    this.$toast.add({
+                        severity: "info",
+                        summary: "Info",
+                        detail: "Category Created Successfully!",
+                        life: 3000,
+                    });
+                    this.$emit("returned");
+                });
         },
     },
 };

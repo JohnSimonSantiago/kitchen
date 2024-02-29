@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 use App\Models\equipment;
 use App\Models\reservation;
 use Illuminate\Http\Request;
@@ -54,20 +55,14 @@ class ReservationController extends Controller
         
         public function approveReservation(Request $request)
         {   
-            // $stockQuantity = equipment::where('equipment_id', $request->id)->first();
-            // $stockQuantityValue = $stockQuantity->quantity;
+            $approvedReservations = Reservation::where('statusID', 2)->get();
             
-            // $orderQuantity = reservation_details::where('reservationNumber', $request->ID)->first();
-            // $orderQuantityValue = $orderQuantity->quantity;
             
+
             $approveReservation = reservation::find($request->ID);
-            
             $approveReservation->statusID = 2;
             $res = $approveReservation->save();
-            
-            // $stockQuantity->quantity = $stockQuantityValue - $orderQuantityValue;
-            // $stockQuantity->save();
-        
+
             return response()->json(['message' => 'Reservation approved successfully.']);
         }
         public function rejectReservation(Request $request)

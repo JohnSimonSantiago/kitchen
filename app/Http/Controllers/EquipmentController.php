@@ -106,6 +106,29 @@ class EquipmentController extends Controller
         return $res;
     }
 
+    public function returnMissingEquipment(Request $request)
+{
+    // Validate request data
+    $validatedData = $request->validate([
+        'equipmentID' => 'required|exists:equipment,equipmentID',
+        'missingQuantity' => 'required|numeric|min:1',
+    ]);
+
+    // Find the equipment by ID
+    $equipment = Equipment::findOrFail($validatedData['equipmentID']);
+
+    // Update the quantity
+    $newQuantity = $equipment->quantity - $validatedData['missingQuantity'];
+
+    // Ensure quantity doesn't go below 0
+    $newQuantity = max(0, $newQuantity);
+
+    // Update the equipment with the new quantity
+    $equipment->quantity = $newQuantity;
+    $equipment->save();
+
+    return response()->json(['message' => 'Missing equipment updated successfully.']);
+}
 
 
 }

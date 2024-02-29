@@ -19,7 +19,6 @@
                 <div>
                     <ReservationTable
                         class=""
-                        :reservationDetails="reservation"
                         @clicked="seeReservationDetails"
                     ></ReservationTable>
                 </div>

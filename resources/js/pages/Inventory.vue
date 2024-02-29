@@ -9,6 +9,7 @@
                     class="border-b border-gray-400 flex items-center justify-between mb-4"
                 >
                     <h1 class="text-l font-semibold">Equipment List</h1>
+
                     <div class="mb-4 flex gap-4">
                         <AddOrDisposeStock
                             @success="getterEquipment"
@@ -64,6 +65,7 @@
                             <p>{{ this.showCardDetails.description }}</p>
                         </div>
                     </div>
+
                     <div
                         class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
                     >
@@ -111,6 +113,14 @@ export default {
         };
     },
     methods: {
+        onAdvancedUpload() {
+            this.$toast.add({
+                severity: "info",
+                summary: "Success",
+                detail: "File Uploaded",
+                life: 3000,
+            });
+        },
         showDetails(data) {
             this.showCardDetails = data;
         },

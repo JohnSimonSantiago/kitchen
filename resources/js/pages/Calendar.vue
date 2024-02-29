@@ -1,106 +1,99 @@
 <template>
-    <Modal
-        :modalContent="{
-            title: 'Create Order',
-            content: 'Please fill out the form below:',
-        }"
-        buttonLabel="Create New Reservation +"
-        cancelLabel="Cancel"
-        saveLabel="Create"
-        :saveOption="true"
-        @save="submitReservation"
-    >
-        <div v-if="Error">Error</div>
-        <form @submit.prevent="submitReservation">
-            <div class="grid gap-6 mb-6 md:grid-cols-1">
-                <div>
-                    <label
-                        for="customer_name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Customer Name</label
-                    >
-
-                    <input
-                        v-model="customerName"
-                        type="text"
-                        id="customer_name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Customer Name"
-                        required
-                    />
-                </div>
-                <div>
-                    <label
-                        for="customer_number"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Customer Contact Number</label
-                    >
-
-                    <input
-                        v-model="customerNumber"
-                        type="text"
-                        id="customer_number"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Customer Contact Number"
-                        required
-                    />
+    <Layout>
+        <div
+            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex"
+        >
+            <!-- Middle Section -->
+            <div class="flex-1 flex flex-col p-5 bg-gray-300">
+                <div
+                    class="border-b border-gray-400 flex items-center justify-between mb-4"
+                >
+                    <h1 class="text-l font-semibold">Calendar</h1>
+                    <div class="space-x-1"></div>
                 </div>
 
-                <div class="card flex flex-center justify-content-center">
-                    <!-- Use the date picker component for dateStart -->
-                    <Calendar
-                        v-model="selectedRange"
-                        selectionMode="range"
-                        inline
-                    />
+                <Calendar inline></Calendar>
+
+                <div class="my-2 grid grid-cols-4 gap-5"></div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-200">
+                <div>
+                    <h2 class="border-b border-gray-300 text-l font-semibold">
+                        Reservation Details
+                    </h2>
+                    <div class="card flex justify-content-center">
+                        <Button label="Show" @click="visible = true" />
+                        <Dialog
+                            v-model:visible="visible"
+                            modal
+                            header="Edit Profile"
+                            :style="{ width: '25rem' }"
+                        >
+                            <span class="p-text-secondary block mb-5"
+                                >Update your information.</span
+                            >
+                            <div class="flex align-items-center gap-3 mb-3">
+                                <label
+                                    for="username"
+                                    class="font-semibold w-6rem"
+                                    >Username</label
+                                >
+                                <InputText
+                                    id="username"
+                                    class="flex-auto"
+                                    autocomplete="off"
+                                />
+                            </div>
+                            <div class="flex align-items-center gap-3 mb-5">
+                                <label for="email" class="font-semibold w-6rem"
+                                    >Email</label
+                                >
+                                <InputText
+                                    id="email"
+                                    class="flex-auto"
+                                    autocomplete="off"
+                                />
+                            </div>
+                            <div class="flex justify-content-end gap-2">
+                                <Button
+                                    type="button"
+                                    label="Cancel"
+                                    severity="secondary"
+                                    @click="visible = false"
+                                ></Button>
+                                <Button
+                                    type="button"
+                                    label="Save"
+                                    @click="visible = false"
+                                ></Button>
+                            </div>
+                        </Dialog>
+                    </div>
                 </div>
             </div>
-        </form>
-    </Modal>
+        </div>
+    </Layout>
 </template>
 
 <script>
-import Modal from "../component/Modal.vue";
-import { DatePicker } from "v-calendar";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 
 export default {
     components: {
-        Modal,
+        Dialog,
         Calendar,
-        DatePicker,
+
+        Button,
     },
     data() {
         return {
-            Error: false,
-            customerName: null,
-            customerNumber: null,
-            selectedRange: null,
+            value: 0,
+            visible: false,
         };
-    },
-
-    methods: {
-        submitReservation() {
-            const { customerName, customerNumber, selectedRange } = this;
-
-            let dateStart = selectedRange[0];
-            let dateEnd = selectedRange[1];
-
-            axios
-                .post("/submit-reservation", {
-                    customerName,
-                    customerNumber,
-                    dateStart,
-                    dateEnd,
-                })
-                .then(({ data }) => {
-                    this.customerName = "";
-                    this.customerNumber = "";
-                    this.selectedRange = null;
-                    this.$emit("success");
-                    this.$router.push("/reservations");
-                });
-        },
     },
 };
 </script>

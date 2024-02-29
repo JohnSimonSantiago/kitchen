@@ -30,6 +30,7 @@ Route::post("/logout", [LoginController::class, "logout"]);
 
 Route::post("/submit-equipment", [EquipmentController::class, 'submitEquipment'])->name('submitEquipment');
 Route::post("/update-equipment", [EquipmentController::class, 'updateEquipment']);
+Route::post("/return-missing-equipment", [EquipmentController::class, "returnMissingEquipment"]);
 Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
 Route::get("/add-dispose-equipments", [EquipmentController::class, "addDisposeEquipment"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);

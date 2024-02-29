@@ -47,7 +47,14 @@
 </template>
 
 <script>
+import Card from "primevue/card";
+import Button from "primevue/button";
+
 export default {
+    components: {
+        Card,
+        Button,
+    },
     props: ["equipmentDetails"],
     methods: {
         readMore() {

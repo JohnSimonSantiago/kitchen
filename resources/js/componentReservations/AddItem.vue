@@ -97,7 +97,6 @@ export default {
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
                 this.equipmentList = data;
-                console.log(equipmentList);
             });
         },
         getterReservation() {

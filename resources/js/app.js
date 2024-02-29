@@ -22,7 +22,7 @@ app.use(setupCalendar, {});
 app.use(router);
 app.component("Layout", Layout1);
 app.mount("#app");
-app.use(VCalendar, {});
+
 app.component("VCalendar", Calendar);
 app.component("VDatePicker", DatePicker);
 app.use(ToastService);

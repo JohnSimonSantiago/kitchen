@@ -9,10 +9,10 @@
         saveLabel="Create"
         :saveOption="true"
         @save="submitReservation"
-    >
+        ><Toast />
         <div v-if="Error">Error</div>
         <form @submit.prevent="submitReservation">
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 mb-6 md:grid-cols-1">
                 <div>
                     <label
                         for="customer_name"
@@ -46,34 +46,12 @@
                     />
                 </div>
 
-                <div>
-                    <label
-                        for="datestart"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Date Start</label
-                    >
-                    <input
-                        v-model="dateStart"
-                        type="date"
-                        id="date_start"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Date Start"
-                        required
-                    />
-                </div>
-                <div>
-                    <label
-                        for="dateEnd"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Date End</label
-                    >
-                    <input
-                        v-model="dateEnd"
-                        type="date"
-                        id="date_End"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Date End"
-                        required
+                <div class="card flex flex-center justify-content-center">
+                    <!-- Use the date picker component for dateStart -->
+                    <Calendar
+                        v-model="selectedRange"
+                        selectionMode="range"
+                        inline
                     />
                 </div>
             </div>
@@ -83,25 +61,31 @@
 
 <script>
 import Modal from "../component/Modal.vue";
-import { DatePicker } from "v-calendar";
+
+import Calendar from "primevue/calendar";
+import Toast from "primevue/toast";
 
 export default {
     components: {
-        DatePicker,
         Modal,
+        Calendar,
+        Toast,
     },
     data() {
         return {
             Error: false,
             customerName: null,
             customerNumber: null,
-            dateStart: null,
-            dateEnd: null,
+            selectedRange: null,
         };
     },
+
     methods: {
         submitReservation() {
-            const { customerName, customerNumber, dateStart, dateEnd } = this;
+            const { customerName, customerNumber, selectedRange } = this;
+
+            let dateStart = selectedRange[0];
+            let dateEnd = selectedRange[1];
 
             axios
                 .post("/submit-reservation", {
@@ -110,12 +94,16 @@ export default {
                     dateStart,
                     dateEnd,
                 })
-
                 .then(({ data }) => {
+                    this.$toast.add({
+                        severity: "info",
+                        summary: "Info",
+                        detail: "Equipment Returned Successfully!",
+                        life: 3000,
+                    });
                     this.customerName = "";
                     this.customerNumber = "";
-                    this.dateStart = "";
-                    this.dateEnd = "";
+                    this.selectedRange = null;
                     this.$emit("success");
                     this.$router.push("/reservations");
                 });
