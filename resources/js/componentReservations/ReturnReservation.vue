@@ -32,12 +32,12 @@
                 <Button
                     class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
                     label="Yes"
-                    @click="skiptoPart5"
+                    @click="nextStep"
                 />
                 <Button
                     class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
                     label="No"
-                    @click=""
+                    @click="skipToPar5"
                 />
             </div>
         </div>
@@ -59,7 +59,6 @@
                         >Select missing equipment:</label
                     >
                     <select v-model="selectedEquipment" id="missingEquipment">
-                        <!-- Replace this with your actual list of equipment options -->
                         <option
                             v-for="equipment in availableEquipment"
                             :key="equipment.id"
@@ -85,7 +84,7 @@
 
         <!-- Part 5: -->
         <div v-if="currentStep === 5">
-            <p>This is Part 5 content.</p>
+            <p>This is Part 5 .</p>
         </div>
         <Toast />
     </Modal>
@@ -120,7 +119,7 @@ export default {
         skipToPart4() {
             this.currentStep = 4;
         },
-        skipToPar54() {
+        skipToPar5() {
             this.currentStep = 5;
         },
         returnReservation() {

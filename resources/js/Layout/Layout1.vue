@@ -19,7 +19,7 @@
                     <div class="space-y-36 text-center py-8">
                         <router-link
                             to="/inventory"
-                            class="text-black-500 font-bold block"
+                            class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -42,7 +42,7 @@
 
                         <router-link
                             to="/reservations"
-                            class="text-black-500 font-bold block"
+                            class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -64,7 +64,7 @@
                         >
                         <router-link
                             to="/calendar"
-                            class="text-black-500 font-bold block"
+                            class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -83,7 +83,7 @@
                         >
                         <button
                             @click="logout"
-                            class="text-black-500 font-bold block mx-10"
+                            class="text-black-500 font-bold block mx-10 hover:bg-gray-200 bg-white"
                         >
                             Exit
                             <svg

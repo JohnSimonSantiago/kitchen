@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div
-            class="w-full border-t border-gray-300 fixed top-11 ml-64 min-h-screen bg-gray-100 flex"
+            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-white-200 flex"
         >
             <!-- Middle Section -->
             <div class="flex-1 flex flex-col p-5 bg-gray-300">

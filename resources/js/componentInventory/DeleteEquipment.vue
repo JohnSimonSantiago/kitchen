@@ -11,16 +11,21 @@
         :saveOption="true"
         @save="deleteEquipment"
     >
+        <Message :closable="false" severity="error"
+            >Warning: You cannot undo this action</Message
+        >
     </Modal>
 </template>
 
 <script>
 import axios from "axios";
 import Modal from "../component/Modal.vue";
+import Message from "primevue/message";
 export default {
     props: ["id"],
     components: {
         Modal,
+        Message,
     },
     methods: {
         deleteEquipment() {

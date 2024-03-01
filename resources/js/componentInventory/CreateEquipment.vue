@@ -10,8 +10,8 @@
         :saveOption="true"
         @save="submitEquipment"
     >
-        <div v-if="Error">Error</div>
-        <form>
+        <div v-if="Error">Error: Please fill out all required fields</div>
+        <form @submit.prevent="submitEquipment">
             <div class="grid gap-6 mb-6 md:grid-cols-3">
                 <div>
                     <label

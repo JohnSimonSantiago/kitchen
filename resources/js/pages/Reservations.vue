@@ -27,7 +27,9 @@
             <!-- Right Section -->
             <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-200">
                 <div v-if="showReservationDetails === null">
-                    (Select Order to View Details)
+                    <Message :closable="false" severity="info"
+                        >Select Reservation to view Details</Message
+                    >
                 </div>
                 <div v-else>
                     <div>
@@ -60,25 +62,16 @@
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
                         <div class="bg-gray-300 rounded-md px-4 py-2">
-                            <h1 class="font-bold">Name:</h1>
+                            <h1 class="font-bold">Cart:</h1>
                             <p>
                                 {{ this.reservationOrder.quantity }}
                             </p>
                             <p>
                                 {{ this.reservationOrder.quantity }}
                             </p>
-                            <div class="mb-2">
-                                <AddItem
-                                    :idReservation="
-                                        this.showReservationDetails
-                                            .reservationNumber
-                                    "
-                                    @success="getterReservation"
-                                ></AddItem>
-                            </div>
                         </div>
                         <div
-                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30"
+                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 flex items-center justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -96,12 +89,12 @@
                                 />
                             </svg>
 
-                            <span style="font-weight: 400">
-                                {{ this.showReservationDetails.dateStart }}
+                            <span>
+                                From:{{ this.showReservationDetails.dateStart }}
                             </span>
                         </div>
                         <div
-                            class="p-1 flex items-center border-b border-dashed border-black h-30"
+                            class="p-1 flex items-center border-b border-dashed border-black h-30 flex items-center justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -117,36 +110,27 @@
                                 />
                             </svg>
 
-                            <span style="font-weight: 400">
-                                {{ this.showReservationDetails.dateEnd }}
+                            <span>
+                                To:{{ this.showReservationDetails.dateEnd }}
                             </span>
                         </div>
                     </div>
                     <div class="flex-col self-end">
-                        <ApproveReservation
-                            v-if="this.showReservationDetails.statusID === 1"
-                            :idReservation="
-                                this.showReservationDetails.reservationNumber
-                            "
-                            :idEquipment="getEquipmentIdForApproval()"
-                        ></ApproveReservation>
-                        <RejectReservation
-                            v-if="this.showReservationDetails.statusID === 1"
-                            :idReservation="
-                                this.showReservationDetails.reservationNumber
-                            "
-                            @rejected="RejectedReservation"
-                        ></RejectReservation>
-                        <ReturnReservation
-                            v-if="this.showReservationDetails.statusID === 2"
-                            :idReservation="
-                                this.showReservationDetails.reservationNumber
-                            "
-                            :idEquipment="getEquipmentIdForApproval()"
-                        ></ReturnReservation>
-                        <router-link :to="'/makeOrder/' + reservationNumber">
-                            <button>Edit Order</button>
-                        </router-link>
+                        <div class="flex items-center justify-center gap-2">
+                            <AddItem
+                                :idReservation="
+                                    this.showReservationDetails
+                                        .reservationNumber
+                                "
+                                @success="getterReservation"
+                            ></AddItem>
+                            <router-link
+                                class="bg-yellow-500 px-4 py-2 rounded-md text-white text-sm hover:bg-yellow-600"
+                                :to="'/makeOrder/' + reservationNumber"
+                            >
+                                <button>Edit Order</button>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,20 +139,16 @@
 </template>
 
 <script>
-import RejectReservation from "@/componentreservations/RejectReservation.vue";
-import ReturnReservation from "../componentReservations/ReturnReservation.vue";
-import ApproveReservation from "@/componentreservations/ApproveReservation.vue";
 import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
 import ReservationTable from "../component/ReservationTable.vue";
+import Message from "primevue/message";
 
 export default {
     components: {
         AddItem,
+        Message,
         CreateReservation,
-        ReturnReservation,
-        RejectReservation,
-        ApproveReservation,
         ReservationTable,
     },
     mounted() {

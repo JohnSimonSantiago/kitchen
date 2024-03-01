@@ -37,7 +37,9 @@
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-100"
             >
                 <div v-if="showCardDetails === null">
-                    (Select Equipment to View Info)
+                    <Message :closable="false" severity="info"
+                        >Select Equipment to view Details</Message
+                    >
                 </div>
                 <div v-else>
                     <h2 class="border-b border-gray-300 text-l font-semibold">
@@ -46,23 +48,39 @@
 
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
-                        <div class="bg-gray-300 rounded-md px-4 py-2">
-                            <h1 class="font-bold">Name:</h1>
-                            <p>{{ this.showCardDetails.equipmentName }}</p>
-                            <h1 class="font-bold">Quantity:</h1>
-                            <p>{{ this.showCardDetails.quantity }}</p>
-                            <h1 class="font-bold">Location:</h1>
-                            <p>{{ this.showCardDetails.location }}</p>
-                            <h1 class="font-bold">Price:</h1>
-                            <p>{{ this.showCardDetails.price }}</p>
-                            <h1 class="font-bold">Barcode:</h1>
-                            <p>{{ this.showCardDetails.barcode }}</p>
-                            <h1 class="font-bold">Category:</h1>
-                            <p>{{ this.showCardDetails.categoryID }}</p>
-                            <h1 class="font-bold">Condition:</h1>
-                            <p>{{ this.showCardDetails.condition }}</p>
-                            <h1 class="font-bold">Description:</h1>
-                            <p>{{ this.showCardDetails.description }}</p>
+                        <div class="bg-gray-200 rounded-md px-4 py-2">
+                            <h1>
+                                <span class="font-bold">Name:</span>
+                                {{ this.showCardDetails.equipmentName }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Quantity:</span>
+                                {{ this.showCardDetails.quantity }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Location:</span>
+                                {{ this.showCardDetails.location }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Price:</span>
+                                {{ this.showCardDetails.price }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Barcode:</span>
+                                {{ this.showCardDetails.barcode }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Category:</span>
+                                {{ this.showCardDetails.cateegoryid }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Condition:</span>
+                                {{ this.showCardDetails.condition }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Description:</span>
+                                {{ this.showCardDetails.description }}
+                            </h1>
                         </div>
                     </div>
 
@@ -91,10 +109,12 @@ import EditEquipment from "@/componentinventory/EditEquipment.vue";
 import DeleteEquipment from "@/componentinventory/DeleteEquipment.vue";
 import CreateCategory from "@/componentinventory/CreateCategory.vue";
 import AddOrDisposeStock from "@/componentinventory/AddOrDisposeStock.vue";
+import Message from "primevue/message";
 
 export default {
     components: {
         CreateEquipment,
+        Message,
         AddOrDisposeStock,
         EditEquipment,
         EquipmentCard,
