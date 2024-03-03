@@ -81,6 +81,9 @@
                             </p>
                             Calendar</router-link
                         >
+                        <router-link to="/reservations2">
+                            reservations2</router-link
+                        >
                         <button
                             @click="logout"
                             class="text-black-500 font-bold block mx-10 hover:bg-gray-200 bg-white"
