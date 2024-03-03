@@ -4,7 +4,7 @@
             class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex"
         >
             <!-- Middle Section -->
-            <div class="flex-1 flex flex-col p-5 bg-gray-300">
+            <div class="flex-1 flex flex-col p-5 bg-gray-200">
                 <div
                     class="border-b border-gray-400 flex items-center justify-between mb-4"
                 >
@@ -18,7 +18,9 @@
             </div>
 
             <!-- Right Section -->
-            <div class="flex min-h-screen flex-col w-1/4 p-4 bg-gray-200">
+            <div
+                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-100"
+            >
                 <div>
                     <h2 class="border-b border-gray-300 text-l font-semibold">
                         Reservation Details

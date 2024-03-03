@@ -2,7 +2,7 @@
     <div class="h-screen">
         <!-- Top Row -->
         <div
-            class="flex items-center ps-2.5 pt-0.5 gap-2 fixed bg-white z-50 w-screen over-flow-clip"
+            class="flex items-center border-b border-yellow-400 border-b-2 ps-2.5 pt-0.5 gap-2 fixed bg-white h-16 w-screen over-flow-clip"
         >
             <img src="../../../public/Cbea.png" alt="" class="w-10 h-10" />
             <span
@@ -13,13 +13,20 @@
 
         <div>
             <div
-                class="w-32 mt-11 border-t border-gray-300 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
+                class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="items-center">
-                    <div class="space-y-36 text-center py-8">
+                    <div class="space-y-32 text-center py-8">
                         <router-link
                             to="/inventory"
                             class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                            @click.native="toggleActive('/inventory')"
+                            :style="{
+                                borderRight:
+                                    isActive === '/inventory'
+                                        ? '3px solid green'
+                                        : 'none',
+                            }"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -43,6 +50,12 @@
                         <router-link
                             to="/reservations"
                             class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                            @click="toggleActive1"
+                            :style="{
+                                borderRight: isActive1
+                                    ? '3px solid green'
+                                    : 'none',
+                            }"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -65,6 +78,12 @@
                         <router-link
                             to="/calendar"
                             class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                            @click="toggleActive2"
+                            :style="{
+                                borderRight: isActive2
+                                    ? '3px solid green'
+                                    : 'none',
+                            }"
                             ><p class="mx-10">
                                 <svg
                                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -119,7 +138,23 @@
 
 <script>
 export default {
+    data() {
+        return {
+            isActive: false,
+            isActive1: false,
+            isActive2: false,
+        };
+    },
     methods: {
+        toggleActive(inventory) {
+            this.isActive = inventory;
+        },
+        toggleActive1() {
+            this.isActive1 = !this.isActive1;
+        },
+        toggleActive2() {
+            this.isActive2 = !this.isActive2;
+        },
         checkAuth() {
             axios.get("/checkUser").then(({ data }) => {
                 if (!data) {

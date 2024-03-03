@@ -55,13 +55,39 @@ class ReservationController extends Controller
         
         public function approveReservation(Request $request)
         {   
-            $approvedReservations = Reservation::where('statusID', 2)->get();
-            
-            
+            $selectedReservation = reservation::find($request->ID);
 
-            $approveReservation = reservation::find($request->ID);
-            $approveReservation->statusID = 2;
-            $res = $approveReservation->save();
+            $getReservationQuantity = DB::table('reservations')
+            ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
+            ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+            ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
+            ->get();
+            
+            
+            $selectedReservationDateRange = [
+                'dateStart' => $selectedReservation->dateStart,
+                'dateEnd' => $selectedReservation->dateEnd
+            ];
+            
+            $approvedReservations = Reservation::where('statusID', 2)
+                ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
+                ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
+                ->get();
+            
+            $approvedReservationQuantities = [];
+            foreach ($approvedReservations as $approvedReservation) {
+                $approvedReservationDetails = DB::table('reservations')
+                ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
+                ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+                ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
+                ->get();
+            dd($approvedReservationQuantities);
+                $approvedReservationQuantities[] = $approvedReservationDetails;
+            }
+            
+            
+            $selectedReservation->statusID = 2;
+            $res = $selectedReservation->save();
 
             return response()->json(['message' => 'Reservation approved successfully.']);
         }
