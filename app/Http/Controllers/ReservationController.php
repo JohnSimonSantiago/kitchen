@@ -53,15 +53,16 @@ class ReservationController extends Controller
             return $res;
         }
         
-        public function approveReservation(Request $request)
+        public function approveReservation(Request $request) 
         {   
             $selectedReservation = reservation::find($request->ID);
-
-            $getReservationQuantity = DB::table('reservations')
+            
+            $getReservationQuantities = DB::table('reservations')
             ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
             ->select('reservation_details.quantity', 'reservation_details.equipment_id')
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
+            
             
             
             $selectedReservationDateRange = [
@@ -69,10 +70,12 @@ class ReservationController extends Controller
                 'dateEnd' => $selectedReservation->dateEnd
             ];
             
-            $approvedReservations = Reservation::where('statusID', 2)
+            
+            $approvedReservations = reservation::where('statusID', 2)
                 ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
                 ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
                 ->get();
+                
             
             $approvedReservationQuantities = [];
             foreach ($approvedReservations as $approvedReservation) {
@@ -81,11 +84,25 @@ class ReservationController extends Controller
                 ->select('reservation_details.quantity', 'reservation_details.equipment_id')
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
-            dd($approvedReservationQuantities);
                 $approvedReservationQuantities[] = $approvedReservationDetails;
             }
             
+        //     $getEquipmentQuantities = equipment::pluck('quantity', 'equipment_id');
+
+        //     foreach ($getEquipmentQuantities as $getEquipmentQuantity) {
+        //         foreach ($approvedReservations as $approvedReservation) {
+        //             foreach ($getReservationQuantities as $getReservationQuantity) {
+        //             if($getEquipmentQuantities){$approvedReservations ++ $getReservationQuantities >$getEquipmentQuantities
+        //                 return response()->json(['message' => 'not enough quantity.']);
+        //             }
+
+        //         }
+        //     }
+        // }
             
+
+
+
             $selectedReservation->statusID = 2;
             $res = $selectedReservation->save();
 
