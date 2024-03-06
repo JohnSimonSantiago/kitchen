@@ -1,14 +1,15 @@
 <template>
-    <Modal
-        :modalContent="{
-            title: 'Create Equipment',
-            content: 'Please fill out the form below:',
-        }"
-        buttonLabel="Create New Equipment +"
-        cancelLabel="Cancel"
-        saveLabel="Create"
-        :saveOption="true"
-        @save="submitEquipment"
+    <Button
+        label="Create Equipment"
+        icon="pi pi-plus"
+        @click="visible = true"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Create Equipment"
+        :style="{ width: '75rem' }"
     >
         <div v-if="Error">Error: Please fill out all required fields</div>
         <form @submit.prevent="submitEquipment">
@@ -160,20 +161,38 @@
                 </div>
                 <div class="card"></div>
             </div>
+            <div class="flex justify-content-end gap-2">
+                <Button
+                    type="button"
+                    label="Cancel"
+                    severity="secondary"
+                    @click="visible = false"
+                ></Button>
+                <Button
+                    type="button"
+                    label="Save"
+                    @click="saveAndSubmit"
+                ></Button>
+            </div>
         </form>
-    </Modal>
+    </Dialog>
 </template>
 
 <script>
 import Modal from "../component/Modal.vue";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 
 export default {
     components: {
         Modal,
+        Button,
+        Dialog,
     },
     data() {
         return {
             Error: false,
+            visible: false,
             equipmentName: "",
             quantity: "",
             description: "",
@@ -192,6 +211,10 @@ export default {
     },
 
     methods: {
+        saveAndSubmit() {
+            this.submitEquipment();
+            this.visible = false;
+        },
         submitEquipment() {
             const {
                 selectedCategory,

@@ -1,6 +1,11 @@
 <template>
     <div class="card flex justify-content-center">
-        <Button label="Edit" @click="visible = true" />
+        <Button
+            label="Add/Dispose Stock"
+            icon="pi pi-file-edit"
+            @click="visible = true"
+            class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
+        />
         <Dialog
             v-model:visible="visible"
             modal
@@ -34,15 +39,16 @@
                 ></Button>
             </div>
         </Dialog>
+        <Toast />
     </div>
 </template>
 
 <script>
 import axios from "axios";
-import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import Toast from "primevue/toast";
 
 export default {
     data() {
@@ -52,7 +58,7 @@ export default {
     },
     props: ["id"],
     components: {
-        Modal,
+        Toast,
         Dialog,
         InputText,
         Button,

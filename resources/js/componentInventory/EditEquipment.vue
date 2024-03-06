@@ -1,14 +1,15 @@
 <template>
-    <Modal
-        :modalContent="{
-            title: 'Edit Equipment',
-            content: 'Please fill out the form below:',
-        }"
-        buttonLabel="Edit"
-        cancelLabel="Cancel"
-        saveLabel="Update"
-        :saveOption="true"
-        @save="updateEquipment"
+    <Button
+        label="Edit Equipment"
+        icon="pi pi-plus"
+        @click="visible = true"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Edit Equipment"
+        :style="{ width: '75rem' }"
     >
         <form @submit.prevent="updateEquipment">
             <div class="grid gap-6 mb-6 md:grid-cols-3">
@@ -63,29 +64,39 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Category</label
                     >
-                    <input
-                        v-model="data.category"
-                        type="text"
+                    <select
+                        v-model="selectedCategory"
                         id="category"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Category"
                         required
-                    />
+                    >
+                        <option
+                            v-for="category in categoryList"
+                            :key="category.categoryID"
+                            :value="category.categoryID"
+                        >
+                            {{ category.category }}
+                        </option>
+                    </select>
                 </div>
                 <div>
                     <label
-                        for="conditon"
+                        for="condition"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Conditon</label
+                        >Condition</label
                     >
-                    <input
-                        v-model="data.condition"
-                        type="text"
+                    <select
+                        v-model="condition"
                         id="condition"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Condition"
                         required
-                    />
+                    >
+                        <option value="Good">Good</option>
+                        <option value="Slightly Damaged">
+                            Slightly Damaged
+                        </option>
+                        <option value="Damaged">Damaged</option>
+                    </select>
                 </div>
                 <div>
                     <label
@@ -134,24 +145,54 @@
                         required
                     ></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="">Upload Image</label>
+                    <input
+                        type="file"
+                        name="image"
+                        @change="handleImageUpload"
+                        required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                </div>
+                <div class="flex justify-content-end gap-2">
+                    <Button
+                        type="button"
+                        label="Cancel"
+                        severity="secondary"
+                        @click="visible = false"
+                    ></Button>
+                    <Button
+                        type="button"
+                        label="Save"
+                        @click="saveAndSubmit"
+                    ></Button>
+                </div>
             </div>
         </form>
-    </Modal>
+    </Dialog>
+    <Toast />
 </template>
 
 <script>
 import axios from "axios";
-import Modal from "../component/Modal.vue";
+import Button from "primevue/button";
+import Toast from "primevue/toast";
+import Dialog from "primevue/dialog";
 
 export default {
     props: ["equipment_id"],
     components: {
-        Modal,
+        Toast,
+        Dialog,
+        Button,
     },
     data() {
         return {
+            visible: false,
             edit_id: 0,
             data: {
+                Error: false,
                 equipment_id: 0,
                 equipmentName: "",
                 quantity: 0,
@@ -159,16 +200,22 @@ export default {
                 price: "",
                 condition: "",
                 location: "",
-                category: "",
+                image: "",
+                categoryList: [],
+                categoryID: null,
                 description: "",
             },
         };
     },
     methods: {
+        saveAndSubmit() {
+            (this.visible = false), this.updateEquipment();
+        },
         getEquipment() {
             const { edit_id } = this;
             axios.post("/get-equipment", { edit_id }).then(({ data }) => {
                 this.data = data;
+                console.log(this.data);
             });
         },
         updateEquipment() {
@@ -198,6 +245,9 @@ export default {
             this.data.equipment_id = New;
             this.getEquipment();
         },
+    },
+    handleImageUpload(event) {
+        this.image = event.target.files[0];
     },
 };
 </script>

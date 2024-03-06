@@ -1,14 +1,15 @@
 <template>
-    <Modal
-        :modalContent="{
-            title: 'Create Category',
-            content: 'Please fill out the form below:',
-        }"
-        buttonLabel="Create New Category +"
-        cancelLabel="Cancel"
-        saveLabel="Create"
-        :saveOption="true"
-        @save="submitCategory"
+    <Button
+        label="Create Category"
+        icon="pi pi-plus"
+        @click="visible = true"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Create Category"
+        :style="{ width: '25rem' }"
     >
         <div v-if="Error">Error</div>
         <form>
@@ -18,45 +19,61 @@
                         <label
                             for="category"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >Category</label
-                        >
+                            >Please Fill up the form:
+                        </label>
                         <input
                             v-model="category"
                             type="text"
                             id="category"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Category"
+                            placeholder="Category Name"
                             required
                         />
                     </div>
                 </div>
+                <div class="flex justify-content-end gap-2">
+                    <Button
+                        type="button"
+                        label="Cancel"
+                        severity="secondary"
+                        @click="visible = false"
+                    ></Button>
+                    <Button
+                        type="button"
+                        label="Save"
+                        @click="saveAndSubmit"
+                    ></Button>
+                </div>
             </div>
         </form>
-        <Button
-            class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-            label="Return"
-            @click="submitCategory()"
-        />
-        <Toast />
-    </Modal>
+    </Dialog>
+    <Toast />
 </template>
 
 <script>
 import Modal from "../component/Modal.vue";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+
 export default {
     components: {
         Modal,
         Button,
         Toast,
+        Dialog,
     },
     data() {
         return {
             category: "",
+            visible: false,
         };
     },
     methods: {
+        saveAndSubmit() {
+            this.visible = false;
+            this.submitCategory();
+        },
         submitCategory() {
             const { category } = this;
             axios
@@ -65,7 +82,7 @@ export default {
                 })
                 .then(() => {
                     this.$toast.add({
-                        severity: "info",
+                        severity: "success",
                         summary: "Info",
                         detail: "Category Created Successfully!",
                         life: 3000,

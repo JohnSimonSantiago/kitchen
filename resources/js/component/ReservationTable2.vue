@@ -2,7 +2,7 @@
     <div class="card">
         <DataTable
             v-model:expandedRows="expandedRows"
-            :value="products"
+            :value="reservations"
             dataKey="id"
             @rowExpand="onRowExpand"
             @rowCollapse="onRowCollapse"
@@ -126,7 +126,7 @@ export default {
     },
     data() {
         return {
-            reservations: [],
+            reservations: null,
         };
     },
     props: ["reservationDetails"],
@@ -134,6 +134,7 @@ export default {
         getterReservations() {
             axios.get("/get-reservations").then(({ data }) => {
                 this.reservations = data;
+                console.log(this.reservations);
             });
         },
         readMore(data) {

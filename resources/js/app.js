@@ -10,6 +10,7 @@ import "v-calendar/style.css";
 import PrimeVue from "primevue/config";
 import "primevue/resources/themes/aura-light-green/theme.css";
 import ToastService from "primevue/toastservice";
+import "primeicons/primeicons.css";
 
 const router = createRouter({
     history: createWebHistory(),

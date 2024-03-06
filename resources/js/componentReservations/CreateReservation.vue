@@ -1,17 +1,17 @@
 <template>
-    <Modal
-        :modalContent="{
-            title: 'Create Order',
-            content: 'Please fill out the form below:',
-        }"
-        buttonLabel="Create New Reservation +"
-        cancelLabel="Cancel"
-        saveLabel="Create"
-        :saveOption="true"
-        @save="submitReservation"
-        ><Toast />
-        <div v-if="Error">Error</div>
-        <form @submit.prevent="submitReservation">
+    <Button
+        label="Create Reservation"
+        icon="pi pi-file-edit"
+        @click="visible = true"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Create Reservation"
+        :style="{ width: '25rem' }"
+    >
+        <form>
             <div class="grid gap-6 mb-6 md:grid-cols-1">
                 <div>
                     <label
@@ -47,33 +47,47 @@
                 </div>
 
                 <div class="card flex flex-center justify-content-center">
-                    <!-- Use the date picker component for dateStart -->
                     <Calendar
                         v-model="selectedRange"
                         selectionMode="range"
                         inline
                     />
                 </div>
+                <div class="flex justify-content-end gap-2">
+                    <Button
+                        type="button"
+                        label="Cancel"
+                        severity="secondary"
+                        @click="visible = false"
+                    ></Button>
+                    <Button
+                        type="button"
+                        label="Save"
+                        @click="saveAndSubmit"
+                    ></Button>
+                </div>
             </div>
         </form>
-    </Modal>
+    </Dialog>
+    <Toast />
 </template>
 
 <script>
-import Modal from "../component/Modal.vue";
-
+import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
+import Button from "primevue/button";
 
 export default {
     components: {
-        Modal,
         Calendar,
+        Dialog,
+        Button,
         Toast,
     },
     data() {
         return {
-            Error: false,
+            visible: false,
             customerName: null,
             customerNumber: null,
             selectedRange: null,
@@ -81,6 +95,10 @@ export default {
     },
 
     methods: {
+        saveAndSubmit() {
+            this.submitReservation();
+            this.visible = false;
+        },
         submitReservation() {
             const { customerName, customerNumber, selectedRange } = this;
 
@@ -96,9 +114,9 @@ export default {
                 })
                 .then(({ data }) => {
                     this.$toast.add({
-                        severity: "info",
+                        severity: "success",
                         summary: "Info",
-                        detail: "Equipment Returned Successfully!",
+                        detail: "Reservation Created Successfully!",
                         life: 3000,
                     });
                     this.customerName = "";

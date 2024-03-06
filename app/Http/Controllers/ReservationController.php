@@ -62,21 +62,18 @@ class ReservationController extends Controller
             ->select('reservation_details.quantity', 'reservation_details.equipment_id')
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
-            
-            
-            
+           
+        
             $selectedReservationDateRange = [
                 'dateStart' => $selectedReservation->dateStart,
                 'dateEnd' => $selectedReservation->dateEnd
             ];
-            
             
             $approvedReservations = reservation::where('statusID', 2)
                 ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
                 ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
                 ->get();
                 
-            
             $approvedReservationQuantities = [];
             foreach ($approvedReservations as $approvedReservation) {
                 $approvedReservationDetails = DB::table('reservations')
@@ -84,30 +81,53 @@ class ReservationController extends Controller
                 ->select('reservation_details.quantity', 'reservation_details.equipment_id')
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
-                $approvedReservationQuantities[] = $approvedReservationDetails;
+                $approvedReservationQuantities = $approvedReservationDetails;
+                
+                
+            }
+
+            $getEquipmentQuantities = equipment::pluck('quantity', 'equipment_id');
+
+
+            $totalQuantities = [];
+            
+       
+           
+            foreach ($getReservationQuantities as $reservationQuantity) {
+                $equipmentId = $reservationQuantity->equipment_id;
+                $quantity = $reservationQuantity->quantity;
+            
+                // If the property doesn't exist, initialize it to 0
+                if (!isset($totalQuantities[$equipmentId])) {
+                    $totalQuantities[$equipmentId] = 0;
+                }
+            
+                // Dynamically assign quantity to $totalQuantities using equipmentId as property
+                $totalQuantities[$equipmentId] += $quantity;
+            }
+
+            foreach ($approvedReservationQuantities as $approvedReservationQuantity) {
+                $equipmentId_ = $approvedReservationQuantity->equipment_id;
+                $quantity = $approvedReservationQuantity->quantity;
+                if (!isset($totalQuantities[$equipmentId_])) {
+                    $totalQuantities[$equipmentId_] = 0;
+                }
+                $totalQuantities[$equipmentId_] += $quantity;
+            }
+    
+            foreach ($totalQuantities as $equipmentId => $totalQuantity) {
+                $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
+                if ($totalQuantity > $availableStock) {
+                    die("Error: Not enough stock for equipment_id $equipmentId.");
+                }
             }
             
-        //     $getEquipmentQuantities = equipment::pluck('quantity', 'equipment_id');
-
-        //     foreach ($getEquipmentQuantities as $getEquipmentQuantity) {
-        //         foreach ($approvedReservations as $approvedReservation) {
-        //             foreach ($getReservationQuantities as $getReservationQuantity) {
-        //             if($getEquipmentQuantities){$approvedReservations ++ $getReservationQuantities >$getEquipmentQuantities
-        //                 return response()->json(['message' => 'not enough quantity.']);
-        //             }
-
-        //         }
-        //     }
-        // }
-            
-
-
-
             $selectedReservation->statusID = 2;
             $res = $selectedReservation->save();
-
             return response()->json(['message' => 'Reservation approved successfully.']);
         }
+
+
         public function rejectReservation(Request $request)
         {   
             $approveReservation = reservation::find($request->ID);
