@@ -83,7 +83,7 @@ export default {
                 .then(() => {
                     this.$toast.add({
                         severity: "success",
-                        summary: "Info",
+                        summary: "Success!",
                         detail: "Category Created Successfully!",
                         life: 3000,
                     });

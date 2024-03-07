@@ -60,7 +60,7 @@ export default {
                 .then(({ data }) => {
                     this.$toast.add({
                         severity: "success",
-                        summary: "Info",
+                        summary: "Success!",
                         detail: "Equpment Deleted Successfully!",
                         life: 3000,
                     });

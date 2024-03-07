@@ -56,19 +56,16 @@ class ReservationController extends Controller
         public function approveReservation(Request $request) 
         {   
             $selectedReservation = reservation::find($request->ID);
-            
             $getReservationQuantities = DB::table('reservations')
             ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
             ->select('reservation_details.quantity', 'reservation_details.equipment_id')
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
            
-        
             $selectedReservationDateRange = [
                 'dateStart' => $selectedReservation->dateStart,
                 'dateEnd' => $selectedReservation->dateEnd
             ];
-            
             $approvedReservations = reservation::where('statusID', 2)
                 ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
                 ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
@@ -82,30 +79,18 @@ class ReservationController extends Controller
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
                 $approvedReservationQuantities = $approvedReservationDetails;
-                
-                
             }
 
             $getEquipmentQuantities = equipment::pluck('quantity', 'equipment_id');
-
-
             $totalQuantities = [];
-            
-       
-           
             foreach ($getReservationQuantities as $reservationQuantity) {
                 $equipmentId = $reservationQuantity->equipment_id;
                 $quantity = $reservationQuantity->quantity;
-            
-                // If the property doesn't exist, initialize it to 0
                 if (!isset($totalQuantities[$equipmentId])) {
                     $totalQuantities[$equipmentId] = 0;
                 }
-            
-                // Dynamically assign quantity to $totalQuantities using equipmentId as property
                 $totalQuantities[$equipmentId] += $quantity;
             }
-
             foreach ($approvedReservationQuantities as $approvedReservationQuantity) {
                 $equipmentId_ = $approvedReservationQuantity->equipment_id;
                 $quantity = $approvedReservationQuantity->quantity;
@@ -114,7 +99,6 @@ class ReservationController extends Controller
                 }
                 $totalQuantities[$equipmentId_] += $quantity;
             }
-    
             foreach ($totalQuantities as $equipmentId => $totalQuantity) {
                 $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
                 if ($totalQuantity > $availableStock) {
@@ -127,44 +111,34 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Reservation approved successfully.']);
         }
 
-
         public function rejectReservation(Request $request)
         {   
             $approveReservation = reservation::find($request->ID);
             $approveReservation->statusID = 3;
             $res = $approveReservation->save();
-            
             return response()->json(['message' => 'Reservation rejected successfully.']);
         }
 
         public function returnReservation(Request $request)
         {   
-            // $newReport = new report();
-            // $newReport->customerName = $request->customerName;
-
             $approveReservation = reservation::find($request->ID);
             $approveReservation->statusID = 4;
             $res = $approveReservation->save();
-            
             return response()->json(['message' => 'Reservation returned successfully.']);
         }
-
-        
-
         
         public function addToReservation(Request $request)
         {
             $equipment_id = $request->input('equipment_id');
             $quantity = $request->input('quantity', 1);
-        
-            $cartItem = Cart::where('equipment_id', $equipment_id)->first();
+            $cartItem = reservation_details::where('equipment_id', $equipment_id)->first();
         
             if ($cartItem) {
                 $cartItem->quantity += $quantity;
                 $cartItem->total = $cartItem->quantity * $cartItem->price;
                 $cartItem->save();
             } else {
-                Cart::create([
+                reservation_details::create([
                     'equipment_id' => $equipment_id,
                     'equipmentName' => $request->input('equipmentName'),
                     'price' => $request->input('price'),

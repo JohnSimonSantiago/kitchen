@@ -4,7 +4,7 @@
             class="min-h-screen w-full border-t border-gray-300 mt-11 bg-white-200 flex"
         >
             <!-- Middle Section -->
-            <div class="flex-1 flex flex-col p-5 bg-gray-300">
+            <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
                 <div
                     class="border-b border-gray-400 flex items-center justify-between mb-5"
                 >
@@ -20,7 +20,9 @@
             </div>
 
             <!-- Right Section -->
-            <div class="min-h-screen flex-col w-1/4 bg-gray-200">
+            <div
+                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
+            >
                 <div v-for="reservation in reservations" class="mx-5">
                     <EditQuantityCard
                         :reservationDetails="reservation"

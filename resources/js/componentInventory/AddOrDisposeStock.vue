@@ -12,7 +12,7 @@
             header="Edit Profile"
             :style="{ width: '25rem' }"
         >
-            <span class="p-text-secondary block mb-5"
+            <span class="p-text-secondary block mb-2"
                 >Update your information.</span
             >
             <div class="flex align-items-center gap-3 mb-3">
@@ -21,10 +21,7 @@
                 >
                 <InputText id="username" class="flex-auto" autocomplete="off" />
             </div>
-            <div class="flex align-items-center gap-3 mb-5">
-                <label for="email" class="font-semibold w-6rem">Email</label>
-                <InputText id="email" class="flex-auto" autocomplete="off" />
-            </div>
+
             <div class="flex justify-content-end gap-2">
                 <Button
                     type="button"
@@ -54,6 +51,8 @@ export default {
     data() {
         return {
             visible: false,
+            equipmentList: [],
+            edit_id: 0,
         };
     },
     props: ["id"],
@@ -63,7 +62,16 @@ export default {
         InputText,
         Button,
     },
+    mounted() {
+        this.getEquipments();
+    },
     methods: {
+        getEquipments() {
+            const { edit_id } = this;
+            axios.post("/get-equipments", { edit_id }).then(({ data }) => {
+                this.equipmentList = data;
+            });
+        },
         DisposeOrAddStock() {
             axios
                 .post("/add-dispose-equipment", { ID: this.id })

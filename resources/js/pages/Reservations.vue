@@ -40,26 +40,12 @@
                             {{ this.showReservationDetails.reservationNumber }}
                         </h2>
                     </div>
-
-                    <div style="display: flex">
-                        <svg
-                            class="w-6 h-6 text-gray-800 dark:text-white"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-width="2"
-                                d="M7 17v1c0 .6.4 1 1 1h8c.6 0 1-.4 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                            />
-                        </svg>
-
+                    <Tag icon="pi pi-user">
                         <span style="font-weight: 600">
+                            <div icon="pi pi-user"></div>
                             {{ this.showReservationDetails.customerName }}
-                        </span>
-                    </div>
+                        </span></Tag
+                    >
 
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
@@ -145,10 +131,12 @@ import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
 import ReservationTable from "../component/ReservationTable.vue";
 import Message from "primevue/message";
+import Tag from "primevue/tag";
 
 export default {
     components: {
         AddItem,
+        Tag,
         Message,
         CreateReservation,
         ReservationTable,

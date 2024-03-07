@@ -25,7 +25,7 @@
                 </div>
             </template>
             <Column expander style="width: 5rem" />
-            <Column field="name" header="Name"></Column>
+            <Column field="name" header="ReservationNumber   "></Column>
             <Column header="Image">
                 <template #body="slotProps">
                     <img
@@ -134,7 +134,6 @@ export default {
         getterReservations() {
             axios.get("/get-reservations").then(({ data }) => {
                 this.reservations = data;
-                console.log(this.reservations);
             });
         },
         readMore(data) {

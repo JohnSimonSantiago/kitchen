@@ -182,11 +182,13 @@
 import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
+import Toast from "primevue/toast";
 
 export default {
     components: {
         Modal,
         Button,
+        Toast,
         Dialog,
     },
     data() {
@@ -240,6 +242,12 @@ export default {
             formData.append("image", this.image);
 
             axios.post("/submit-equipment", formData).then(({ data }) => {
+                this.$toast.add({
+                    severity: "success",
+                    summary: "Success!",
+                    detail: "Equipment Created Successfully!",
+                    life: 3000,
+                });
                 this.resetForm();
                 this.$emit("success");
                 this.$router.push("/inventory");

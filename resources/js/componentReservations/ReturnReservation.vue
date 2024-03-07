@@ -1,8 +1,15 @@
 <template>
-    <Modal
-        class=""
-        :modalContent="modalContent"
-        buttonLabel="Return Reservation"
+    <Button
+        label="Return Reservation"
+        icon="pi pi-undo"
+        @click="visible = true"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Return Reservation"
+        :style="{ width: '25rem' }"
     >
         <!-- Part 1: -->
         <div v-if="currentStep === 1">
@@ -86,8 +93,8 @@
         <div v-if="currentStep === 5">
             <p>This is Part 5 .</p>
         </div>
-        <Toast />
-    </Modal>
+    </Dialog>
+    <Toast />
 </template>
 
 <script>
@@ -95,11 +102,13 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
+import Dialog from "primevue/dialog";
 
 export default {
     props: ["idReservation"],
     data() {
         return {
+            visible: false,
             currentStep: 1,
             modalContent: {
                 title: "Return Reservation",
@@ -109,6 +118,7 @@ export default {
     },
     components: {
         Toast,
+        Dialog,
         Modal,
         Button,
     },
@@ -127,8 +137,8 @@ export default {
                 .post("/return-reservation", { ID: this.idReservation })
                 .then(() => {
                     this.$toast.add({
-                        severity: "info",
-                        summary: "Info",
+                        severity: "success",
+                        summary: "Success!",
                         detail: "Equipment Returned Successfully!",
                         life: 3000,
                     });

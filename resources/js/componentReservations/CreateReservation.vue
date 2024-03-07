@@ -115,7 +115,7 @@ export default {
                 .then(({ data }) => {
                     this.$toast.add({
                         severity: "success",
-                        summary: "Info",
+                        summary: "Success!",
                         detail: "Reservation Created Successfully!",
                         life: 3000,
                     });

@@ -1,35 +1,64 @@
 <template>
-    <Modal
-        class=""
-        :modalContent="{
-            title: 'Approve Reservation',
-            content: 'Are you sure you want to approve?',
-        }"
-        buttonLabel="Approve Reservation"
-        cancelLabel="Cancel"
-        saveLabel="Approve"
-        :saveOption="true"
-        @save="approveReservation"
+    <Button
+        label="Approve Reservation"
+        icon="pi pi-thumbs-up-fill"
+        @click="visible = true"
+        class="border border-gree-500 p-2 hover:bg-green-600 hover:text-white"
+    />
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Approve Reservation"
+        :style="{ width: '25rem' }"
     >
         <Message :closable="false" severity="warn"
             >Note: You cannot edit Reservations once it has been
             approved</Message
         >
-    </Modal>
+        <div class="flex justify-content-end gap-2">
+            <Button
+                type="button"
+                label="Cancel"
+                severity="secondary"
+                @click="visible = false"
+            ></Button>
+            <Button
+                type="button"
+                label="Approve"
+                @click="saveAndSubmit"
+            ></Button>
+        </div>
+    </Dialog>
+    <Toast />
 </template>
 
 <script>
 import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Message from "primevue/message";
+import Dialog from "primevue/dialog";
+import Toast from "primevue/toast";
+import Button from "primevue/button";
 
 export default {
+    data() {
+        return {
+            visible: false,
+        };
+    },
     props: ["idReservation", "idEquipment"],
     components: {
         Modal,
+        Dialog,
+        Button,
+        Toast,
         Message,
     },
     methods: {
+        saveAndSubmit() {
+            this.approveReservation();
+            this.visible = false;
+        },
         approveReservation() {
             axios
                 .post("/approve-reservation", {
@@ -37,6 +66,12 @@ export default {
                     id: this.idEquipment,
                 })
                 .then(() => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success!",
+                        detail: "Reservation Approved Successfully!",
+                        life: 3000,
+                    });
                     this.$emit("approved");
                 })
                 .catch((error) => {

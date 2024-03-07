@@ -1,9 +1,9 @@
 <template>
     <Button
         label="Edit Equipment"
-        icon="pi pi-plus"
+        icon="pi pi-cog"
         @click="visible = true"
-        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+        class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"
@@ -215,7 +215,6 @@ export default {
             const { edit_id } = this;
             axios.post("/get-equipment", { edit_id }).then(({ data }) => {
                 this.data = data;
-                console.log(this.data);
             });
         },
         updateEquipment() {
