@@ -13,6 +13,11 @@
     >
         <div v-if="Error">Error: Please fill out all required fields</div>
         <form @submit.prevent="submitEquipment">
+            <label
+                for="category"
+                class="block mb-5 text-sm font-medium text-gray-900 dark:text-white"
+                >Please Fill up the form:
+            </label>
             <div class="grid gap-6 mb-6 md:grid-cols-3">
                 <div>
                     <label

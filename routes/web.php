@@ -32,6 +32,7 @@ Route::post("/submit-equipment", [EquipmentController::class, 'submitEquipment']
 Route::post("/update-equipment", [EquipmentController::class, 'updateEquipment']);
 Route::post("/return-missing-equipment", [EquipmentController::class, "returnMissingEquipment"]);
 Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
+Route::get("/get-max-stock", [EquipmentController::class, "getMaxStock"]);
 Route::get("/add-dispose-equipments", [EquipmentController::class, "addDisposeEquipment"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);

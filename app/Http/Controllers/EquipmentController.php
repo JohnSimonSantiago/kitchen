@@ -40,7 +40,7 @@ class EquipmentController extends Controller
     }
 
     public function getMaxStock(){
-        $getEquipmentStock = equipment::find($quantity['id']);
+        $getEquipmentStock = equipment::pluck('quantity');
         return $getEquipmentStock;
     }
 
@@ -79,8 +79,6 @@ class EquipmentController extends Controller
 
         return $res;
     }
-
-
 
 
     public function deleteEquipment(Request $request){

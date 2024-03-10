@@ -9,19 +9,14 @@
         <Dialog
             v-model:visible="visible"
             modal
-            header="Edit Profile"
-            :style="{ width: '25rem' }"
+            header="Add/Dispose Stock"
+            :style="{ width: '30rem' }"
         >
-            <span class="p-text-secondary block mb-2"
-                >Update your information.</span
-            >
-            <div class="flex align-items-center gap-3 mb-3">
-                <label for="username" class="font-semibold w-6rem"
-                    >Username</label
-                >
-                <InputText id="username" class="flex-auto" autocomplete="off" />
+            <div v-for="equipment in equipments" class="mx-5">
+                <EditQuantityStockCard
+                    :equipmentDetails="equipment"
+                ></EditQuantityStockCard>
             </div>
-
             <div class="flex justify-content-end gap-2">
                 <Button
                     type="button"
@@ -45,6 +40,7 @@ import axios from "axios";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import EditQuantityStockCard from "../Card_small/EditQuantityStockCard.vue";
 import Toast from "primevue/toast";
 
 export default {
@@ -59,17 +55,18 @@ export default {
     components: {
         Toast,
         Dialog,
+        EditQuantityStockCard,
         InputText,
         Button,
     },
     mounted() {
-        this.getEquipments();
+        this.getterEquipment();
+        this.DisposeOrAddStock();
     },
     methods: {
-        getEquipments() {
-            const { edit_id } = this;
-            axios.post("/get-equipments", { edit_id }).then(({ data }) => {
-                this.equipmentList = data;
+        getterEquipment() {
+            axios.get("/get-equipments").then(({ data }) => {
+                this.equipments = data;
             });
         },
         DisposeOrAddStock() {

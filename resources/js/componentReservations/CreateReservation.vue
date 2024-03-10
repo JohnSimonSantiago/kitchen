@@ -9,25 +9,31 @@
         v-model:visible="visible"
         modal
         header="Create Reservation"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
     >
         <form>
-            <div class="grid gap-6 mb-6 md:grid-cols-1">
+            <div class="align-items-center grid gap-6 mb-6 md:grid-cols-1 flex">
                 <div>
                     <label
                         for="customer_name"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Customer Name</label
                     >
-
-                    <input
-                        v-model="customerName"
-                        type="text"
-                        id="customer_name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Customer Name"
-                        required
-                    />
+                    <div class="flex items-center">
+                        <input
+                            v-model="customerName"
+                            type="text"
+                            id="customer_name"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Customer Name"
+                            required
+                        />
+                        <div class="mt-1" style="white-space: nowrap">
+                            <InlineMessage v-if="!customerName"
+                                >Customer Name is required</InlineMessage
+                            >
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label
@@ -41,17 +47,17 @@
                         type="text"
                         id="customer_number"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Customer Contact Number"
+                        placeholder="9-digit Phone Number"
                         required
                     />
                 </div>
 
-                <div class="card flex flex-center justify-content-center">
+                <div class="flex flex-col">
                     <Calendar
                         v-model="selectedRange"
                         selectionMode="range"
                         inline
-                    />
+                    ></Calendar>
                 </div>
                 <div class="flex justify-content-end gap-2">
                     <Button
@@ -77,6 +83,7 @@ import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import InlineMessage from "primevue/inlinemessage";
 
 export default {
     components: {
@@ -84,6 +91,7 @@ export default {
         Dialog,
         Button,
         Toast,
+        InlineMessage,
     },
     data() {
         return {

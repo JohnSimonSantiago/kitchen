@@ -18,7 +18,7 @@
                     <div>
                         <label
                             for="category"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            class="block mb-5 text-sm font-medium text-gray-900 dark:text-white"
                             >Please Fill up the form:
                         </label>
                         <input

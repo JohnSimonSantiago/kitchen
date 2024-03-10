@@ -150,4 +150,6 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Product added to cart']);
         }
         
+
+        
 }

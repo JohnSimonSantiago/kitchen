@@ -12,13 +12,14 @@
                     <div class="space-x-1"></div>
                 </div>
 
-                <Calendar
-                    inline
-                    :events="reservations"
-                    :event-title="(event) => event.title"
-                    :event-start="(event) => event.start"
-                    :event-end="(event) => event.end"
-                ></Calendar>
+                <VCalendar
+                    borderless
+                    transparent
+                    expanded
+                    :attributes="attributes"
+                ></VCalendar>
+
+                <Calendar></Calendar>
 
                 <div class="my-2 grid grid-cols-4 gap-5"></div>
             </div>
@@ -33,35 +34,57 @@
 
 <script>
 import axios from "axios";
-import Dialog from "primevue/dialog";
-import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 
 export default {
     components: {
-        Dialog,
         Calendar,
-        Button,
     },
     data() {
         return {
-            value: 0,
-            visible: false,
-            reservations: [],
+            attributes: [],
+            highlightColors: [
+                "blue",
+                "red",
+                "green",
+                "orange",
+                "purple",
+                "pink",
+                "yellow",
+            ],
         };
     },
     mounted() {
-        this.getterReservations();
+        this.getterReservation();
     },
     methods: {
-        getterReservations() {
-            axios.get("/get-reservations").then(({ data }) => {
-                this.reservations = data.map((reservation) => ({
-                    title: "Reservation", 
-                    start: new Date(reservation.dateStart), 
-                    end: new Date(reservation.dateEnd), 
-                }));
-            });
+        getterReservation() {
+            axios
+                .get("/get-reservations")
+                .then((response) => {
+                    this.attributes = response.data.map(
+                        (reservation, index) => {
+                            // Use modulo to cycle through highlight colors
+                            const highlightColor =
+                                this.highlightColors[
+                                    index % this.highlightColors.length
+                                ];
+                            return {
+                                highlight: highlightColor,
+                                dates: [
+                                    [
+                                        new Date(reservation.dateStart),
+                                        new Date(reservation.dateEnd),
+                                    ],
+                                ],
+                            };
+                        }
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error fetching reservations:", error);
+                });
+            console.log(this.attributes);
         },
     },
 };

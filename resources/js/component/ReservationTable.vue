@@ -38,10 +38,16 @@
                             v-if="reservation.statusID === 1"
                             :idReservation="reservation.reservationNumber"
                         ></ApproveReservation>
-                        <ReturnReservation
+                        <ReceiveReservation
                             v-if="reservation.statusID === 2"
                             :idReservation="reservation.reservationNumber"
                         >
+                        </ReceiveReservation>
+                        <ReturnReservation
+                            v-if="reservation.statusID === 3"
+                            :idReservation="reservation.reservationNumber"
+                        >
+                        
                         </ReturnReservation>
                         <RejectReservation
                             v-if="reservation.statusID === 1"
@@ -68,11 +74,13 @@ import Button from "primevue/button";
 import ReturnReservation from "../componentReservations/ReturnReservation.vue";
 import RejectReservation from "../componentReservations/RejectReservation.vue";
 import ApproveReservation from "../componentReservations/ApproveReservation.vue";
+import ReceiveReservation from "../componentReservations/Receive Reservation.vue";
 
 export default {
     components: {
         Modal,
         Button,
+        ReceiveReservation,
         ReturnReservation,
         RejectReservation,
         ApproveReservation,

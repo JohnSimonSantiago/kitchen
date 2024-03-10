@@ -67,7 +67,7 @@ export default {
     data() {
         return {
             Error: false,
-            quantity: "",
+            quantity: 0,
             selectedEquipment: null,
             reservations: [],
             equipmentList: [],
@@ -107,6 +107,7 @@ export default {
         getterMaxStock() {
             axios.get("/get-max-stock").then(({ data }) => {
                 this.maxStock = data;
+                console.log(this.maxStock);
             });
         },
     },

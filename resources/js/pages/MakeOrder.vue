@@ -14,19 +14,22 @@
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="equipment in equipments" class="">
-                        <AddToReservationCard :equipmentDetails="equipment" />
+                        <AddItemToReservationCard
+                            :equipmentDetails="equipment"
+                        />
                     </div>
                 </div>
             </div>
 
             <!-- Right Section -->
+
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <div v-for="reservation in reservations" class="mx-5">
-                    <EditQuantityCard
-                        :reservationDetails="reservation"
-                    ></EditQuantityCard>
+                <div v-for="equipment in equipments" class="mx-5">
+                    <EditQuantityOrderCard
+                        :equipmentDetails="equipment"
+                    ></EditQuantityOrderCard>
                 </div>
             </div>
         </div>
@@ -34,42 +37,27 @@
 </template>
 
 <script>
-import EditQuantityCard from "../Card_small/EditQuantityCard.vue";
-import AddToReservationCard from "../Cards/AddToReservationCard.vue";
+import EditQuantityOrderCard from "../Card_small/EditQuantityOrderCard.vue";
+import AddItemToReservationCard from "../Cards/AddItemToReservationCard.vue";
 
 export default {
-    props: ["reservationDetails"],
     components: {
-        EditQuantityCard,
-        AddToReservationCard,
+        EditQuantityOrderCard,
+        AddItemToReservationCard,
     },
     mounted() {
         this.getterEquipment();
-        this.getterReservation();
     },
     data() {
         return {
             equipments: [],
-            reservations: [],
-            showCardDetails: null,
         };
     },
     methods: {
-        showDetails(data) {
-            this.showCardDetails = data;
-        },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
                 console.log(data);
                 this.equipments = data;
-            });
-        },
-        seeReservationDetails() {
-            this.$emit("clicked", this.reservationDetails);
-        },
-        getterReservation() {
-            axios.get("/get-reservations").then(({ data }) => {
-                this.reservations = data;
             });
         },
     },
