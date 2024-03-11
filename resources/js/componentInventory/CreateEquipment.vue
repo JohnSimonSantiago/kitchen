@@ -86,42 +86,7 @@
                         </option>
                     </select>
                 </div>
-                <div>
-                    <label
-                        for="condition"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Condition</label
-                    >
-                    <select
-                        v-model="condition"
-                        id="condition"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    >
-                        <option value="Good">Good</option>
-                        <option value="Slightly Damaged">
-                            Slightly Damaged
-                        </option>
-                        <option value="Damaged">Damaged</option>
-                    </select>
-                </div>
-                <div>
-                    <label
-                        for="quantity"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Quantity</label
-                    >
-                    <input
-                        v-model="quantity"
-                        type="number"
-                        id="quantity"
-                        step="1"
-                        min="0"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Quantity"
-                        required
-                    />
-                </div>
+
                 <div>
                     <label
                         for="price"
@@ -139,6 +104,16 @@
                         required
                     />
                 </div>
+                <div class="mb-3">
+                    <label for="">Upload Image</label>
+                    <input
+                        type="file"
+                        name="image"
+                        @change="handleImageUpload"
+                        required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                </div>
                 <div>
                     <label
                         for="description"
@@ -154,17 +129,6 @@
                         required
                     ></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="">Upload Image</label>
-                    <input
-                        type="file"
-                        name="image"
-                        @change="handleImageUpload"
-                        required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    />
-                </div>
-                <div class="card"></div>
             </div>
             <div class="flex justify-content-end gap-2">
                 <Button
@@ -201,12 +165,10 @@ export default {
             Error: false,
             visible: false,
             equipmentName: "",
-            quantity: "",
             description: "",
             location: "",
             price: "",
             barcode: "",
-            condition: "",
             image: "",
             categoryList: [],
             categoryID: null,
@@ -226,24 +188,20 @@ export default {
             const {
                 selectedCategory,
                 equipmentName,
-                quantity,
                 description,
                 price,
                 location,
                 barcode,
-                condition,
                 image,
             } = this;
 
             let formData = new FormData();
             formData.append("equipmentName", equipmentName);
-            formData.append("quantity", quantity);
             formData.append("description", description);
             formData.append("price", price);
             formData.append("location", location);
             formData.append("barcode", barcode);
             formData.append("categoryID", selectedCategory);
-            formData.append("condition", condition);
             formData.append("image", this.image);
 
             axios.post("/submit-equipment", formData).then(({ data }) => {
@@ -261,12 +219,10 @@ export default {
         resetForm() {
             // Reset form values, including the image
             this.equipmentName = "";
-            this.quantity = "";
             this.description = "";
             this.price = "";
             this.location = "";
             this.barcode = "";
-            this.condition = "";
             this.image = "";
         },
         getterCategoryList() {

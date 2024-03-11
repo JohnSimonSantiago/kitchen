@@ -14,6 +14,9 @@
                         <AddOrDisposeStock
                             @success="getterEquipment"
                         ></AddOrDisposeStock>
+                        <CreateCondition
+                            @success="getterCondition"
+                        ></CreateCondition>
                         <CreateCategory
                             @success="getterCategory"
                         ></CreateCategory>
@@ -53,10 +56,7 @@
                                 <span class="font-bold">Name:</span>
                                 {{ this.showCardDetails.equipmentName }}
                             </h1>
-                            <h1>
-                                <span class="font-bold">Quantity:</span>
-                                {{ this.showCardDetails.quantity }}
-                            </h1>
+
                             <h1>
                                 <span class="font-bold">Location:</span>
                                 {{ this.showCardDetails.location }}
@@ -73,10 +73,7 @@
                                 <span class="font-bold">Category:</span>
                                 {{ this.showCardDetails.cateegoryid }}
                             </h1>
-                            <h1>
-                                <span class="font-bold">Condition:</span>
-                                {{ this.showCardDetails.condition }}
-                            </h1>
+
                             <h1>
                                 <span class="font-bold">Description:</span>
                                 {{ this.showCardDetails.description }}
@@ -95,6 +92,7 @@
                             :id="this.showCardDetails.equipment_id"
                             @deleted="DeletedEquipment"
                         ></DeleteEquipment>
+
                     </div>
                 </div>
             </div>
@@ -109,12 +107,16 @@ import EditEquipment from "@/componentinventory/EditEquipment.vue";
 import DeleteEquipment from "@/componentinventory/DeleteEquipment.vue";
 import CreateCategory from "@/componentinventory/CreateCategory.vue";
 import AddOrDisposeStock from "@/componentinventory/AddOrDisposeStock.vue";
+import CreateCondition from "../componentInventory/CreateCondition.vue";
+
 import Message from "primevue/message";
 
 export default {
     components: {
         CreateEquipment,
+
         Message,
+        CreateCondition,
         AddOrDisposeStock,
         EditEquipment,
         EquipmentCard,
@@ -124,11 +126,13 @@ export default {
     mounted() {
         this.getterEquipment();
         this.getterCategory();
+        this.getterCondition();
     },
     data() {
         return {
             equipments: [],
             categories: [],
+            conditions: [],
             showCardDetails: null,
         };
     },
@@ -157,6 +161,11 @@ export default {
         getterCategory() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
+            });
+        },
+        getterCondition() {
+            axios.get("/get-conditions").then(({ data }) => {
+                this.conditions = data;
             });
         },
     },

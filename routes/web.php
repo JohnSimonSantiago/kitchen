@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\signUpController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ReservationController;
 
@@ -40,6 +41,9 @@ Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquip
 
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');
 Route::get("/get-categories", [CategoryController::class, 'getCategories']);
+
+Route::post("/submit-condition", [ConditionController::class, 'submitCondition'])->name('submitCondition');
+Route::get("/get-conditions", [ConditionController::class, 'getConditions']);
 
 Route::get("/get-reservations", [ReservationController::class, "getReservations"]);
 Route::post("/submit-reservation", [ReservationController::class, 'submitReservation'])->name('submitReservation');

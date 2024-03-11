@@ -19,8 +19,6 @@
                     :attributes="attributes"
                 ></VCalendar>
 
-                <Calendar></Calendar>
-
                 <div class="my-2 grid grid-cols-4 gap-5"></div>
             </div>
 
@@ -34,12 +32,9 @@
 
 <script>
 import axios from "axios";
-import Calendar from "primevue/calendar";
 
 export default {
-    components: {
-        Calendar,
-    },
+    components: {},
     data() {
         return {
             attributes: [],

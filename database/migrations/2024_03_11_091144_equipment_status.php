@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservation_details', function (Blueprint $table) {
-            $table->id();
-            $table->integer('reservationNumber');
-            $table->integer('quantity');
-            $table->integer('equipment_id');
+        Schema::create('equipment_status', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('equipment_id');
             $table->tinyInteger('condition_id');
+            $table->integer('quantity');
             $table->timestamps();
+
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservation_details');
+        Schema::dropIfExists('equipment_status');
     }
 };

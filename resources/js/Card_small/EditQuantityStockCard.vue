@@ -21,6 +21,22 @@
                 Current Stock: {{ equipmentDetails.quantity }}
             </p>
         </div>
+        <div>
+            <select
+                v-model="selectedCondition"
+                id="condition"
+                class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg"
+                required
+            >
+                <option
+                    v-for="condition in conditionList"
+                    :key="condition.id"
+                    :value="condition.id"
+                >
+                    {{ condition.condition }}
+                </option>
+            </select>
+        </div>
         <div class="p-2 flex items-center">
             <input
                 v-model="quantity"
@@ -28,7 +44,6 @@
                 class="px-4 py-2 border border-gray-300 rounded-md w-16 text-center"
                 required
                 min="0"
-                max="maxStock"
             />
         </div>
     </div>
@@ -44,23 +59,17 @@ export default {
     data() {
         return {
             quantity: 0,
-            maxStock: 0,
+            conditionList: [],
+            selectedCondition: null,
         };
     },
     mounted() {
-        this.getterMaxStock();
+        this.getterCondition();
     },
     methods: {
-        incrementQuantity() {
-            this.quantity += 1;
-        },
-        decrementQuantity() {
-            this.quantity = Math.max(1, this.quantity - 1);
-        },
-        getterMaxStock() {
-            axios.get("/get-max-stock").then(({ data }) => {
-                this.maxStock = data;
-                console.log(this.maxStock);
+        getterCondition() {
+            axios.get("/get-conditions").then(({ data }) => {
+                this.conditionList = data;
             });
         },
     },

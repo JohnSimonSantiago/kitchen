@@ -18,33 +18,50 @@
             </div>
             <div>
                 <Button
+                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    label="No"
+                    @click="skipToPart3"
+                />
+                <Button
                     class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
                     label="Yes"
                     @click="nextStep"
-                />
-                <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
-                    label="No"
-                    @click="skipToPart2"
                 />
             </div>
         </div>
 
-        <!-- Part 2: -->
         <div v-if="currentStep === 2">
             <div>
-                <p>Is Equipment in Good Condition?</p>
+                <p>Receive Equipment</p>
             </div>
             <div>
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                    label="Yes"
-                    @click="nextStep"
+                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    label="Cancel"
+                    @click=""
                 />
                 <Button
+                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                    label="Receive"
+                    @click=""
+                />
+            </div>
+        </div>
+
+        <div v-if="currentStep === 3">
+            <div>
+                <p>Input Missing Equipment</p>
+            </div>
+            <div>
+                <Button
                     class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
-                    label="No"
-                    @click="skipToPar5"
+                    label="Cancel"
+                    @click=""
+                />
+                <Button
+                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                    label="Confirm"
+                    @click=""
                 />
             </div>
         </div>
@@ -80,6 +97,9 @@ export default {
     methods: {
         nextStep() {
             this.currentStep++;
+        },
+        skipToPart3() {
+            this.currentStep = 3;
         },
 
         receiveReservation() {

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\category;
+use App\Models\condition;
 use App\Models\equipment;
 use App\Models\reservation;
 use Illuminate\Http\Request;
+use App\Models\equipment_status;
 use App\Models\reservation_details;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,13 +19,11 @@ class EquipmentController extends Controller
         'categoryID' => 'required|exists:category_table,categoryID',
     ]);
         $newEquipment->equipmentName = $request->equipmentName;
-        $newEquipment->quantity = $request->quantity;
         $newEquipment->description = $request->description;
         $newEquipment->barcode = $request->barcode;
         $newEquipment->price = $request->price;
         $newEquipment->location = $request->location;
         $newEquipment->categoryID = $request->categoryID;
-        $newEquipment->condition = $request->condition;
         
         if($request->hasfile('image'))
         {
@@ -37,6 +37,24 @@ class EquipmentController extends Controller
         $res = $newEquipment->save();
 
         return $res;
+    }
+
+    function addDisposeEquipment()
+    {
+        $equipment = equipment::all();
+        foreach ($equipment as $item) {
+            $condition = condition::where('condition_name', $item->condition)->first();
+
+            DB::table('equipment_status')->insert([
+                'equipmentid' => $item->id,
+                'conditionid' => $condition->id,
+                'quantity' => $item->quantity,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+    
+        return "Equipment disposed successfully.";
     }
 
     public function getMaxStock(){
@@ -70,15 +88,7 @@ class EquipmentController extends Controller
     
         return $res;
     }
-    public function addDisposeEquipment(Request $request){
-       
-        $data = $request->data;
-        $updatedInfo = equipment::find($data['id']);
-        $updatedInfo->quantity = $data['quantity'];
-        $res = $updatedInfo->save();
 
-        return $res;
-    }
 
 
     public function deleteEquipment(Request $request){
@@ -92,9 +102,11 @@ class EquipmentController extends Controller
         $validatedData = $request->validate([
             'equipment_id' => 'required|exists:equipments,equipment_id',
             'quantity' => 'required|integer|min:0',
+            'condition_id' => 'required|exists:condition_table,id',
         ]);
         $newReservationDetail->reservationNumber = $request->reservationNumber;
         $newReservationDetail->equipment_id = $request->equipment_id;
+        $newReservationDetail->condition_id = $request->condition_id;
         $newReservationDetail->quantity = $request->quantity;
 
         $res = $newReservationDetail->save();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\equipment;
 use App\Models\reservation;
+use App\Models\equipment_status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\reservation_details;
@@ -58,10 +59,10 @@ class ReservationController extends Controller
             $selectedReservation = reservation::find($request->ID);
             $getReservationQuantities = DB::table('reservations')
             ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-            ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+            ->select('reservation_details.quantity', 'reservation_details.equipment_id', 'reservation_details.condition_id')
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
-           
+
             $selectedReservationDateRange = [
                 'dateStart' => $selectedReservation->dateStart,
                 'dateEnd' => $selectedReservation->dateEnd
@@ -75,13 +76,14 @@ class ReservationController extends Controller
             foreach ($approvedReservations as $approvedReservation) {
                 $approvedReservationDetails = DB::table('reservations')
                 ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-                ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+                ->select('reservation_details.quantity', 'reservation_details.equipment_id', 'reservation_details.condition_id')
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
                 $approvedReservationQuantities = $approvedReservationDetails;
             }
 
-            $getEquipmentQuantities = equipment::pluck('quantity', 'equipment_id');
+            $getEquipmentQuantities = equipment_status::pluck('quantity', 'equipment_id', 'condition_id');
+            dd($getEquipmentQuantities);
             $totalQuantities = [];
             foreach ($getReservationQuantities as $reservationQuantity) {
                 $equipmentId = $reservationQuantity->equipment_id;
