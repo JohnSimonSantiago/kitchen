@@ -20,7 +20,7 @@
                         <div>
                             <router-link
                                 to="/inventory"
-                                class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                                 @click.native="toggleActive('/inventory')"
                                 :style="{
                                     borderRight:
@@ -52,7 +52,7 @@
 
                         <router-link
                             to="/reservations"
-                            class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             @click="toggleActive1"
                             :style="{
                                 borderRight: isActive1
@@ -80,7 +80,7 @@
                         >
                         <router-link
                             to="/calendar"
-                            class="text-black-500 font-bold block hover:bg-gray-200 bg-white"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             @click="toggleActive2"
                             :style="{
                                 borderRight: isActive2
@@ -108,7 +108,7 @@
                         >
                         <button
                             @click="logout"
-                            class="text-black-500 font-bold block mx-10 hover:bg-gray-200 bg-white"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                         >
                             Exit
                             <svg

@@ -1,7 +1,7 @@
 <template>
     <div class="card flex justify-content-center">
         <Button
-            label="Add/Dispose Stock"
+            label="Add Stock"
             icon="pi pi-file-edit"
             @click="visible = true"
             class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
@@ -27,7 +27,7 @@
                 <Button
                     type="button"
                     label="Save"
-                    @click="visible = false"
+                    @click="saveAndSubmit"
                 ></Button>
             </div>
         </Dialog>
@@ -61,17 +61,21 @@ export default {
     },
     mounted() {
         this.getterEquipment();
-        this.DisposeOrAddStock();
+        this.addEquipmenStock();
     },
     methods: {
+        saveAndSubmit() {
+            this.visible = false;
+            this.DisposeOrAddStock();
+        },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
                 this.equipments = data;
             });
         },
-        DisposeOrAddStock() {
+        addEquipmenStock() {
             axios
-                .post("/add-dispose-equipment", { ID: this.id })
+                .post("/add-equipment-stock", { ID: this.id })
                 .then(({ data }) => {
                     this.$emit("updated");
                 });

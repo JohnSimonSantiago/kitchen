@@ -23,7 +23,7 @@
             ></Button>
             <Button
                 type="button"
-                label="Approve"
+                label="Reject"
                 @click="saveAndSubmit"
             ></Button>
         </div>

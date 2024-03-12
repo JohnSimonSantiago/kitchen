@@ -39,24 +39,6 @@ class EquipmentController extends Controller
         return $res;
     }
 
-    function addDisposeEquipment()
-    {
-        $equipment = equipment::all();
-        foreach ($equipment as $item) {
-            $condition = condition::where('condition_name', $item->condition)->first();
-
-            DB::table('equipment_status')->insert([
-                'equipmentid' => $item->id,
-                'conditionid' => $condition->id,
-                'quantity' => $item->quantity,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
-    
-        return "Equipment disposed successfully.";
-    }
-
     public function getMaxStock(){
         $getEquipmentStock = equipment::pluck('quantity');
         return $getEquipmentStock;
@@ -102,14 +84,26 @@ class EquipmentController extends Controller
         $validatedData = $request->validate([
             'equipment_id' => 'required|exists:equipments,equipment_id',
             'quantity' => 'required|integer|min:0',
-            'condition_id' => 'required|exists:condition_table,id',
         ]);
         $newReservationDetail->reservationNumber = $request->reservationNumber;
         $newReservationDetail->equipment_id = $request->equipment_id;
-        $newReservationDetail->condition_id = $request->condition_id;
         $newReservationDetail->quantity = $request->quantity;
 
         $res = $newReservationDetail->save();
+
+        return $res;
+    }
+    public function AddEquipmentStock(Request $request){
+        $newEquipmentStock = new equipment_status();
+        $validatedData = $request->validate([
+            'equipment_id' => 'required|exists:equipments,equipment_id',
+            'condition_id' => 'required|exists:condition_table,condition_id',
+            'quantity' => 'required|integer|min:0',
+        ]);
+        $newEquipmentStock->equipment_id = $request->equipment_id;
+        $newEquipmentStock->condition_id = $request->condition_id;
+        $newEquipmentStock->quantity = $request->quantity;
+        $res = $newEquipmentStock->save();
 
         return $res;
     }

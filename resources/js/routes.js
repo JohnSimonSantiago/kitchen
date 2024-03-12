@@ -6,6 +6,7 @@ import MakeOrder from "@/pages/MakeOrder.vue";
 import Signup from "@/pages/Signup.vue";
 import Rent from "@/pagesUser/Rent.vue";
 import Reservations2 from "@/pages/Reservations2.vue";
+import EditStock from "@/pages/EditStock.vue";
 
 export const routes = [
     {
@@ -19,9 +20,9 @@ export const routes = [
         component: Signup,
     },
     {
-        path: "/signup",
-        name: "signup",
-        component: Signup,
+        path: "/editstock",
+        name: "editstock",
+        component: EditStock,
     },
     {
         path: "/reservations2",

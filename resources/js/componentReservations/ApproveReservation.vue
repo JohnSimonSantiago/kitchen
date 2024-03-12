@@ -65,14 +65,24 @@ export default {
                     ID: this.idReservation,
                     id: this.idEquipment,
                 })
-                .then(() => {
-                    this.$toast.add({
-                        severity: "success",
-                        summary: "Success!",
-                        detail: "Reservation Approved Successfully!",
-                        life: 3000,
-                    });
-                    this.$emit("approved");
+                .then((response) => {
+                    if (response.data.success) {
+                        this.$toast.add({
+                            severity: "success",
+                            summary: "Success!",
+                            detail: "Reservation Approved Successfully!",
+                            life: 3000,
+                        });
+                        this.$emit("approved");
+                    } else {
+                        this.$toast.add({
+                            severity: "error",
+                            summary: "Error!",
+                            detail: "Approving Failed!",
+                            life: 3000,
+                        });
+                    }
+                    this.visible = false;
                 })
                 .catch((error) => {
                     console.error("Error approving reservation:", error);

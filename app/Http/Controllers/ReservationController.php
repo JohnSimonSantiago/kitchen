@@ -59,7 +59,7 @@ class ReservationController extends Controller
             $selectedReservation = reservation::find($request->ID);
             $getReservationQuantities = DB::table('reservations')
             ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-            ->select('reservation_details.quantity', 'reservation_details.equipment_id', 'reservation_details.condition_id')
+            ->select('reservation_details.quantity', 'reservation_details.equipment_id',)
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
 
@@ -76,15 +76,15 @@ class ReservationController extends Controller
             foreach ($approvedReservations as $approvedReservation) {
                 $approvedReservationDetails = DB::table('reservations')
                 ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-                ->select('reservation_details.quantity', 'reservation_details.equipment_id', 'reservation_details.condition_id')
+                ->select('reservation_details.quantity', 'reservation_details.equipment_id',)
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
                 $approvedReservationQuantities = $approvedReservationDetails;
             }
 
-            $getEquipmentQuantities = equipment_status::pluck('quantity', 'equipment_id', 'condition_id');
-            dd($getEquipmentQuantities);
+            $getEquipmentQuantities = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
             $totalQuantities = [];
+            
             foreach ($getReservationQuantities as $reservationQuantity) {
                 $equipmentId = $reservationQuantity->equipment_id;
                 $quantity = $reservationQuantity->quantity;
@@ -93,6 +93,7 @@ class ReservationController extends Controller
                 }
                 $totalQuantities[$equipmentId] += $quantity;
             }
+            
             foreach ($approvedReservationQuantities as $approvedReservationQuantity) {
                 $equipmentId_ = $approvedReservationQuantity->equipment_id;
                 $quantity = $approvedReservationQuantity->quantity;
@@ -101,13 +102,14 @@ class ReservationController extends Controller
                 }
                 $totalQuantities[$equipmentId_] += $quantity;
             }
+            
             foreach ($totalQuantities as $equipmentId => $totalQuantity) {
                 $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
                 if ($totalQuantity > $availableStock) {
                     die("Error: Not enough stock for equipment_id $equipmentId.");
                 }
             }
-            
+
             $selectedReservation->statusID = 2;
             $res = $selectedReservation->save();
             return response()->json(['message' => 'Reservation approved successfully.']);

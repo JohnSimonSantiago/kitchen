@@ -11,12 +11,14 @@
                     <h1 class="text-l font-semibold">Equipment List</h1>
 
                     <div class="mb-4 flex gap-4">
-                        <AddOrDisposeStock
-                            @success="getterEquipment"
-                        ></AddOrDisposeStock>
-                        <CreateCondition
-                            @success="getterCondition"
-                        ></CreateCondition>
+                        <router-link to="/editstock">
+                            <button
+                                class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button p-button-outlined p-button-info p-button-text"
+                            >
+                                <span class="pi pi-file-edit"></span>
+                                Edit Stock
+                            </button>
+                        </router-link>
                         <CreateCategory
                             @success="getterCategory"
                         ></CreateCategory>
@@ -92,7 +94,6 @@
                             :id="this.showCardDetails.equipment_id"
                             @deleted="DeletedEquipment"
                         ></DeleteEquipment>
-
                     </div>
                 </div>
             </div>
@@ -106,18 +107,12 @@ import CreateEquipment from "@/componentinventory/CreateEquipment.vue";
 import EditEquipment from "@/componentinventory/EditEquipment.vue";
 import DeleteEquipment from "@/componentinventory/DeleteEquipment.vue";
 import CreateCategory from "@/componentinventory/CreateCategory.vue";
-import AddOrDisposeStock from "@/componentinventory/AddOrDisposeStock.vue";
-import CreateCondition from "../componentInventory/CreateCondition.vue";
-
 import Message from "primevue/message";
 
 export default {
     components: {
         CreateEquipment,
-
         Message,
-        CreateCondition,
-        AddOrDisposeStock,
         EditEquipment,
         EquipmentCard,
         CreateCategory,
