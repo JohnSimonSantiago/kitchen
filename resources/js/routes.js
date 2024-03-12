@@ -35,10 +35,10 @@ export const routes = [
         component: Rent,
     },
     {
-        path: "/makeorder",
-        name: "makeOrder",
-        component: MakeOrder,
-    },
+        path: '/makeOrder/:reservationNumber',
+        name: 'MakeOrder',
+        component: MakeOrder
+      },
     {
         path: "/reservations",
         name: "reservations",

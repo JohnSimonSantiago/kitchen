@@ -80,11 +80,10 @@ export default {
     },
     methods: {
         submitEquipmentOrder() {
-            const { selectedEquipment, quantity, selectedCondition } = this;
+            const { selectedEquipment, quantity } = this;
             axios
                 .post("/submit-equipment-order", {
                     equipment_id: selectedEquipment,
-                    condition_id: selectedCondition,
                     reservationNumber: this.idReservation,
                     quantity,
                 })

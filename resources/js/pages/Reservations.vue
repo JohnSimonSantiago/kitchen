@@ -114,7 +114,10 @@
                             ></AddItem>
                             <router-link
                                 class="bg-yellow-500 px-4 py-2 rounded-md text-white text-sm hover:bg-yellow-600"
-                                :to="'/makeOrder/' + reservationNumber"
+                                :to="
+                                    '/makeOrder/' +
+                                    showReservationDetails.reservationNumber
+                                "
                             >
                                 <button>Edit Order</button>
                             </router-link>

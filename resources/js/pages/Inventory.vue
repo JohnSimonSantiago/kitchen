@@ -142,6 +142,7 @@ export default {
         },
         showDetails(data) {
             this.showCardDetails = data;
+            console.log(this.showCardDetails);
         },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {

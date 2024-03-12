@@ -79,19 +79,36 @@ class EquipmentController extends Controller
         return $res;
     }
 
-    public function submitEquipmentOrder(Request $request){
-        $newReservationDetail = new reservation_details();
+    public function submitEquipmentOrder(Request $request)
+    {
         $validatedData = $request->validate([
             'equipment_id' => 'required|exists:equipments,equipment_id',
             'quantity' => 'required|integer|min:0',
         ]);
-        $newReservationDetail->reservationNumber = $request->reservationNumber;
-        $newReservationDetail->equipment_id = $request->equipment_id;
-        $newReservationDetail->quantity = $request->quantity;
+    
+        $reservationNumber = $request->reservationNumber;
+        $equipment_id = $request->equipment_id;
+        $quantity = $request->quantity;
+    
+        
+        $existingReservationDetail = reservation_details::where('equipment_id', $equipment_id)
+            ->where('reservationNumber', $reservationNumber)
+            ->first();
+    
+        if ($existingReservationDetail) {
+            
+            $existingReservationDetail->quantity += $quantity;
+            $existingReservationDetail->save();
+        } else {
 
-        $res = $newReservationDetail->save();
-
-        return $res;
+            $newReservationDetail = new reservation_details();
+            $newReservationDetail->reservationNumber = $reservationNumber;
+            $newReservationDetail->equipment_id = $equipment_id;
+            $newReservationDetail->quantity = $quantity;
+            $newReservationDetail->save();
+        }
+    
+        return response()->json(['success' => true]);
     }
     public function AddEquipmentStock(Request $request){
         $newEquipmentStock = new equipment_status();

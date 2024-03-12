@@ -74,7 +74,7 @@ import Button from "primevue/button";
 import ReturnReservation from "../componentReservations/ReturnReservation.vue";
 import RejectReservation from "../componentReservations/RejectReservation.vue";
 import ApproveReservation from "../componentReservations/ApproveReservation.vue";
-import ReceiveReservation from "../componentReservations/Receive Reservation.vue";
+import ReceiveReservation from "../componentReservations/ReceiveReservation.vue";
 
 export default {
     components: {

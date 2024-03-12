@@ -37,12 +37,12 @@ class ReservationController extends Controller
             return $getReservation;
         }
         public function getReservationOrder(){
-            $getReservation = DB::table ('reservations')
+            $getReservationOrder = DB::table ('reservations')
             ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
             ->join('equipments', 'reservation_details.equipment_id', '=', 'equipments.equipment_id')
             ->select('reservation_details.*', 'equipments.equipmentName', 'reservations.reservationNumber')
             ->get();
-            return $getReservation;
+            return $getReservationOrder;
         }
 
 
@@ -131,29 +131,9 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Reservation returned successfully.']);
         }
         
-        public function addToReservation(Request $request)
-        {
-            $equipment_id = $request->input('equipment_id');
-            $quantity = $request->input('quantity', 1);
-            $cartItem = reservation_details::where('equipment_id', $equipment_id)->first();
-        
-            if ($cartItem) {
-                $cartItem->quantity += $quantity;
-                $cartItem->total = $cartItem->quantity * $cartItem->price;
-                $cartItem->save();
-            } else {
-                reservation_details::create([
-                    'equipment_id' => $equipment_id,
-                    'equipmentName' => $request->input('equipmentName'),
-                    'price' => $request->input('price'),
-                    'total' => $request->input('price') * $quantity,
-                    'quantity' => $quantity,
-                ]);
-            }
-        
-            return response()->json(['message' => 'Product added to cart']);
+        public function showReservationOrder(){
+            return reservation_details::all();
         }
-        
 
         
 }

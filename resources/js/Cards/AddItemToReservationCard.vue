@@ -22,7 +22,7 @@
                 {{ equipmentDetails.price }}
             </p>
             <Button
-                @click="addToOrder(equipment)"
+                @click="addItem"
                 label="Add Item"
                 icon="pi pi-cart-plus"
                 class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
@@ -42,28 +42,15 @@ export default {
         Button,
     },
     data() {
-        return {
-            equipments: [],
-            order: [],
-            amountGiven: 0,
-        };
+        return {};
     },
     props: ["equipmentDetails"],
-
     methods: {
-        addToOrder(equipment) {
-            console.log("Adding to Order:", equipment);
-            axios
-                .post("/addToOrder", {
-                    equipmentId: equipment.equipment_id,
-                    name: equipment.equipmentName,
-                    price: equipment.price,
-                    quantity: equipment.quantity,
-                    total: equipment.total,
-                })
-                .then((data) => {
-                    this.showCartItem();
-                });
+        addItem() {
+            this.$emit("clicked", {
+                equipmentDetails: this.equipmentDetails,
+                quantity: 1,
+            });
         },
     },
 };
