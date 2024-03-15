@@ -17,6 +17,7 @@
                         <AddItemToReservationCard
                             :equipmentDetails="equipment"
                             @clicked="submitEquipmentOrder"
+                            @refreshOrders="getterReservationOrder"
                         />
                     </div>
                 </div>
@@ -27,7 +28,7 @@
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <div v-if="showCardDetails === null">
+                <div v-if="reservationOrder.length === 0">
                     <Message :closable="false" severity="info"
                         >Cart is Empty</Message
                     >
@@ -42,20 +43,18 @@
                     <!-- drawer component -->
                     <div class="my-5">
                         <div class="bg-gray-200 rounded-md px-4 py-2">
-                            <div v-for="order in reservationOrder" class="">
-                                <EditQuantityOrderCard :orderDetails="order" />
+                            <div
+                                v-for="order in reservationOrder"
+                                :key="order.id"
+                            >
+                                <EditQuantityOrderCard
+                                    :orderDetails="order"
+                                    :imageSrc="
+                                        getEquipmentImage(order.equipment_id)
+                                    "
+                                />
                             </div>
-                            <h1>
-                                <span class="font-bold">Name:</span>
-                                {{ this.showCardDetails.equipmentName }}
-                            </h1>
                         </div>
-                        <Button
-                            label="Make Order"
-                            icon="pi pi-file-edit"
-                            @click="visible = true"
-                            class="my-5 border border-green-500 p-2 hover:bg-green-600 hover:text-white"
-                        />
                     </div>
 
                     <div
@@ -116,6 +115,12 @@ export default {
             axios.get("/get-reservation-orders").then(({ data }) => {
                 this.reservationOrder = data;
             });
+        },
+        getEquipmentImage(equipmentId) {
+            const equipment = this.equipments.find(
+                (item) => item.equipment_id === equipmentId
+            );
+            return equipment ? equipment.image_url : "";
         },
     },
 };

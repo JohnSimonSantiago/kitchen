@@ -51,6 +51,7 @@ export default {
                 equipmentDetails: this.equipmentDetails,
                 quantity: 1,
             });
+            this.$emit("refreshOrders");
         },
     },
 };

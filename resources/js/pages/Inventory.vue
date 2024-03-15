@@ -13,7 +13,7 @@
                     <div class="mb-4 flex gap-4">
                         <router-link to="/editstock">
                             <button
-                                class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button p-button-outlined p-button-info p-button-text"
+                                class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
                             >
                                 <span class="pi pi-file-edit"></span>
                                 Edit Stock
@@ -142,7 +142,7 @@ export default {
         },
         showDetails(data) {
             this.showCardDetails = data;
-            console.log(this.showCardDetails);
+
         },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {

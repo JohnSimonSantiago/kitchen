@@ -113,13 +113,17 @@
                                 @success="getterReservation"
                             ></AddItem>
                             <router-link
-                                class="bg-yellow-500 px-4 py-2 rounded-md text-white text-sm hover:bg-yellow-600"
                                 :to="
                                     '/makeOrder/' +
                                     showReservationDetails.reservationNumber
                                 "
                             >
-                                <button>Edit Order</button>
+                                <button
+                                    class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
+                                >
+                                    <span class="pi pi-file-edit"></span>
+                                    Edit Order
+                                </button>
                             </router-link>
                         </div>
                     </div>
