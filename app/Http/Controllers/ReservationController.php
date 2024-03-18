@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 use Carbon\Carbon;
+use App\Models\Status;
 use App\Models\equipment;
 use App\Models\reservation;
-use App\Models\equipment_status;
 use Illuminate\Http\Request;
+use App\Models\equipment_status;
 use Illuminate\Support\Facades\DB;
 use App\Models\reservation_details;
 
@@ -36,12 +37,16 @@ class ReservationController extends Controller
             $getReservation = reservation::all();
             return $getReservation;
         }
-        public function getReservationOrder(){
-            $getReservationOrder = DB::table ('reservations')
-            ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-            ->join('equipments', 'reservation_details.equipment_id', '=', 'equipments.equipment_id')
-            ->select('reservation_details.*', 'equipments.equipmentName', 'reservations.reservationNumber')
-            ->get();
+        public function getReservationOrder(Request $request){
+            $reservationNumber = $request->reservationNumber;
+        
+            $getReservationOrder = DB::table('reservations')
+                ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
+                ->join('equipments', 'reservation_details.equipment_id', '=', 'equipments.equipment_id')
+                ->select('reservation_details.*', 'equipments.equipmentName', 'reservations.reservationNumber')
+                ->where('reservation_details.reservationNumber', $reservationNumber)
+                ->get();
+        
             return $getReservationOrder;
         }
 
@@ -118,7 +123,7 @@ class ReservationController extends Controller
         public function rejectReservation(Request $request)
         {   
             $approveReservation = reservation::find($request->ID);
-            $approveReservation->statusID = 3;
+            $approveReservation->statusID = 5;
             $res = $approveReservation->save();
             return response()->json(['message' => 'Reservation rejected successfully.']);
         }
@@ -133,6 +138,13 @@ class ReservationController extends Controller
         
         public function showReservationOrder(){
             return reservation_details::all();
+        }
+
+        public function getStatusTable()
+        {
+            $statusTable = Status::all(['id', 'status']);
+        
+            return $statusTable;
         }
 
         

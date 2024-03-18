@@ -3,7 +3,7 @@
         label="Approve Reservation"
         icon="pi pi-thumbs-up-fill"
         @click="visible = true"
-        class="border border-gree-500 p-2 hover:bg-green-600 hover:text-white"
+        class="flex border border-green-500 p-2 hover:bg-green-600 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"

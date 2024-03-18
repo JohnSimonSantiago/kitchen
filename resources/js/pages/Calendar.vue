@@ -1,10 +1,8 @@
 <template>
     <Layout>
-        <div
-            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex"
-        >
+        <div class="min-h-screen w-full border-t border-gray-300 mt-11 flex">
             <!-- Middle Section -->
-            <div class="flex-1 flex flex-col p-5 bg-gray-200">
+            <div class="flex-1 flex flex-col p-5 bg-gray-50">
                 <div
                     class="border-b border-gray-400 flex items-center justify-between mb-4"
                 >
@@ -24,7 +22,7 @@
 
             <!-- Right Section -->
             <div
-                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-100"
+                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             ></div>
         </div>
     </Layout>

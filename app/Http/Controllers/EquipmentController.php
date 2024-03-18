@@ -50,10 +50,7 @@ class EquipmentController extends Controller
     }
     public function getEquipment(Request $request){
         $getEquipment=equipment::find($request->edit_id);
-        // dd($getEquipment);
-            // dd($request->data); 
         return $getEquipment;
-
     }
     public function updateEquipment(Request $request){
        
@@ -141,6 +138,19 @@ class EquipmentController extends Controller
     $equipment->save();
 
     return response()->json(['message' => 'Missing equipment updated successfully.']);
+}
+
+
+public function getAllEquipmentStatus(){
+    $getEquipment = equipment_status::all();
+    return $getEquipment;
+}
+
+public function getEquipmentNameAndImage()
+{
+    $statusTable = equipment::all(['equipment_id', 'equipmentName', 'image']);
+
+    return $statusTable;
 }
 
 

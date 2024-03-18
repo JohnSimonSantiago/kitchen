@@ -47,7 +47,9 @@
                     >
                 </div>
                 <div v-else>
-                    <h2 class="border-b border-gray-300 text-l font-semibold">
+                    <h2
+                        class="my-5 border-b border-gray-300 text-l font-semibold"
+                    >
                         Item Details
                     </h2>
 
@@ -142,7 +144,6 @@ export default {
         },
         showDetails(data) {
             this.showCardDetails = data;
-
         },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {

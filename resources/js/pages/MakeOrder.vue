@@ -47,12 +47,7 @@
                                 v-for="order in reservationOrder"
                                 :key="order.id"
                             >
-                                <EditQuantityOrderCard
-                                    :orderDetails="order"
-                                    :imageSrc="
-                                        getEquipmentImage(order.equipment_id)
-                                    "
-                                />
+                                <EditQuantityOrderCard :orderDetails="order" />
                             </div>
                         </div>
                     </div>
@@ -79,11 +74,13 @@ export default {
         Button,
         Message,
     },
+
     mounted() {
         this.reservationNumber = this.$route.params.reservationNumber;
         this.getterEquipment();
         this.getterReservationOrder();
     },
+
     data() {
         return {
             equipments: [],
@@ -112,15 +109,15 @@ export default {
                 });
         },
         getterReservationOrder() {
-            axios.get("/get-reservation-orders").then(({ data }) => {
-                this.reservationOrder = data;
-            });
-        },
-        getEquipmentImage(equipmentId) {
-            const equipment = this.equipments.find(
-                (item) => item.equipment_id === equipmentId
-            );
-            return equipment ? equipment.image_url : "";
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: this.reservationNumber,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                });
         },
     },
 };

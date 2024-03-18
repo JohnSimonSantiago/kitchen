@@ -28,6 +28,7 @@
                 class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
             >
             </Button>
+            <Toast />
         </div>
     </div>
 </template>
@@ -52,6 +53,12 @@ export default {
                 quantity: 1,
             });
             this.$emit("refreshOrders");
+            this.$toast.add({
+                severity: "success",
+                summary: "Success!",
+                detail: "Item added to reservation.",
+                life: 1000,
+            });
         },
     },
 };

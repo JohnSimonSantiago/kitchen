@@ -22,8 +22,8 @@
                 {{ equipmentDetails.price }}
             </p>
             <Button
-                @click="editStock(equipment)"
-                label="Edit Stock"
+                @click="addStock"
+                label="Add Stock"
                 icon="pi pi-database"
                 class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
             >
@@ -51,7 +51,7 @@ export default {
     props: ["equipmentDetails"],
 
     methods: {
-        EditStock(equipment) {},
+        addStock() {},
     },
 };
 </script>

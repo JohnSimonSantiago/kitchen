@@ -14,7 +14,7 @@
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="equipment in equipments" class="">
-                        <EditEquipmentStockCard :equipmentDetails="equipment" />
+                        <AddStockCard :equipmentDetails="equipment" />
                     </div>
                 </div>
             </div>
@@ -24,9 +24,9 @@
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <div v-for="equipment in equipments" class="mx-5">
+                <div v-for="equipmentStatus in equipmentsStatus" class="mx-5">
                     <EditQuantityStockCard
-                        :equipmentDetails="equipment"
+                        :equipmentStatusDetails="equipmentStatus"
                     ></EditQuantityStockCard>
                 </div>
             </div>
@@ -36,25 +36,31 @@
 
 <script>
 import EditQuantityStockCard from "../Card_small/EditQuantityStockCard.vue";
-import EditEquipmentStockCard from "../Cards/EditEquipmentStockCard.vue";
+import AddStockCard from "../Cards/AddStockCard.vue";
 
 export default {
     components: {
         EditQuantityStockCard,
-        EditEquipmentStockCard,
+        AddStockCard,
     },
     mounted() {
         this.getterEquipment();
+        this.getterAllEquipmentStatus();
     },
     data() {
         return {
             equipments: [],
+            equipmentsStatus: [],
         };
     },
     methods: {
+        getterAllEquipmentStatus() {
+            axios.get("/get-all-equipment-status").then(({ data }) => {
+                this.equipmentsStatus = data;
+            });
+        },
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
-                console.log(data);
                 this.equipments = data;
             });
         },

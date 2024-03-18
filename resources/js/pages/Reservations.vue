@@ -1,11 +1,10 @@
 <template>
     <Layout>
         <div
-            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex"
+            class="min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-50 flex"
         >
-            <!-- min-h-screen w-full border-t border-gray-300 mt-11 bg-gray-100 flex -->
             <!-- Middle Section -->
-            <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-200">
+            <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
                 <div
                     class="border-b border-gray-400 flex items-center justify-between mb-4"
                 >
@@ -26,7 +25,7 @@
 
             <!-- Right Section -->
             <div
-                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-100"
+                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
                 <div v-if="showReservationDetails === null">
                     <Message :closable="false" severity="info"
@@ -51,12 +50,6 @@
                     <div class="my-2 grid grid-cols-1">
                         <div class="bg-gray-300 rounded-md px-4 py-2">
                             <h1 class="font-bold">Cart:</h1>
-                            <p>
-                                {{ this.reservationOrder.quantity }}
-                            </p>
-                            <p>
-                                {{ this.reservationOrder.quantity }}
-                            </p>
                         </div>
                         <div
                             class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 flex items-center justify-center"

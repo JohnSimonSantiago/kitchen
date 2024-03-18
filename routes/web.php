@@ -34,7 +34,9 @@ Route::post("/update-equipment", [EquipmentController::class, 'updateEquipment']
 Route::post("/return-missing-equipment", [EquipmentController::class, "returnMissingEquipment"]);
 Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
 Route::get("/get-max-stock", [EquipmentController::class, "getMaxStock"]);
-Route::get("/add-equipment-stock", [EquipmentController::class, "addEquipmentStock"]);
+Route::get("/get-all-equipment-status", [EquipmentController::class, "getAllEquipmentStatus"]);
+Route::get("/get-equipment-name-and-image", [EquipmentController::class, "getEquipmentNameAndImage"]);
+Route::post("/add-equipment-stock", [EquipmentController::class, "addEquipmentStock"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
@@ -52,7 +54,7 @@ Route::get("/get-reservation-orders", [ReservationController::class, "getReserva
 Route::post("/approve-reservation", [ReservationController::class, "approveReservation"]);
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
-
+Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

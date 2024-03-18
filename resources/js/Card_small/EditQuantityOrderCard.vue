@@ -2,57 +2,117 @@
     <div
         class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center"
     >
-        <img :src="imageSrc" alt="Equipment Image" />
+        <img
+            :src="equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc"
+            alt="Equipment Image"
+        />
+
         <div class="p-2 flex-1">
             <a href="#">
                 <h5
                     class="font-bold tracking-tight text-gray-900 dark:text-white"
                 >
-                    {{ orderDetails.equipment_id }}
+                    {{ getName(orderDetails.equipment_id) }}
                 </h5>
             </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                P {{ orderDetails.quantity }}
-            </p>
         </div>
         <div class="p-2 flex items-center">
-            <input
-                v-model="quantity"
-                type="number"
-                class="px-4 py-2 border border-gray-300 rounded-md w-16 text-center"
-                required
-                min="0"
-                max="maxStock"
-            />
+            <div class="flex items-center">
+                <button
+                    @click="decrementQuantity"
+                    class="px-3 py-1 border border-gray-300 rounded-l-md"
+                >
+                    <span>-</span>
+                </button>
+                <div class="px-4 py-2 border border-gray-300 w-16 text-center">
+                    <span>{{ orderDetails.quantity }}</span>
+                </div>
+                <button
+                    @click="incrementQuantity"
+                    class="px-3 py-1 border border-gray-300 rounded-r-md"
+                >
+                    <span>+</span>
+                </button>
+            </div>
 
             <div class="ml-4">
-                <!-- <p class="text-gray-900 dark:text-white">
+                <p class="text-gray-900 dark:text-white">
                     Total: P {{ totalAmount.toFixed(2) }}
-                </p> -->
+                </p>
             </div>
         </div>
     </div>
 </template>
-
 <script>
 import Button from "primevue/button";
 export default {
     components: {
         Button,
     },
+    mounted() {
+        this.getEquipmentNameAndImage();
+        this.getterEquipmentPrice();
+        this.getEquipmentPrice();
+    },
+
     props: ["orderDetails"],
     data() {
         return {
             quantity: 1,
             maxStock: 0,
+            equipmentNameAndImage: {},
+            equipmentsPrice: [],
         };
     },
     methods: {
+        getterEquipmentPrice() {
+            axios.get("/get-equipments").then(({ data }) => {
+                this.equipmentsPrice = data.map((equipment) => equipment.price);
+            });
+        },
+        getEquipmentPrice(equipment_id) {
+            if (equipment_id && this.equipmentsPrice.length > 0) {
+                const index = equipment_id - 1;
+                if (index >= 0 && index < this.equipmentsPrice.length) {
+                    return this.equipmentsPrice[index];
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        },
+
+        getEquipmentNameAndImage() {
+            axios
+                .get("/get-equipment-name-and-image")
+                .then(({ data }) => {
+                    data.forEach((equipment) => {
+                        this.equipmentNameAndImage[equipment.equipment_id] = {
+                            name: equipment.equipmentName,
+                            imageSrc: equipment.image,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching equipment data:", error);
+                });
+        },
+        getName(equipment_id) {
+            const equipment = this.equipmentNameAndImage[equipment_id];
+            if (equipment) {
+                return equipment.name || "Unknown";
+            } else {
+                return "Unknown";
+            }
+        },
         incrementQuantity() {
-            this.quantity += 1;
+            this.orderDetails.quantity += 1;
         },
         decrementQuantity() {
-            this.quantity = Math.max(1, this.quantity - 1);
+            if (this.orderDetails.quantity > 1) {
+                this.orderDetails.quantity -= 1;
+            }
         },
         getterMaxStock() {
             axios.get("/get-max-stock").then(({ data }) => {
@@ -61,9 +121,12 @@ export default {
         },
     },
     computed: {
-        // totalAmount() {
-        //     return this.quantity * this.orderDetails.price;
-        // },
+        totalAmount() {
+            const price = this.getEquipmentPrice(
+                this.orderDetails.equipment_id
+            );
+            return this.orderDetails.quantity * price;
+        },
     },
 };
 </script>

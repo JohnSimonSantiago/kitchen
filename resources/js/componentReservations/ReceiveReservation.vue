@@ -16,50 +16,61 @@
             <div>
                 <p>Is Equipment Complete?</p>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="No"
                     @click="skipToPart3"
                 />
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Yes"
                     @click="nextStep"
                 />
             </div>
         </div>
 
+        <!--part 2-->
         <div v-if="currentStep === 2">
             <div>
-                <p>Receive Equipment</p>
+                <p>Receive Equipment?</p>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="Cancel"
-                    @click=""
+                    @click="visible = false"
                 />
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Receive"
                     @click=""
                 />
             </div>
         </div>
 
+        <!--part 3-->
         <div v-if="currentStep === 3">
             <div>
-                <p>Input Missing Equipment</p>
+                <p>Input Received Equipment</p>
             </div>
-            <div>
+            <div class="bg-gray-200 rounded-md px-4 py-2">
+                <div v-for="order in reservationOrder" :key="order.id">
+                    <EditQuantityOrderCard :orderDetails="order" />
+                </div>
+            </div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="Cancel"
-                    @click=""
+                    @click="visible = false"
                 />
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Confirm"
                     @click=""
                 />
