@@ -107,19 +107,35 @@ class EquipmentController extends Controller
     
         return response()->json(['success' => true]);
     }
-    public function AddEquipmentStock(Request $request){
-        $newEquipmentStock = new equipment_status();
+    public function AddandDisposeEquipmentStock(Request $request)
+    {
         $validatedData = $request->validate([
             'equipment_id' => 'required|exists:equipments,equipment_id',
-            'condition_id' => 'required|exists:condition_table,condition_id',
             'quantity' => 'required|integer|min:0',
         ]);
-        $newEquipmentStock->equipment_id = $request->equipment_id;
-        $newEquipmentStock->condition_id = $request->condition_id;
-        $newEquipmentStock->quantity = $request->quantity;
-        $res = $newEquipmentStock->save();
+    
+        $equipment_id = $request->equipment_id;
+        $condition_id = $request->condition_id;
+        $quantity = $request->quantity;
+    
+        $existingEquipmentStock = equipment_status::where('equipment_id', $equipment_id)
+            ->where('condition_id', $condition_id)
+            ->first();
+    
+        if ($existingEquipmentStock) {
 
-        return $res;
+            $existingEquipmentStock->quantity += $quantity;
+            $existingEquipmentStock->save();
+        } else {
+
+            $newEquipmentStock = new equipment_status();
+            $newEquipmentStock->equipment_id = $equipment_id;
+            $newEquipmentStock->condition_id = $condition_id;
+            $newEquipmentStock->quantity = $quantity;
+            $newEquipmentStock->save();
+        }
+    
+        return response()->json(['success' => true]);
     }
 
     public function returnMissingEquipment(Request $request)
@@ -144,6 +160,11 @@ class EquipmentController extends Controller
 public function getAllEquipmentStatus(){
     $getEquipment = equipment_status::all();
     return $getEquipment;
+}
+
+public function getEquipmentCondition(){
+    $conditionTable = condition::all(['condition']);
+    return $conditionTable;
 }
 
 public function getEquipmentNameAndImage()

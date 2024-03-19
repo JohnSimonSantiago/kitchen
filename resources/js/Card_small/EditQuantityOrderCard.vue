@@ -92,6 +92,7 @@ export default {
                             name: equipment.equipmentName,
                             imageSrc: equipment.image,
                         };
+                        console.log(this.equipmentNameAndImage);
                     });
                 })
                 .catch((error) => {

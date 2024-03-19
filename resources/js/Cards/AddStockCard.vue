@@ -21,13 +21,9 @@
                 Price:
                 {{ equipmentDetails.price }}
             </p>
-            <Button
-                @click="addStock"
-                label="Add Stock"
-                icon="pi pi-database"
-                class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
-            >
-            </Button>
+            <ChooseEditStockCondition
+                @conditionSelected="addItem"
+            ></ChooseEditStockCondition>
         </div>
     </div>
 </template>
@@ -35,23 +31,38 @@
 <script>
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import Dialog from "primevue/Dialog";
+import ChooseEditStockCondition from "../componentInventory/ChooseEditStockCondition.vue";
 
 export default {
     components: {
         Toast,
         Button,
+        ChooseEditStockCondition,
+        Dialog,
     },
     data() {
         return {
-            equipments: [],
-            order: [],
-            amountGiven: 0,
+            selectedCondition: "",
         };
     },
     props: ["equipmentDetails"],
 
     methods: {
-        addStock() {},
+        addItem(condition) {
+            this.$emit("clicked", {
+                equipmentDetails: this.equipmentDetails,
+                selectedCondition: condition,
+                quantity: 1,
+            });
+            this.$emit("refreshOrders");
+            this.$toast.add({
+                severity: "success",
+                summary: "Success!",
+                detail: "Item added to Stock.",
+                life: 1000,
+            });
+        },
     },
 };
 </script>

@@ -14,23 +14,11 @@
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 Current Stock: {{ equipmentStatusDetails.quantity }}
             </p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Condition:
+            </p>
         </div>
-        <div>
-            <select
-                v-model="selectedCondition"
-                id="condition"
-                class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg"
-                required
-            >
-                <option
-                    v-for="condition in conditionList"
-                    :key="condition.id"
-                    :value="condition.id"
-                >
-                    {{ condition.condition }}
-                </option>
-            </select>
-        </div>
+        <div></div>
         <div class="p-2 flex items-center">
             <input
                 v-model="quantity"
@@ -53,18 +41,30 @@ export default {
     data() {
         return {
             quantity: 0,
-            conditionList: [],
-            selectedCondition: null,
+            equipmentCondition: {},
         };
     },
     mounted() {
-        this.getterCondition();
+        this.getConditionNames();
     },
     methods: {
-        getterCondition() {
-            axios.get("/get-conditions").then(({ data }) => {
-                this.conditionList = data;
-            });
+        getConditionNames() {
+            axios
+                .get("/get-equipment-condition")
+                .then(({ data }) => {
+                    data.forEach((condition) => {
+                        this.equipmentCondition[condition.id] = {
+                            condition: condition.condition,
+                        };
+                    });
+                    console.log(this.equipmentCondition);
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error fetching equipment data by condition:",
+                        error
+                    );
+                });
         },
     },
 };

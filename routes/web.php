@@ -36,10 +36,13 @@ Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
 Route::get("/get-max-stock", [EquipmentController::class, "getMaxStock"]);
 Route::get("/get-all-equipment-status", [EquipmentController::class, "getAllEquipmentStatus"]);
 Route::get("/get-equipment-name-and-image", [EquipmentController::class, "getEquipmentNameAndImage"]);
-Route::post("/add-equipment-stock", [EquipmentController::class, "addEquipmentStock"]);
+Route::post("/add-and-dispose-equipment-stock", [EquipmentController::class, "AddandDisposeEquipmentStock"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
+Route::get("/get-equipment-condition", [EquipmentController::class, "getEquipmentCondition"]);
+
+
 
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');
 Route::get("/get-categories", [CategoryController::class, 'getCategories']);

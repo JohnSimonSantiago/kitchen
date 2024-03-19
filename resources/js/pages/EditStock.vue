@@ -14,7 +14,11 @@
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="equipment in equipments" class="">
-                        <AddStockCard :equipmentDetails="equipment" />
+                        <AddStockCard
+                            :equipmentDetails="equipment"
+                            :selectedCondition="selectedCondition"
+                            @clicked="submitEquipmentStatus"
+                        />
                     </div>
                 </div>
             </div>
@@ -51,6 +55,7 @@ export default {
         return {
             equipments: [],
             equipmentsStatus: [],
+            selectedCondition: "",
         };
     },
     methods: {
@@ -63,6 +68,20 @@ export default {
             axios.get("/get-equipments").then(({ data }) => {
                 this.equipments = data;
             });
+        },
+        submitEquipmentStatus(data) {
+            const { equipmentDetails, quantity, selectedCondition } = data;
+            axios
+                .post("add-and-dispose-equipment-stock", {
+                    equipment_id: equipmentDetails.equipment_id,
+                    condition_id: selectedCondition,
+                    quantity,
+                })
+                .then(({ data }) => {
+                    this.id = "";
+                    this.quantity = "";
+                    this.$emit("success");
+                });
         },
     },
 };

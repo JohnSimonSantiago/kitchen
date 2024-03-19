@@ -36,7 +36,7 @@
 import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Message from "primevue/message";
-import Dialog from "primevue/dialog";
+import Dialog from "primevue/Dialog";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 
@@ -78,7 +78,7 @@ export default {
                         this.$toast.add({
                             severity: "error",
                             summary: "Error!",
-                            detail: "Approving Failed!",
+                            detail: "Not Enough Equipment! (Please Edit Cart)",
                             life: 3000,
                         });
                     }

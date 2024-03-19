@@ -55,6 +55,12 @@
                     <div
                         class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
                     ></div>
+                    <button
+                        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button"
+                    >
+                        <span class="pi pi-file-export"></span>
+                        Submit Order
+                    </button>
                 </div>
             </div>
         </div>
