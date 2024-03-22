@@ -3,8 +3,11 @@
         class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center"
     >
         <img
-            :src="equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc"
+            :src="`/uploads/${
+                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
+            }`"
             alt="Equipment Image"
+            class="rounded-t-lg w-10 h-10"
         />
 
         <div class="p-2 flex-1">
@@ -92,12 +95,20 @@ export default {
                             name: equipment.equipmentName,
                             imageSrc: equipment.image,
                         };
-                        console.log(this.equipmentNameAndImage);
                     });
                 })
                 .catch((error) => {
                     console.error("Error fetching equipment data:", error);
                 });
+        },
+        getImageSrc(equipment_id) {
+            const equipment = this.equipmentNameAndImage[equipment_id];
+            if (equipment) {
+                
+                return equipment.imageSrc || "Unknown";
+            } else {
+                return "Unknown";
+            }
         },
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];

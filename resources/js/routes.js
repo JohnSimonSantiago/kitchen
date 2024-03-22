@@ -7,6 +7,7 @@ import Signup from "@/pages/Signup.vue";
 import Rent from "@/pagesUser/Rent.vue";
 import Reservations2 from "@/pages/Reservations2.vue";
 import EditStock from "@/pages/EditStock.vue";
+import Dashboard from "./pages/Dashboard.vue";
 
 export const routes = [
     {
@@ -18,6 +19,11 @@ export const routes = [
         path: "/signup",
         name: "signup",
         component: Signup,
+    },
+    {
+        path: "/dashboard",
+        name: "dashboard",
+        component: Dashboard,
     },
     {
         path: "/editstock",

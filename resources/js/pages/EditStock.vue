@@ -28,23 +28,20 @@
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <div v-for="equipmentStatus in equipmentsStatus" class="mx-5">
-                    <EditQuantityStockCard
-                        :equipmentStatusDetails="equipmentStatus"
-                    ></EditQuantityStockCard>
-                </div>
+                <div
+                    v-for="equipmentStatus in equipmentsStatus"
+                    class="mx-5"
+                ></div>
             </div>
         </div>
     </Layout>
 </template>
 
 <script>
-import EditQuantityStockCard from "../Card_small/EditQuantityStockCard.vue";
 import AddStockCard from "../Cards/AddStockCard.vue";
 
 export default {
     components: {
-        EditQuantityStockCard,
         AddStockCard,
     },
     mounted() {

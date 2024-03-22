@@ -21,9 +21,6 @@
                 Price:
                 {{ equipmentDetails.price }}
             </p>
-            <ChooseEditStockCondition
-                @conditionSelected="addItem"
-            ></ChooseEditStockCondition>
         </div>
     </div>
 </template>
@@ -32,13 +29,11 @@
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 import Dialog from "primevue/Dialog";
-import ChooseEditStockCondition from "../componentInventory/ChooseEditStockCondition.vue";
 
 export default {
     components: {
         Toast,
         Button,
-        ChooseEditStockCondition,
         Dialog,
     },
     data() {
