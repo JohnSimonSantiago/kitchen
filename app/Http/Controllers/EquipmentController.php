@@ -163,7 +163,7 @@ public function getAllEquipmentStatus(){
 }
 
 public function getEquipmentCondition(){
-    $conditionTable = condition::all(['condition']);
+    $conditionTable = condition::all(['id', 'condition']);
     return $conditionTable;
 }
 
