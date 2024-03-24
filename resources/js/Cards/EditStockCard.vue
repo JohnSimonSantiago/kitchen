@@ -65,11 +65,13 @@ export default {
             selectedCondition: "",
             equipmentNameAndImage: {},
             equipmentCondition: {},
+            maxStockAll: [],
         };
     },
     mounted() {
         this.getEquipmentNameAndImage();
         this.getEquipmentCondition();
+        this.getterMaxStockAll();
     },
     props: ["equipmentDetails"],
 
@@ -131,9 +133,36 @@ export default {
             this.equipmentDetails.quantity += 1;
         },
         decrementQuantity() {
-            if (this.equipmentDetails.quantity > 1) {
+            const { equipment_id, condition_id } = this.equipmentDetails;
+            const maxStockItem = this.maxStockAll.find(
+                (item) =>
+                    item.equipment_id === equipment_id &&
+                    item.condition_id === condition_id
+            );
+
+            if (maxStockItem) {
+                console.log("Current Equipment ID:", equipment_id);
+                console.log("Current Condition ID:", condition_id);
+                console.log(
+                    "Current Quantity:",
+                    this.equipmentDetails.quantity
+                );
                 this.equipmentDetails.quantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum stock data not available.",
+                    life: 3000,
+                });
             }
+        },
+
+        getterMaxStockAll() {
+            axios.get("/get-max-stock-all").then(({ data }) => {
+                this.maxStockAll = data;
+                console.log(this.maxStockAll);
+            });
         },
     },
 };

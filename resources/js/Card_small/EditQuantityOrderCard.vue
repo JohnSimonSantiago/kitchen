@@ -56,13 +56,14 @@ export default {
         this.getEquipmentNameAndImage();
         this.getterEquipmentPrice();
         this.getEquipmentPrice();
+        this.getterMaxStock();
     },
 
     props: ["orderDetails"],
     data() {
         return {
             quantity: 1,
-            maxStock: 0,
+            maxStock: [],
             equipmentNameAndImage: {},
             equipmentsPrice: [],
         };
@@ -104,7 +105,6 @@ export default {
         getImageSrc(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
-                
                 return equipment.imageSrc || "Unknown";
             } else {
                 return "Unknown";
@@ -119,10 +119,26 @@ export default {
             }
         },
         incrementQuantity() {
-            this.orderDetails.quantity += 1;
+            const maxStock = this.maxStock[this.orderDetails.equipment_id];
+
+            if (!maxStock) {
+                console.warn("Max stock not available.");
+                return;
+            }
+
+            if (this.orderDetails.quantity < maxStock) {
+                this.orderDetails.quantity += 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum stock reached.",
+                    life: 3000,
+                });
+            }
         },
         decrementQuantity() {
-            if (this.orderDetails.quantity > 1) {
+            if (this.orderDetails.quantity > 0) {
                 this.orderDetails.quantity -= 1;
             }
         },

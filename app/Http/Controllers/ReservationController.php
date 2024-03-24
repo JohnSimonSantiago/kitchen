@@ -67,7 +67,7 @@ class ReservationController extends Controller
             ->select('reservation_details.quantity', 'reservation_details.equipment_id',)
             ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
             ->get();
-
+    
             $selectedReservationDateRange = [
                 'dateStart' => $selectedReservation->dateStart,
                 'dateEnd' => $selectedReservation->dateEnd
@@ -84,6 +84,7 @@ class ReservationController extends Controller
                 ->select('reservation_details.quantity', 'reservation_details.equipment_id',)
                 ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
                 ->get();
+     
                 $approvedReservationQuantities = $approvedReservationDetails;
             }
 

@@ -39,11 +39,7 @@ class EquipmentController extends Controller
         return $res;
     }
 
-    public function getMaxStock(){
-        $getEquipmentStock = equipment::pluck('quantity');
-        return $getEquipmentStock;
-    }
-
+    
     public function getEquipments(){
         $getEquipment = equipment::all();
         return $getEquipment;
@@ -174,5 +170,14 @@ public function getEquipmentNameAndImage()
     return $statusTable;
 }
 
+public function getMaxStock(){
+    $getEquipmentStock = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
+    return $getEquipmentStock;
+}
+public function getMaxStockAll()
+{
+    $getMaxStockAll = equipment_status::all('equipment_id','condition_id','quantity' );
 
+    return $getMaxStockAll;
+}
 }
