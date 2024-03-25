@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import Dialog from "primevue/dialog";
+import Dialog from "primevue/Dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";

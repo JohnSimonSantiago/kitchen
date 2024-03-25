@@ -54,7 +54,7 @@
 import Modal from "../component/Modal.vue";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
-import Dialog from "primevue/dialog";
+import Dialog from "primevue/Dialog";
 
 export default {
     components: {

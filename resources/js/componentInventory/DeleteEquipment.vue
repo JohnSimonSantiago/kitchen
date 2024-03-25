@@ -33,7 +33,7 @@
 
 <script>
 import axios from "axios";
-import Dialog from "primevue/dialog";
+import Dialog from "primevue/Dialog";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 import Message from "primevue/message";

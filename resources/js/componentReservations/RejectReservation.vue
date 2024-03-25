@@ -36,7 +36,7 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Message from "primevue/message";
 import Button from "primevue/button";
-import Dialog from "primevue/dialog";
+import Dialog from "primevue/Dialog";
 import Toast from "primevue/toast";
 
 export default {
