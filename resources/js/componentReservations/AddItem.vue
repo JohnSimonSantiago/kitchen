@@ -71,33 +71,22 @@ export default {
             selectedEquipment: null,
             reservations: [],
             equipmentList: [],
-            maxStock: 0,
+            maxStock: [],
         };
     },
     mounted() {
         this.getterEquipment();
         this.getterReservation();
+        this.getterMaxStock();
     },
     methods: {
-        submitEquipmentOrder() {
-            const { selectedEquipment, quantity } = this;
-            axios
-                .post("/submit-equipment-order", {
-                    equipment_id: selectedEquipment,
-                    reservationNumber: this.idReservation,
-                    quantity,
-                })
-                .then(({ data }) => {
-                    this.id = "";
-                    this.quantity = "";
-                    this.$emit("success");
-                });
-        },
+
         getterEquipment() {
             axios.get("/get-equipments").then(({ data }) => {
                 this.equipmentList = data;
             });
         },
+
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
                 this.reservations = data;

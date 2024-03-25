@@ -33,7 +33,7 @@ Route::post("/submit-equipment", [EquipmentController::class, 'submitEquipment']
 Route::post("/update-equipment", [EquipmentController::class, 'updateEquipment']);
 Route::post("/return-missing-equipment", [EquipmentController::class, "returnMissingEquipment"]);
 Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
-Route::get("/get-max-stock", [EquipmentController::class, "getMaxStock"]);
+Route::get("/get-max-possible-order", [EquipmentController::class, "getMaxPossibleOrder"]);
 Route::get("/get-max-stock-all", [EquipmentController::class, "getMaxStockAll"]);
 Route::get("/get-all-equipment-status", [EquipmentController::class, "getAllEquipmentStatus"]);
 Route::get("/get-equipment-name-and-image", [EquipmentController::class, "getEquipmentNameAndImage"]);

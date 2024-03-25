@@ -92,6 +92,7 @@ export default {
             equipments: [],
             showCardDetails: null,
             reservationOrder: [],
+            maxStock: [],
         };
     },
     methods: {
@@ -113,6 +114,11 @@ export default {
                     this.quantity = "";
                     this.$emit("success");
                 });
+        },
+        getterMaxStock() {
+            axios.get("/get-max-stock").then(({ data }) => {
+                this.maxStock = data;
+            });
         },
         getterReservationOrder() {
             axios

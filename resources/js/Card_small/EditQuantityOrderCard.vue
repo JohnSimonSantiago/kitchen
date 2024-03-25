@@ -56,14 +56,14 @@ export default {
         this.getEquipmentNameAndImage();
         this.getterEquipmentPrice();
         this.getEquipmentPrice();
-        this.getterMaxStock();
+        this.getterMaxPossibleOrder();
     },
 
     props: ["orderDetails"],
     data() {
         return {
             quantity: 1,
-            maxStock: [],
+            maxPossibleOrder: [],
             equipmentNameAndImage: {},
             equipmentsPrice: [],
         };
@@ -119,14 +119,14 @@ export default {
             }
         },
         incrementQuantity() {
-            const maxStock = this.maxStock[this.orderDetails.equipment_id];
+            const maxPossibleOrder = this.maxPossibleOrder[this.orderDetails.equipment_id];
 
-            if (!maxStock) {
+            if (!maxPossibleOrder) {
                 console.warn("Max stock not available.");
                 return;
             }
 
-            if (this.orderDetails.quantity < maxStock) {
+            if (this.orderDetails.quantity < maxPossibleOrder) {
                 this.orderDetails.quantity += 1;
             } else {
                 this.$toast.add({
@@ -142,9 +142,10 @@ export default {
                 this.orderDetails.quantity -= 1;
             }
         },
-        getterMaxStock() {
-            axios.get("/get-max-stock").then(({ data }) => {
-                this.maxStock = data;
+        getterMaxPossibleOrder() {
+            axios.get("/get-max-possible-order").then(({ data }) => {
+                this.maxPossibleOrder = data;
+              
             });
         },
     },

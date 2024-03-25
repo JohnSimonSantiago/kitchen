@@ -67,22 +67,15 @@ export default {
                 })
                 .then((response) => {
                     if (response.data.success) {
-                        this.$toast.add({
+                        ToastService.add({
                             severity: "success",
                             summary: "Success!",
                             detail: "Reservation Approved Successfully!",
                             life: 3000,
                         });
                         this.$emit("approved");
-                    } else {
-                        this.$toast.add({
-                            severity: "error",
-                            summary: "Error!",
-                            detail: "Not Enough Equipment! (Please Edit Cart)",
-                            life: 3000,
-                        });
-                    }
-                    this.visible = false;
+                    } 
+                    this.visible = false; // Move this line inside the `then` block
                 })
                 .catch((error) => {
                     console.error("Error approving reservation:", error);

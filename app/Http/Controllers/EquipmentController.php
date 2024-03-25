@@ -170,9 +170,10 @@ public function getEquipmentNameAndImage()
     return $statusTable;
 }
 
-public function getMaxStock(){
-    $getEquipmentStock = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
-    return $getEquipmentStock;
+public function getMaxPossibleOrder(){
+    $selectedReservation = reservation::find($request->ID);
+    $getMaxPossibleOrder = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
+    return $getMaxPossibleOrder;
 }
 public function getMaxStockAll()
 {
