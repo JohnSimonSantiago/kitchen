@@ -68,7 +68,7 @@ export default {
                         detail: "Reservation Rejected Successfully!",
                         life: 3000,
                     });
-                    this.$emit("deleted");
+                    this.$emit("Refresh");
                 });
         },
     },

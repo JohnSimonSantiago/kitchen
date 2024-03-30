@@ -127,11 +127,7 @@ export default {
                         detail: "Reservation Created Successfully!",
                         life: 3000,
                     });
-                    this.customerName = "";
-                    this.customerNumber = "";
-                    this.selectedRange = null;
                     this.$emit("success");
-                    this.$router.push("/reservations");
                 });
         },
     },

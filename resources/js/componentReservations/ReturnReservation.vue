@@ -142,7 +142,7 @@ export default {
                         detail: "Equipment Returned Successfully!",
                         life: 3000,
                     });
-                    this.$emit("returned");
+                    this.$emit("Refresh");
                 });
         },
     },

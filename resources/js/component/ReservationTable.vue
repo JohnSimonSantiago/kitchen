@@ -47,20 +47,24 @@
                         <ApproveReservation
                             v-if="reservation.statusID === 1"
                             :idReservation="reservation.reservationNumber"
+                            @Refresh="getterReservations"
                         ></ApproveReservation>
                         <ReceiveReservation
                             v-if="reservation.statusID === 2"
                             :idReservation="reservation.reservationNumber"
+                            @Refresh="getterReservations"
                         >
                         </ReceiveReservation>
                         <ReturnReservation
                             v-if="reservation.statusID === 3"
                             :idReservation="reservation.reservationNumber"
+                            @Refresh="getterReservations"
                         >
                         </ReturnReservation>
                         <RejectReservation
                             v-if="reservation.statusID === 1"
                             :idReservation="reservation.reservationNumber"
+                            @Refresh="getterReservations"
                         ></RejectReservation>
                         <Button
                             @click="readMore(reservation)"

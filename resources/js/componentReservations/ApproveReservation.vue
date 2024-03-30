@@ -73,7 +73,7 @@ export default {
                             detail: "Reservation Approved Successfully!",
                             life: 3000,
                         });
-                        this.$emit("approved");
+                        this.$emit("Refresh");
                     } 
                     this.visible = false; // Move this line inside the `then` block
                 })
