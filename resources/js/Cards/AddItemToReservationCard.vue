@@ -43,8 +43,15 @@ export default {
         Button,
     },
     data() {
-        return {};
+        return {
+            maxPossibleOrder: [],
+        };
     },
+    mounted() {
+    this.reservationNumber = this.$route.params.reservationNumber;
+    this.getterMaxPossibleOrder();
+},
+
     props: ["equipmentDetails"],
     methods: {
         addItem() {
@@ -60,6 +67,17 @@ export default {
                 life: 1000,
             });
         },
+        getterMaxPossibleOrder() {
+    const reservationNumber = this.reservationNumber;
+    return axios.get(`/get-max-possible-order?reservationNumber=${reservationNumber}`)
+        .then(({ data }) => {
+            this.maxPossibleOrder = data;
+        })
+        .catch(error => {
+            console.error("Error fetching max possible order:", error);
+        });
+},
+
     },
 };
 </script>

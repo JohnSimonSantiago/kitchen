@@ -85,6 +85,7 @@ export default {
         this.reservationNumber = this.$route.params.reservationNumber;
         this.getterEquipment();
         this.getterReservationOrder();
+        this.getterMaxPossibleOrder();
     },
 
     data() {
@@ -92,7 +93,7 @@ export default {
             equipments: [],
             showCardDetails: null,
             reservationOrder: [],
-            maxStock: [],
+            maxPossibleOrder: [],
         };
     },
     methods: {
@@ -115,9 +116,10 @@ export default {
                     this.$emit("success");
                 });
         },
-        getterMaxStock() {
-            axios.get("/get-max-stock").then(({ data }) => {
-                this.maxStock = data;
+        getterMaxPossibleOrder(){
+            axios.get("/get-max-possible-order").then(({ data }) => {
+                this.maxPossibleOrder = data;
+                console.log(this.maxPossibleOrder);
             });
         },
         getterReservationOrder() {

@@ -35,7 +35,15 @@
         <!--part 2-->
         <div v-if="currentStep === 2">
             <div>
-                <p>Receive Equipment?</p>
+                <div class="bg-gray-200 rounded-md px-4 py-2">
+                            <div
+                                v-for="order in reservationOrder"
+                                :key="order.id"
+                            >
+                                <EditQuantityOrderCard :orderDetails="order" />
+                            </div>
+                        </div>
+                <p>input payment:</p>
             </div>
             <div class="flex gap-2">
                 <Button
@@ -93,11 +101,17 @@ export default {
         return {
             visible: false,
             currentStep: 1,
+            reservationOrder: [],
             modalContent: {
                 title: "Return Reservation",
                 content: "",
             },
         };
+    },
+    
+    mounted() {
+        this.getterReservationOrder();
+
     },
     components: {
         Toast,
@@ -106,6 +120,17 @@ export default {
         Button,
     },
     methods: {
+        getterReservationOrder() {
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: this.reservationNumber,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                });
+        },
         nextStep() {
             this.currentStep++;
         },
@@ -115,12 +140,12 @@ export default {
 
         receiveReservation() {
             axios
-                .post("/return-reservation", { ID: this.idReservation })
+                .post("/recieve-reservation", { ID: this.idReservation })
                 .then(() => {
                     this.$toast.add({
                         severity: "success",
                         summary: "Success!",
-                        detail: "Equipment Returned Successfully!",
+                        detail: "Equipment Reeceived Successfully!",
                         life: 3000,
                     });
                     this.$emit("returned");

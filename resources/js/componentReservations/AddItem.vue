@@ -71,13 +71,11 @@ export default {
             selectedEquipment: null,
             reservations: [],
             equipmentList: [],
-            maxStock: [],
         };
     },
     mounted() {
         this.getterEquipment();
         this.getterReservation();
-        this.getterMaxStock();
     },
     methods: {
 

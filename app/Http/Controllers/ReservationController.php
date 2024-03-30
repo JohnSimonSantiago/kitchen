@@ -121,20 +121,30 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Reservation approved successfully.']);
         }
 
-        public function rejectReservation(Request $request)
+        public function receiveReservation(Request $request)
         {   
-            $approveReservation = reservation::find($request->ID);
-            $approveReservation->statusID = 5;
-            $res = $approveReservation->save();
-            return response()->json(['message' => 'Reservation rejected successfully.']);
+            $receiveReservation = reservation::find($request->ID);
+            $receiveReservation->statusID = 3;
+            $res = $receiveReservation->save();
+            return response()->json(['message' => 'Reservation returned successfully.']);
         }
+
+
 
         public function returnReservation(Request $request)
         {   
-            $approveReservation = reservation::find($request->ID);
-            $approveReservation->statusID = 4;
-            $res = $approveReservation->save();
+            $returnReservation = reservation::find($request->ID);
+            $returnReservation->statusID = 4;
+            $res = $returnReservation->save();
             return response()->json(['message' => 'Reservation returned successfully.']);
+        }
+        
+        public function rejectReservation(Request $request)
+        {   
+            $rejectReservation = reservation::find($request->ID);
+            $rejectReservation->statusID = 5;
+            $res = $rejectReservation->save();
+            return response()->json(['message' => 'Reservation rejected successfully.']);
         }
         
         public function showReservationOrder(){

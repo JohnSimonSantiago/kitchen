@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\category;
 use App\Models\condition;
 use App\Models\equipment;
@@ -169,16 +170,27 @@ public function getEquipmentNameAndImage()
 
     return $statusTable;
 }
-
-public function getMaxPossibleOrder(){
-    $selectedReservation = reservation::find($request->ID);
-    $getMaxPossibleOrder = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
-    return $getMaxPossibleOrder;
-}
-public function getMaxStockAll()
+public function getMaxPossibleOrder(Request $request)
 {
-    $getMaxStockAll = equipment_status::all('equipment_id','condition_id','quantity' );
+    $reservationNumber = $request->reservationNumber;
 
-    return $getMaxStockAll;
+    // Fetch reservation details for the given reservation number
+    $reservationDetails = reservation_details::where('reservationNumber', $reservationNumber)->get();
+
+    // Calculate total quantity of equipment needed based on the reservation details
+    $totalQuantity = $reservationDetails->sum('quantity');
+
+    // Retrieve equipment quantities from the equipment_status table
+    $getEquipmentQuantities = equipment_status::where('condition_id', 1)
+        ->pluck('quantity', 'equipment_id');
+
+    // Check available stock for each equipment and calculate the maximum possible order
+    $maxPossibleOrder = [];
+    foreach ($getEquipmentQuantities as $equipmentId => $availableStock) {
+        $maxPossibleOrder[$equipmentId] = floor($availableStock / $totalQuantity);
+    }
+
+    return response()->json(['maxPossibleOrder' => $maxPossibleOrder]);
 }
+
 }
