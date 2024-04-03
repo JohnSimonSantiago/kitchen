@@ -36,13 +36,10 @@
         <div v-if="currentStep === 2">
             <div>
                 <div class="bg-gray-200 rounded-md px-4 py-2">
-                            <div
-                                v-for="order in reservationOrder"
-                                :key="order.id"
-                            >
-                                <EditQuantityOrderCard :orderDetails="order" />
-                            </div>
-                        </div>
+                    <div v-for="order in reservationOrder" :key="order.id">
+                        <EditQuantityOrderCard :orderDetails="order" />
+                    </div>
+                </div>
                 <p>input payment:</p>
             </div>
             <div class="flex gap-2">
@@ -108,10 +105,9 @@ export default {
             },
         };
     },
-    
+
     mounted() {
         this.getterReservationOrder();
-
     },
     components: {
         Toast,
@@ -129,6 +125,7 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
+                    console.log(this.reservationOrder);
                 });
         },
         nextStep() {

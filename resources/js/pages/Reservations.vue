@@ -98,13 +98,6 @@
                     </div>
                     <div class="flex-col self-end">
                         <div class="flex items-center justify-center gap-2">
-                            <AddItem
-                                :idReservation="
-                                    this.showReservationDetails
-                                        .reservationNumber
-                                "
-                                @success="getterReservation"
-                            ></AddItem>
                             <router-link
                                 :to="
                                     '/makeOrder/' +
@@ -127,7 +120,6 @@
 </template>
 
 <script>
-import AddItem from "@/componentreservations/AddItem.vue";
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
 import ReservationTable from "../component/ReservationTable.vue";
 import Message from "primevue/message";
@@ -135,7 +127,6 @@ import Tag from "primevue/tag";
 
 export default {
     components: {
-        AddItem,
         Tag,
         Message,
         CreateReservation,
@@ -152,26 +143,6 @@ export default {
         };
     },
     methods: {
-        getEquipmentIdForApproval() {
-            // Check if there is a selected reservation and if reservationOrder is available
-            if (this.showReservationDetails && this.reservationOrder) {
-                // Find the corresponding reservation order
-                const order = this.reservationOrder.find((order) => {
-                    return (
-                        order.reservationNumber ===
-                        this.showReservationDetails.reservationNumber
-                    );
-                });
-
-                // Return the idEquipment if found
-                if (order) {
-                    return order.idEquipment;
-                }
-            }
-
-            // Return a default value or handle the case when idEquipment is not available
-            return null;
-        },
         seeReservationDetails(data) {
             this.showReservationDetails = data;
             console.log(data);

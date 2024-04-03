@@ -143,27 +143,29 @@
                         <router-link to="/reservations2">
                             reservations2</router-link
                         >
-                        <button
-                            @click="logout"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                        >
-                            Exit
-                            <svg
-                                class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 16 16"
+                        <div class="flex justify-center items-center">
+                            <button
+                                @click="logout"
+                                class="flex flex-col items-center mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"
-                                />
-                            </svg>
-                        </button>
+                                <svg
+                                    class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180 w-3.5 h-3.5 mb-1"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"
+                                    />
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
