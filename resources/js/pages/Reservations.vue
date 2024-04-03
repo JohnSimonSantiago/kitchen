@@ -19,6 +19,7 @@
                     <ReservationTable
                         class=""
                         @clicked="seeReservationDetails"
+                        @reservationSelected="handleReservationSelected"
                     ></ReservationTable>
                 </div>
             </div>
@@ -49,7 +50,14 @@
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
                         <div class="bg-gray-300 rounded-md px-4 py-2">
-                            <h1 class="font-bold">Cart:</h1>
+                            <div class="my-5">
+                                <div
+                                    v-for="order in reservationOrder"
+                                    :key="order.id"
+                                >
+                                    <OrderCard :orderDetails="order" />
+                                </div>
+                            </div>
                         </div>
                         <div
                             class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 flex items-center justify-center"
@@ -71,7 +79,12 @@
                             </svg>
 
                             <span>
-                                From:{{ this.showReservationDetails.dateStart }}
+                                From:
+                                {{
+                                    formatDate(
+                                        this.showReservationDetails.dateStart
+                                    )
+                                }}
                             </span>
                         </div>
                         <div
@@ -92,7 +105,12 @@
                             </svg>
 
                             <span>
-                                To:{{ this.showReservationDetails.dateEnd }}
+                                To:
+                                {{
+                                    formatDate(
+                                        this.showReservationDetails.dateEnd
+                                    )
+                                }}
                             </span>
                         </div>
                     </div>
@@ -124,11 +142,13 @@ import CreateReservation from "@/componentreservations/CreateReservation.vue";
 import ReservationTable from "../component/ReservationTable.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";
+import OrderCard from "../Card_small/OrderCard.vue";
 
 export default {
     components: {
         Tag,
         Message,
+        OrderCard,
         CreateReservation,
         ReservationTable,
     },
@@ -140,12 +160,20 @@ export default {
         return {
             reservations: null,
             showReservationDetails: null,
+            reservationOrder: [],
         };
     },
     methods: {
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+            });
+        },
         seeReservationDetails(data) {
             this.showReservationDetails = data;
-            console.log(data);
         },
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
@@ -157,10 +185,19 @@ export default {
             this.showReservationDetails = null;
         },
 
-        getterReservationOrder() {
-            axios.get("/get-reservation-orders").then(({ data }) => {
-                this.reservationOrder = data;
-            });
+        handleReservationSelected(reservationNumber) {
+            this.getterReservationOrder(reservationNumber);
+        },
+        getterReservationOrder(reservationNumber) {
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: reservationNumber,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                });
         },
     },
 };

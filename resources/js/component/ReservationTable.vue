@@ -38,10 +38,10 @@
                         </Message>
                     </td>
                     <td class="text-center">
-                        {{ reservation.dateStart }}
+                        {{ formatDate(reservation.dateStart) }}
                     </td>
                     <td class="text-center">
-                        {{ reservation.dateEnd }}
+                        {{ formatDate(reservation.dateEnd) }}
                     </td>
                     <td class="text-center flex gap-2">
                         <ApproveReservation
@@ -144,8 +144,18 @@ export default {
                 this.reservations = data;
             });
         },
-        readMore(data) {
-            this.$emit("clicked", data);
+        readMore(reservation) {
+            this.$emit("clicked", reservation);
+
+            this.$emit("reservationSelected", reservation.reservationNumber);
+        },
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+            });
         },
     },
 };

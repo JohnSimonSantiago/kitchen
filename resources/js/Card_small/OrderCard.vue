@@ -21,21 +21,9 @@
         </div>
         <div class="p-2 flex items-center">
             <div class="flex items-center">
-                <button
-                    @click="decrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-l-md"
-                >
-                    <span>-</span>
-                </button>
                 <div class="px-3 py-1 border border-gray-300 w-16 text-center">
                     <span>{{ orderDetails.quantity }}</span>
                 </div>
-                <button
-                    @click="incrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-r-md"
-                >
-                    <span>+</span>
-                </button>
             </div>
 
             <div class="ml-2 flex items-center">
@@ -118,31 +106,7 @@ export default {
                 return "Unknown";
             }
         },
-        incrementQuantity() {
-            const maxPossibleOrder =
-                this.maxPossibleOrder[this.orderDetails.equipment_id];
 
-            if (!maxPossibleOrder) {
-                console.warn("Max stock not available.");
-                return;
-            }
-
-            if (this.orderDetails.quantity < maxPossibleOrder) {
-                this.orderDetails.quantity += 1;
-            } else {
-                this.$toast.add({
-                    severity: "warn",
-                    summary: "Warning",
-                    detail: "Maximum stock reached.",
-                    life: 3000,
-                });
-            }
-        },
-        decrementQuantity() {
-            if (this.orderDetails.quantity > 0) {
-                this.orderDetails.quantity -= 1;
-            }
-        },
         getterMaxPossibleOrder() {
             axios.get("/get-max-possible-order").then(({ data }) => {
                 this.maxPossibleOrder = data;

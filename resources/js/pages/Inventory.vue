@@ -20,7 +20,7 @@
                             </button>
                         </router-link>
                         <CreateCategory
-                            @success="getterCategory"
+                            @refresh="getterCategoryList"
                         ></CreateCategory>
                         <CreateEquipment
                             @success="getterEquipment"
@@ -78,11 +78,66 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Section -->
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <!-- Details Section (unchanged) -->
+                <div v-if="showCardDetails === null">
+                    <Message :closable="false" severity="info"
+                        >Select Equipment to view Details</Message
+                    >
+                </div>
+                <div v-else>
+                    <h2
+                        class="my-5 border-b border-gray-300 text-l font-semibold"
+                    >
+                        Item Details
+                    </h2>
+
+                    <!-- drawer component -->
+                    <div class="my-2 grid grid-cols-1">
+                        <div class="bg-gray-200 rounded-md px-4 py-2">
+                            <h1>
+                                <span class="font-bold">Name:</span>
+                                {{ this.showCardDetails.equipmentName }}
+                            </h1>
+
+                            <h1>
+                                <span class="font-bold">Location:</span>
+                                {{ this.showCardDetails.location }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Price:</span>
+                                {{ this.showCardDetails.price }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Barcode:</span>
+                                {{ this.showCardDetails.barcode }}
+                            </h1>
+                            <h1>
+                                <span class="font-bold">Category:</span>
+                                {{ this.showCardDetails.cateegoryid }}
+                            </h1>
+
+                            <h1>
+                                <span class="font-bold">Description:</span>
+                                {{ this.showCardDetails.description }}
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
+                    >
+                        <EditEquipment
+                            :id="this.showCardDetails.equipment_id"
+                            @success="getterEquipment"
+                        ></EditEquipment>
+                        <DeleteEquipment
+                            :id="this.showCardDetails.equipment_id"
+                            @deleted="DeletedEquipment"
+                        ></DeleteEquipment>
+                    </div>
+                </div>
             </div>
         </div>
     </Layout>

@@ -11,7 +11,10 @@
                     <h1 class="text-l mb-3 mt-3 font-semibold">
                         Equipment List
                     </h1>
-                    <AddNewStock @conditionSelected="addItem"></AddNewStock>
+                    <AddNewStock
+                        @conditionSelected="addItem"
+                        @refresh="getterAllEquipmentStatus"
+                    ></AddNewStock>
                 </div>
                 <div class="my-2 grid grid-cols-4 gap-5">
                     <div v-for="equipment in equipmentsStatus" class="">

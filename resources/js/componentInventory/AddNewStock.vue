@@ -114,6 +114,7 @@ export default {
                     detail: "Please select equipment and condition.",
                     life: 3000,
                 });
+
                 return;
             }
 
@@ -160,6 +161,7 @@ export default {
                 })
                 .finally(() => {
                     this.visible = false;
+                    this.$emit("refresh");
                 });
         },
     },

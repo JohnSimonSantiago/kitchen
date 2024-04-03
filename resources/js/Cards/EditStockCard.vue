@@ -35,7 +35,7 @@
                 >
                     <span>-</span>
                 </button>
-                <div class="px-4 py-2 border border-gray-300 w-16 text-center">
+                <div class="px-3 py-1 border border-gray-300 w-16 text-center">
                     <span>{{ equipmentDetails.quantity }}</span>
                 </div>
                 <button

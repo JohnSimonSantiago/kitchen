@@ -64,11 +64,45 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Section -->
+ <!-- Right Section -->
+
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
             >
-                <!-- Details Section (unchanged) -->
+                <div v-if="reservationOrder.length === 0">
+                    <Message :closable="false" severity="info"
+                        >Cart is Empty</Message
+                    >
+                </div>
+                <div v-else>
+                    <h2
+                        class="border-b my-5 border-gray-300 text-l font-semibold"
+                    >
+                        Item Details
+                    </h2>
+
+                    <!-- drawer component -->
+                    <div class="my-5">
+                        <div class="bg-gray-200 rounded-md px-4 py-2">
+                            <div
+                                v-for="order in reservationOrder"
+                                :key="order.id"
+                            >
+                                <EditQuantityOrderCard :orderDetails="order" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
+                    ></div>
+                    <button
+                        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button"
+                    >
+                        <span class="pi pi-file-export"></span>
+                        Submit Order
+                    </button>
+                </div>
             </div>
         </div>
     </Layout>

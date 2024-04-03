@@ -56,7 +56,6 @@ import Modal from "../component/Modal.vue";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 
-
 export default {
     components: {
         Modal,
@@ -74,6 +73,7 @@ export default {
         saveAndSubmit() {
             this.visible = false;
             this.submitCategory();
+            
         },
         submitCategory() {
             const { category } = this;
@@ -88,7 +88,6 @@ export default {
                         detail: "Category Created Successfully!",
                         life: 3000,
                     });
-                    this.$emit("returned");
                 });
         },
     },
