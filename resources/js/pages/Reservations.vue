@@ -123,6 +123,12 @@
                                 "
                             >
                                 <button
+                                    v-if="
+                                        showReservationDetails &&
+                                        [1, 2].includes(
+                                            showReservationDetails.statusID
+                                        )
+                                    "
                                     class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
                                 >
                                     <span class="pi pi-file-edit"></span>

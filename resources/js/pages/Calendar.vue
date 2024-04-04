@@ -23,19 +23,41 @@
             <!-- Right Section -->
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
-            ></div>
+            >
+                <div v-if="showReservationDetails === null">
+                    <!-- Show a message if no reservation is selected -->
+                    <Message :closable="false" severity="info"
+                        >Select a date with a reservation to view
+                        details.</Message
+                    >
+                </div>
+                <div v-else>
+                    <!-- Show reservation details in the drawer -->
+                    <div>
+                        <h2>Reservation Details</h2>
+                        <p>
+                            Reservation Number:
+                            {{ showReservationDetails.reservationNumber }}
+                        </p>
+                        <!-- Other reservation details here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </Layout>
 </template>
 
 <script>
 import axios from "axios";
+import Message from "primevue/message";
 
 export default {
-    components: {},
+    components: { Message },
     data() {
         return {
             attributes: [],
+            clickedDate: null,
+            showReservationDetails: null,
             highlightColors: [
                 "blue",
                 "red",
@@ -73,11 +95,11 @@ export default {
                             };
                         }
                     );
+                    console.log(this.attributes);
                 })
                 .catch((error) => {
                     console.error("Error fetching reservations:", error);
                 });
-            console.log(this.attributes);
         },
     },
 };

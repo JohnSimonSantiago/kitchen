@@ -42,6 +42,7 @@ Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
 Route::get("/get-equipment-condition", [EquipmentController::class, "getEquipmentCondition"]);
+Route::get("/get-equipment-category", [EquipmentController::class, "getEquipmentCategory"]);
 
 
 

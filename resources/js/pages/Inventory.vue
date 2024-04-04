@@ -16,7 +16,7 @@
                                 class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
                             >
                                 <span class="pi pi-file-edit"></span>
-                                Edit Stock
+                                View/Edit Stock
                             </button>
                         </router-link>
                         <CreateCategory

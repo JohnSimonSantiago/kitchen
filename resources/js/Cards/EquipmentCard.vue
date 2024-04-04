@@ -19,7 +19,7 @@
             </a>
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 Category:
-                {{ equipmentDetails.categoryID }}
+                {{ getCategoryName(equipmentDetails.categoryID) }}
             </p>
             <Button
                 @click="readMore"
@@ -38,10 +38,41 @@ export default {
     components: {
         Button,
     },
+    data() {
+        return {
+            equipmentCategory: {},
+        };
+    },
+    mounted() {
+        this.getEquipmentCategory();
+    },
     props: ["equipmentDetails"],
     methods: {
         readMore() {
             this.$emit("clicked", this.equipmentDetails);
+        },
+        getEquipmentCategory() {
+            axios
+                .get("/get-equipment-category")
+                .then(({ data }) => {
+                    data.forEach((category) => {
+                        this.equipmentCategory[category.categoryID] = {
+                            name: category.category,
+                        };
+                    });
+                    console.log(this.equipmentCategory);
+                })
+                .catch((error) => {
+                    console.error("Error fetching equipment category:", error);
+                });
+        },
+        getCategoryName(categoryID) {
+            const category = this.equipmentCategory[categoryID];
+            if (category) {
+                return category.name || "Unknown";
+            } else {
+                return "Unknown";
+            }
         },
     },
 };

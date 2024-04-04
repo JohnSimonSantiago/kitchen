@@ -164,6 +164,11 @@ public function getEquipmentCondition(){
     return $conditionTable;
 }
 
+public function getEquipmentCategory(){
+    $categoryTable = category::all(['categoryID', 'category']);
+    return $categoryTable;
+}
+
 public function getEquipmentNameAndImage()
 {
     $statusTable = equipment::all(['equipment_id', 'equipmentName', 'image']);
