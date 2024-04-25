@@ -9,47 +9,60 @@
         v-model:visible="visible"
         modal
         header="Create Reservation"
-        :style="{ width: '30rem' }"
+        :style="{ width: '40rem' }"
     >
-        <form>
-            <div class="align-items-center grid gap-6 mb-6 md:grid-cols-1 flex">
+        <form class="">
+            <div class="gap-6 mb-6 flex items-center justify-center">
                 <div>
-                    <label
-                        for="customer_name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Customer Name</label
-                    >
-                    <div class="flex items-center">
-                        <input
-                            v-model="customerName"
-                            type="text"
-                            id="customer_name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Customer Name"
-                            required
-                        />
-                        <div class="mt-1" style="white-space: nowrap">
-                            <InlineMessage v-if="!customerName"
-                                >Customer Name is required</InlineMessage
-                            >
+                    <div class="">
+                        <label
+                            for="customer_name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Customer Name</label
+                        >
+                        <div class="flex items-center">
+                            <input
+                                v-model="customerName"
+                                type="text"
+                                id="customer_name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Customer Name"
+                                required
+                            />
                         </div>
                     </div>
-                </div>
-                <div>
-                    <label
-                        for="customer_number"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Customer Contact Number</label
-                    >
+                    <div>
+                        <label
+                            for="customer_number"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Customer Contact Number</label
+                        >
 
-                    <input
-                        v-model="customerNumber"
-                        type="text"
-                        id="customer_number"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="9-digit Phone Number"
-                        required
-                    />
+                        <input
+                            v-model="customerNumber"
+                            type="text"
+                            id="customer_number"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="9-digit Phone Number"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="email"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Email</label
+                        >
+
+                        <input
+                            v-model="email"
+                            type="text"
+                            id="email"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="sample@sample.com"
+                            required
+                        />
+                    </div>
                 </div>
 
                 <div class="flex flex-col">
@@ -59,19 +72,19 @@
                         inline
                     ></Calendar>
                 </div>
-                <div class="flex justify-content-end gap-2">
-                    <Button
-                        type="button"
-                        label="Cancel"
-                        severity="secondary"
-                        @click="visible = false"
-                    ></Button>
-                    <Button
-                        type="button"
-                        label="Save"
-                        @click="saveAndSubmit"
-                    ></Button>
-                </div>
+            </div>
+            <div class="flex justify-content-end gap-2">
+                <Button
+                    type="button"
+                    label="Cancel"
+                    severity="secondary"
+                    @click="visible = false"
+                ></Button>
+                <Button
+                    type="button"
+                    label="Save"
+                    @click="saveAndSubmit"
+                ></Button>
             </div>
         </form>
     </Dialog>
@@ -83,7 +96,6 @@ import Dialog from "primevue/Dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
-import InlineMessage from "primevue/inlinemessage";
 
 export default {
     components: {
@@ -91,13 +103,13 @@ export default {
         Dialog,
         Button,
         Toast,
-        InlineMessage,
     },
     data() {
         return {
             visible: false,
             customerName: null,
             customerNumber: null,
+            email: null,
             selectedRange: null,
         };
     },
@@ -117,6 +129,7 @@ export default {
                 .post("/submit-reservation", {
                     customerName,
                     customerNumber,
+                    email,
                     dateStart,
                     dateEnd,
                 })

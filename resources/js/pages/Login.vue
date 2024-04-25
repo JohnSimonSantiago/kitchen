@@ -110,8 +110,8 @@ export default {
                 .post("/login", { email, password })
                 .then((res) => {
                     if (res.status == 200) {
-                        if (res.data.role === "admin") {
-                            this.$router.push("/invetory");
+                        if (res.data.role === "2") {
+                            this.$router.push("/inventory");
                         } else {
                             this.$router.push("/calendar");
                         }

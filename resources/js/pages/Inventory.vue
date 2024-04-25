@@ -16,7 +16,7 @@
                                 class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
                             >
                                 <span class="pi pi-file-edit"></span>
-                                View/Edit Stock
+                                Edit Stock
                             </button>
                         </router-link>
                         <CreateCategory
@@ -112,10 +112,6 @@
                             <h1>
                                 <span class="font-bold">Barcode:</span>
                                 {{ this.showCardDetails.barcode }}
-                            </h1>
-                            <h1>
-                                <span class="font-bold">Category:</span>
-                                {{ this.showCardDetails.cateegoryid }}
                             </h1>
 
                             <h1>

@@ -12,18 +12,25 @@
         <div class="p-5">
             <a href="#">
                 <h5
-                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
                 >
                     {{ equipmentDetails.equipmentName }}
                 </h5>
             </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            <p class="font-normal text-gray-700 dark:text-gray-400">
                 Category:
                 {{ getCategoryName(equipmentDetails.categoryID) }}
             </p>
+            <p class="font-normal text-gray-700 dark:text-gray-400">
+                <Badge
+                    :value="getEquipmentQuantity(3)"
+                    severity="danger"
+                ></Badge>
+            </p>
+
             <Button
                 @click="readMore"
-                label="Read More"
+                label="View"
                 icon="pi pi-arrow-right"
                 class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
             >
@@ -34,9 +41,12 @@
 
 <script>
 import Button from "primevue/button";
+import Badge from "primevue/badge";
+
 export default {
     components: {
         Button,
+        Badge,
     },
     data() {
         return {
@@ -48,6 +58,24 @@ export default {
     },
     props: ["equipmentDetails"],
     methods: {
+        getEquipmentQuantity(conditionId) {
+            const params = {
+                equipment_id: this.equipmentDetails.equipment_id,
+                condition_id: conditionId,
+            };
+
+            axios
+                .get("/api/get-equipment-status-quantity", { params })
+                .then((response) => {
+                    const quantity = response.data.quantity;
+                    console.log("Quantity:", quantity);
+                    return quantity;
+                })
+                .catch((error) => {
+                    console.error("Error fetching equipment quantity:", error);
+                    return 0;
+                });
+        },
         readMore() {
             this.$emit("clicked", this.equipmentDetails);
         },
@@ -60,7 +88,6 @@ export default {
                             name: category.category,
                         };
                     });
-                    console.log(this.equipmentCategory);
                 })
                 .catch((error) => {
                     console.error("Error fetching equipment category:", error);

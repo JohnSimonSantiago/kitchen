@@ -68,7 +68,7 @@
                         ></RejectReservation>
                         <Button
                             @click="readMore(reservation)"
-                            label="Read More"
+                            label="View"
                             icon="pi pi-arrow-right"
                             class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
                         >

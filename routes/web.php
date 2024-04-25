@@ -43,7 +43,7 @@ Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
 Route::get("/get-equipment-condition", [EquipmentController::class, "getEquipmentCondition"]);
 Route::get("/get-equipment-category", [EquipmentController::class, "getEquipmentCategory"]);
-
+Route::get('/api/get-equipment-status-quantity', [EquipmentController::class, 'getEquipmentStatusQuantity']);
 
 
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');

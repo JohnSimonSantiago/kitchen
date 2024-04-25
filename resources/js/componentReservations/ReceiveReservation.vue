@@ -40,7 +40,6 @@
                         <EditQuantityOrderCard :orderDetails="order" />
                     </div>
                 </div>
-                <p>input payment:</p>
             </div>
             <div class="flex gap-2">
                 <Button

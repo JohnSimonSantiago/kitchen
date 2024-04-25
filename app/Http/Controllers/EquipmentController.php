@@ -175,6 +175,23 @@ public function getEquipmentNameAndImage()
 
     return $statusTable;
 }
+
+public function getEquipmentStatusQuantity(Request $request)
+    {
+        $equipmentId = $request->query('equipment_id');
+        $conditionId = $request->query('condition_id');
+
+        $equipmentStatus = equipment_status::where('equipment_id', $equipmentId)
+            ->where('condition_id', $conditionId)
+            ->first();
+
+        if ($equipmentStatus) {
+            return response()->json(['quantity' => $equipmentStatus->quantity]);
+        } else {
+            return response()->json(['error' => 'Equipment status not found'], 404);
+        }
+    }
+
 public function getMaxPossibleOrder(Request $request)
 {
     $reservationNumber = $request->reservationNumber;
