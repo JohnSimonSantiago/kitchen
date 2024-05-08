@@ -16,7 +16,26 @@
                 class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="flex text-center items-center">
-                    <div class="space-y-24 text-center py-8">
+                    <div class="space-y-32 text-center py-8">
+                        <div>
+                            <router-link
+                                to="/Home"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
+                                @click="toggleActive1"
+                                :style="{
+                                    borderRight: isActive1
+                                        ? '3px solid green'
+                                        : 'none',
+                                }"
+                                ><p class="mx-10">
+                                    <i
+                                        class="pi pi-home"
+                                        style="font-size: 1.5rem"
+                                    ></i>
+                                </p>
+                                Home</router-link
+                            >
+                        </div>
                         <div>
                             <router-link
                                 to="/myReservations"
@@ -50,11 +69,11 @@
                             >
                                 <p class="mx-10">
                                     <i
-                                        class="pi pi-cart-plus"
+                                        class="pi pi-shopping-cart"
                                         style="font-size: 1.5rem"
                                     ></i>
                                 </p>
-                                Rent</router-link
+                                My Cart</router-link
                             >
                         </div>
 

@@ -9,6 +9,7 @@ import Reservations2 from "@/pages/Reservations2.vue";
 import EditStock from "@/pages/EditStock.vue";
 import Dashboard from "./pages/Dashboard.vue";
 import MyReservations from "@/pagesUser/MyReservations.vue";
+import Home from "@/pagesUser/Home.vue";
 
 export const routes = [
     {
@@ -30,6 +31,11 @@ export const routes = [
         path: "/myreservations",
         name: "myreservations",
         component: MyReservations,
+    },
+    {
+        path: "/home",
+        name: "home",
+        component: Home,
     },
     {
         path: "/editstock",

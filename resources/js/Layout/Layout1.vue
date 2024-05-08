@@ -16,7 +16,7 @@
                 class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="flex text-center items-center">
-                    <div class="space-y-24 text-center py-8">
+                    <div class="space-y-20 text-center py-8">
                         <div>
                             <router-link
                                 to="/dashboard"
