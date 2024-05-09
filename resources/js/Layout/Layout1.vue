@@ -104,7 +104,7 @@
                                 class="flex flex-col items-center mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             >
                                 <i
-                                    class="pi pi-user-minus"
+                                    class="pi pi-sign-out"
                                     style="font-size: 1.5rem"
                                 ></i>
                                 Logout

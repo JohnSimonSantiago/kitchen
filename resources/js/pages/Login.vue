@@ -113,7 +113,7 @@ export default {
                         if (res.data.role === "2") {
                             this.$router.push("/inventory");
                         } else {
-                            this.$router.push("/calendar");
+                            this.$router.push("/home");
                         }
                     }
                 })

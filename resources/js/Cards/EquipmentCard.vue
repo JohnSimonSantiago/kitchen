@@ -23,7 +23,18 @@
             </p>
             <p class="font-normal text-gray-700 dark:text-gray-400">
                 <Badge
+                    :value="getEquipmentQuantity(1)"
+                    size="large"
+                    severity="success"
+                ></Badge>
+                <Badge
+                    :value="getEquipmentQuantity(2)"
+                    size="large"
+                    severity="warning"
+                ></Badge>
+                <Badge
                     :value="getEquipmentQuantity(3)"
+                    size="large"
                     severity="danger"
                 ></Badge>
             </p>
@@ -58,14 +69,14 @@ export default {
     },
     props: ["equipmentDetails"],
     methods: {
-        getEquipmentQuantity(conditionId) {
+        getEquipmentQuantity(condition_id) {
             const params = {
                 equipment_id: this.equipmentDetails.equipment_id,
-                condition_id: conditionId,
+                condition_id: condition_id,
             };
 
-            axios
-                .get("/api/get-equipment-status-quantity", { params })
+            return axios
+                .get("/get-equipment-status-quantity", { params })
                 .then((response) => {
                     const quantity = response.data.quantity;
                     console.log("Quantity:", quantity);
@@ -76,6 +87,7 @@ export default {
                     return 0;
                 });
         },
+
         readMore() {
             this.$emit("clicked", this.equipmentDetails);
         },

@@ -177,20 +177,24 @@ public function getEquipmentNameAndImage()
 }
 
 public function getEquipmentStatusQuantity(Request $request)
-    {
-        $equipmentId = $request->query('equipment_id');
-        $conditionId = $request->query('condition_id');
-
-        $equipmentStatus = equipment_status::where('equipment_id', $equipmentId)
-            ->where('condition_id', $conditionId)
-            ->first();
-
-        if ($equipmentStatus) {
-            return response()->json(['quantity' => $equipmentStatus->quantity]);
-        } else {
-            return response()->json(['error' => 'Equipment status not found'], 404);
-        }
+{
+    $equipmentId = $request->equipment_id;
+    $conditionId = $request->condition_id;
+    $equipmentStatus = equipment_status::where('equipment_id', $equipmentId)
+        ->where('condition_id', $conditionId)
+        ->first();
+    
+    if ($equipmentStatus) {
+        $quantity = $equipmentStatus->quantity;
+    
+        return response()->json(['quantity' => $quantity]);
+       
+    } else {
+       
+        return response()->json(['quantity' => 0]);
     }
+}
+
 
 public function getMaxPossibleOrder(Request $request)
 {
