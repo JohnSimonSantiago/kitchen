@@ -23,17 +23,17 @@
             </p>
             <p class="font-normal text-gray-700 dark:text-gray-400">
                 <Badge
-                    :value="getEquipmentQuantity(1)"
+                    :value="equipmentQuantities[1]"
                     size="large"
                     severity="success"
                 ></Badge>
                 <Badge
-                    :value="getEquipmentQuantity(2)"
+                    :value="equipmentQuantities[2]"
                     size="large"
                     severity="warning"
                 ></Badge>
                 <Badge
-                    :value="getEquipmentQuantity(3)"
+                    :value="equipmentQuantities[3]"
                     size="large"
                     severity="danger"
                 ></Badge>
@@ -62,30 +62,47 @@ export default {
     data() {
         return {
             equipmentCategory: {},
+            equipmentQuantities: {},
         };
     },
     mounted() {
         this.getEquipmentCategory();
+        this.getEquipmentQuantities();
     },
     props: ["equipmentDetails"],
     methods: {
-        getEquipmentQuantity(condition_id) {
-            const params = {
-                equipment_id: this.equipmentDetails.equipment_id,
-                condition_id: condition_id,
-            };
+        async getEquipmentQuantities() {
+            try {
+                const quantities = {};
+                for (let conditionId = 1; conditionId <= 3; conditionId++) {
+                    const quantity = await this.getEquipmentQuantity(
+                        conditionId
+                    );
+                    quantities[conditionId] = quantity;
+                }
+                this.equipmentQuantities = quantities;
+            } catch (error) {
+                console.error("Error fetching equipment quantities:", error);
+            }
+        },
+        async getEquipmentQuantity(condition_id) {
+            try {
+                const params = {
+                    equipment_id: this.equipmentDetails.equipment_id,
+                    condition_id: condition_id,
+                };
 
-            return axios
-                .get("/get-equipment-status-quantity", { params })
-                .then((response) => {
-                    const quantity = response.data.quantity;
-                    console.log("Quantity:", quantity);
-                    return quantity;
-                })
-                .catch((error) => {
-                    console.error("Error fetching equipment quantity:", error);
-                    return 0;
-                });
+                const response = await axios.get(
+                    "/get-equipment-status-quantity",
+                    { params }
+                );
+                const quantity = response.data.quantity;
+                console.log("Quantity:", quantity);
+                return quantity;
+            } catch (error) {
+                console.error("Error fetching equipment quantity:", error);
+                return 0; // Return 0 or handle the error accordingly
+            }
         },
 
         readMore() {
