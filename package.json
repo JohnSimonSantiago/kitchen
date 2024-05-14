@@ -16,6 +16,7 @@
         "@vitejs/plugin-vue": "^4.5.0",
         "autoprefixer": "^10.4.16",
         "lodash": "^4.17.21",
+        "pinia": "^2.1.7",
         "postcss": "^8.4.31",
         "primeicons": "^6.0.1",
         "primevue": "^3.49.0",

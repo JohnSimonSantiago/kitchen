@@ -21,7 +21,8 @@ class ReservationController extends Controller
         ]);
     
         $newReservation = new Reservation();
-    
+
+        $newReservation->user_id = $request->user_id;
         $newReservation->customerName = $request->customerName;
         $newReservation->customerNumber = $request->customerNumber;
         $newReservation->dateStart = Carbon::parse($request->dateStart)->toDateTimeString();

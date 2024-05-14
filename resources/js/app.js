@@ -11,13 +11,16 @@ import PrimeVue from "primevue/config";
 import "primevue/resources/themes/aura-light-green/theme.css";
 import ToastService from "primevue/toastservice";
 import "primeicons/primeicons.css";
+import { createPinia } from "pinia";
 
+const pinia = createPinia();
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,
 });
 const app = createApp({});
 
+app.use(pinia);
 app.use(PrimeVue);
 app.use(setupCalendar, {});
 app.use(router);
