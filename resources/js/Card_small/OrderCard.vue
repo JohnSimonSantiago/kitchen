@@ -44,14 +44,12 @@ export default {
         this.getEquipmentNameAndImage();
         this.getterEquipmentPrice();
         this.getEquipmentPrice();
-        this.getterMaxPossibleOrder();
     },
 
     props: ["orderDetails"],
     data() {
         return {
             quantity: 1,
-            maxPossibleOrder: [],
             equipmentNameAndImage: {},
             equipmentsPrice: [],
         };
@@ -105,12 +103,6 @@ export default {
             } else {
                 return "Unknown";
             }
-        },
-
-        getterMaxPossibleOrder() {
-            axios.get("/get-max-possible-order").then(({ data }) => {
-                this.maxPossibleOrder = data;
-            });
         },
     },
     computed: {

@@ -96,6 +96,7 @@ import Dialog from "primevue/Dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import axios from 'axios';
 
 export default {
     components: {
@@ -120,13 +121,14 @@ export default {
             this.visible = false;
         },
         submitReservation() {
-            const { customerName, customerNumber, selectedRange } = this;
+            const { customerName, customerNumber, email, selectedRange } = this;
 
             let dateStart = selectedRange[0];
             let dateEnd = selectedRange[1];
 
             axios
                 .post("/submit-reservation", {
+                    user_id: 1, // Automatically set the user_id to 1
                     customerName,
                     customerNumber,
                     email,

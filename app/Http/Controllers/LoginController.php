@@ -24,7 +24,7 @@ class LoginController extends Controller
         }
     }
     
-
+    
     public function checkLogin(){
         
         return Auth::check();
@@ -34,4 +34,10 @@ class LoginController extends Controller
         
         return Auth::logout();
       }
+      public function showReservationForm()
+{
+    $userId = Auth::id(); // Get the authenticated user's ID
+    return view('reservation.form', compact('userId'));
+}
+
 }
