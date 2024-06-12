@@ -213,7 +213,6 @@ export default {
                 });
                 this.resetForm();
                 this.$emit("success");
-                this.$router.push("/inventory");
             });
         },
         resetForm() {

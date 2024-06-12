@@ -34,10 +34,14 @@ class ReservationController extends Controller
         return $res;
     }
     
-        public function getReservations(){
-            $getReservation = reservation::all();
-            return $getReservation;
-        }
+
+
+    public function getReservations(Request $request) {
+        $getReservation = reservation::all();
+        return $getReservation;
+    }
+    
+        
         public function getReservationOrder(Request $request){
             $reservationNumber = $request->reservationNumber;
         

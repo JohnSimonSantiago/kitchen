@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\TransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::get("/get-categories", [CategoryController::class, 'getCategories']);
 Route::get("/get-conditions", [ConditionController::class, 'getConditions']);
 
 Route::get("/get-reservations", [ReservationController::class, "getReservations"]);
+Route::get("/get-approved-reservations", [ReservationController::class, "getApprovedReservations"]);
 Route::post("/submit-reservation", [ReservationController::class, 'submitReservation'])->name('submitReservation');
 Route::post("/delete-reservation", [ReservationController::class, "deleteReservation"]);
 Route::get("/get-reservation-orders", [ReservationController::class, "getReservationOrder"]);
@@ -60,6 +62,8 @@ Route::post("/approve-reservation", [ReservationController::class, "approveReser
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
+
+Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

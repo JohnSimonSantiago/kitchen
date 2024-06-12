@@ -16,11 +16,11 @@
                     </div>
                 </div>
                 <div>
-                    <ReservationTable
+                    <ReservationTableAll
                         class=""
                         @clicked="seeReservationDetails"
                         @reservationSelected="handleReservationSelected"
-                    ></ReservationTable>
+                    ></ReservationTableAll>
                 </div>
             </div>
 
@@ -145,7 +145,7 @@
 
 <script>
 import CreateReservation from "@/componentreservations/CreateReservation.vue";
-import ReservationTable from "../component/ReservationTable.vue";
+import ReservationTableAll from "../component/ReservationTableAll.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
@@ -156,7 +156,7 @@ export default {
         Message,
         OrderCard,
         CreateReservation,
-        ReservationTable,
+        ReservationTableAll,
     },
     mounted() {
         this.getterReservation();
@@ -178,6 +178,7 @@ export default {
                 year: "numeric",
             });
         },
+        
         seeReservationDetails(data) {
             this.showReservationDetails = data;
         },
