@@ -1,25 +1,27 @@
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-        >
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead>
-                <tr
-                    class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
-                >
+                <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                     <th scope="col" class="text-center px-6 py-3">
                         Transaction Number
                     </th>
                     <th scope="col" class="text-center px-6 py-3">
                         Transaction Type
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">Equipment</th>
-                    <th scope="col" class="text-center px-6 py-3">Condition</th>
-                    <th scope="col" class="text-center px-6 py-3">Quantity</th>
+                    <th scope="col" class="text-center px-6 py-3">
+                        Equipment
+                    </th>
+                    <th scope="col" class="text-center px-6 py-3">
+                        Condition
+                    </th>
+                    <th scope="col" class="text-center px-6 py-3">
+                        Quantity
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(transaction, index) in transactions" key="index0">
+                <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td class="text-center">
                         {{ transaction.id }}
                     </td>
@@ -35,7 +37,6 @@
                     <td class="text-center">
                         {{ transaction.quantity }}
                     </td>
-
                 </tr>
             </tbody>
         </table>
@@ -54,28 +55,26 @@ export default {
         Button,
         Message,
     },
-    mounted() {
-        this.getterTransactions();
 
-    },
     data() {
         return {
             transactions: [],
         };
     },
-    props: ["reservationDetails"],
+    mounted() {
+        this.getterTransactions();
+    },
     methods: {
         getterTransactions() {
-            axios.get("/get-transactions").then(({ data }) => {
-                this.reservations = data;
-            });
+            axios.get("/get-transactions")
+                .then(({ data }) => {
+                    console.log(data); // Log the data to the console
+                    this.transactions = data;
+                })
+                .catch(error => {
+                    console.error("Error fetching transactions:", error);
+                });
         },
-        readMore(transaction) {
-            this.$emit("clicked", transaction);
-
-            this.$emit("reservationSelected", reservation.reservationNumber);
-        },
-
     },
 };
 </script>
