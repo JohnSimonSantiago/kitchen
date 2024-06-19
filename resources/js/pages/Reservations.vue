@@ -18,32 +18,28 @@
                 <div>
                     <ReservationTableAll
                         class=""
-                        @clicked="seeReservationDetails"
+                        @clicked="seeReservationDetails, (this.visible = true)"
                         @reservationSelected="handleReservationSelected"
                     ></ReservationTableAll>
                 </div>
             </div>
-
-            <!-- Right Section -->
-            <div
-                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
+            <Dialog
+                v-model:visible="visible"
+                modal
+                header="Edit Profile"
+                :style="{ width: '45rem' }"
             >
-                <div v-if="showReservationDetails === null">
-                    <Message :closable="false" severity="info"
-                        >Select Reservation to view Details</Message
-                    >
-                </div>
-                <div v-else>
+                <div>
                     <div>
                         <h2 class="text-1 font-bold">
                             Order No.
-                            {{ this.showReservationDetails.reservationNumber }}
+                            {{ this.showReservationDetails?.reservationNumber }}
                         </h2>
                     </div>
                     <Tag icon="pi pi-user">
                         <span style="font-weight: 600">
                             <div icon="pi pi-user"></div>
-                            {{ this.showReservationDetails.customerName }}
+                            {{ this.showReservationDetails?.customerName }}
                         </span></Tag
                     >
 
@@ -60,7 +56,7 @@
                             </div>
                         </div>
                         <div
-                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 flex items-center justify-center"
+                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -82,13 +78,13 @@
                                 From:
                                 {{
                                     formatDate(
-                                        this.showReservationDetails.dateStart
+                                        this.showReservationDetails?.dateStart
                                     )
                                 }}
                             </span>
                         </div>
                         <div
-                            class="p-1 flex items-center border-b border-dashed border-black h-30 flex items-center justify-center"
+                            class="p-1 border-b border-dashed border-black h-30 flex items-center justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -108,7 +104,7 @@
                                 To:
                                 {{
                                     formatDate(
-                                        this.showReservationDetails.dateEnd
+                                        this.showReservationDetails?.dateEnd
                                     )
                                 }}
                             </span>
@@ -119,7 +115,7 @@
                             <router-link
                                 :to="
                                     '/makeOrder/' +
-                                    showReservationDetails.reservationNumber
+                                    showReservationDetails?.reservationNumber
                                 "
                             >
                                 <button
@@ -138,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </Dialog>
         </div>
     </Layout>
 </template>
@@ -149,6 +145,7 @@ import ReservationTableAll from "../component/ReservationTableAll.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
+import Dialog from "primevue/Dialog";
 
 export default {
     components: {
@@ -157,6 +154,7 @@ export default {
         OrderCard,
         CreateReservation,
         ReservationTableAll,
+        Dialog,
     },
     mounted() {
         this.getterReservation();
@@ -167,6 +165,7 @@ export default {
             reservations: null,
             showReservationDetails: null,
             reservationOrder: [],
+            visible: false,
         };
     },
     methods: {
@@ -178,7 +177,7 @@ export default {
                 year: "numeric",
             });
         },
-        
+
         seeReservationDetails(data) {
             this.showReservationDetails = data;
         },

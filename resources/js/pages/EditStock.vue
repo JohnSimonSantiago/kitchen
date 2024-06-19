@@ -11,12 +11,14 @@
                     <h1 class="text-l mb-3 mt-3 font-semibold">
                         Equipment List
                     </h1>
+                </div>
+                <div class="">
                     <AddNewStock
                         @conditionSelected="addItem"
                         @refresh="getterAllEquipmentStatus"
                     ></AddNewStock>
                 </div>
-                <div class="my-2 grid grid-cols-4 gap-5">
+                <div class="my-2 grid grid-cols-6 gap-5">
                     <div v-for="equipment in equipmentsStatus" class="">
                         <EditStockCard
                             :equipmentDetails="equipment"
@@ -28,18 +30,6 @@
             </div>
 
             <!-- Right Section -->
-
-            <div
-                class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
-            >
-                <div></div>
-                <button
-                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button mt-6"
-                >
-                    <span class="pi pi-file-export"></span>
-                    Update Stock
-                </button>
-            </div>
         </div>
     </Layout>
 </template>

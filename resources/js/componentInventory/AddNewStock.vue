@@ -3,7 +3,7 @@
         label="Add New Stock"
         icon="pi pi-database"
         @click="visible = true"
-        class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
+        class="bg-yellow-400 px-4 py-2 rounded-md text-white hover:bg-yellow-500 transition-all"
     />
     <Dialog
         v-model:visible="visible"
@@ -57,6 +57,15 @@
                         <option value="bad">Bad</option>
                     </select>
                 </div>
+                <div class="">
+                    <p>Quantity</p>
+                    <input
+                        type="number"
+                        v-model="quantity"
+                        class="rounded-md border-gray-200"
+                    />
+                </div>
+                <div class=""></div>
                 <div class="grid gap-6 mb-6">
                     <div class="flex justify-content-end gap-2">
                         <Button
@@ -98,6 +107,7 @@ export default {
             selectedEquipment: null,
             equipmentList: [],
             visible: false,
+            quantity: 1,
         };
     },
     methods: {
@@ -135,7 +145,7 @@ export default {
                 .post("/add-dispose-equipment-stock", {
                     equipment_id: this.selectedEquipment,
                     condition_id: conditionId,
-                    quantity: 1,
+                    quantity: this.quantity,
                 })
                 .then(() => {
                     this.$toast.add({
@@ -144,6 +154,7 @@ export default {
                         detail: "Equipment stock updated successfully.",
                         life: 3000,
                     });
+                    this.quantity = 1;
                     this.getterEquipmentList();
                 })
                 .catch((error) => {

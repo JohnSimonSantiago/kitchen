@@ -3,7 +3,7 @@
         label="Receive Reservation"
         icon="pi pi-downnload"
         @click="visible = true"
-        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+        class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600"
     />
     <Dialog
         v-model:visible="visible"
