@@ -10,27 +10,27 @@
                     <th scope="col" class="text-center px-6 py-3">
                         Reservation Number
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
-                        Customer Name
-                    </th>
-                    <th scope="col" class="text-center px-6 py-3">Status</th>
-                    <th scope="col" class="text-center px-6 py-3">
-                        Date Start
-                    </th>
-                    <th scope="col" class="text-center px-6 py-3">Date End</th>
-                    <th scope="col" class="text-center px-6 py-3">Actions</th>
+                    <th scope="col" class="text-center">Customer Name</th>
+                    <th scope="col" class="text-center">Status</th>
+                    <th scope="col" class="text-center">Date Start</th>
+                    <th scope="col" class="text-center">Date End</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(reservation, index) in reservations" key="index0">
+                <tr v-for="(reservation, index) in reservations">
                     <td class="text-center">
-                        {{ reservation.reservationNumber }}
+                        No. {{ reservation.reservationNumber }}
                     </td>
                     <td class="text-center">
                         {{ reservation.customerName }}
                     </td>
-                    <td class="text-center">
+                    <td
+                        class="text-center flex items-center justify-center"
+                        align="center"
+                    >
                         <Message
+                            class="text-center w-fit"
                             :closable="false"
                             :severity="getStatusSeverity(reservation.statusID)"
                         >
@@ -43,7 +43,7 @@
                     <td class="text-center">
                         {{ formatDate(reservation.dateEnd) }}
                     </td>
-                    <td class="text-center flex gap-2">
+                    <td class="space-x-2.5" align="center">
                         <ApproveReservation
                             v-if="reservation.statusID === 1"
                             :idReservation="reservation.reservationNumber"
@@ -70,7 +70,7 @@
                             @click="readMore(reservation)"
                             label="View"
                             icon="pi pi-arrow-right"
-                            class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
+                            class="bg-blue-500 border-md px-4 py-2 hover:bg-blue-600 text-white"
                         >
                         </Button>
                     </td>

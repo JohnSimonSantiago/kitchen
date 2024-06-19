@@ -3,7 +3,7 @@
         label="Reject Reservation"
         icon="pi pi-thumbs-down-fill"
         @click="visible = true"
-        class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+        class="bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600"
     />
     <Dialog
         v-model:visible="visible"
