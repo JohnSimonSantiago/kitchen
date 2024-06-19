@@ -24,27 +24,22 @@
                 Current Stock:
                 {{ equipmentDetails.quantity }}
             </p>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                Condition:
-                {{ getConditionName(equipmentDetails.condition_id) }}
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 flex items-center gap-1.5">
+               <div class="h-5 w-5 rounded-full" 
+               :class="{
+    'bg-green-500': equipmentDetails.condition_id === 1,
+    'bg-yellow-500': equipmentDetails.condition_id === 2,
+    'bg-red-500': equipmentDetails.condition_id === 3
+            }"></div>
+                {{
+                    equipmentDetails.condition_id === 1
+                        ? "Good"
+                        : equipmentDetails.condition_id === 2
+                        ? "Sligthly Damaged"
+                        : "Bad"
+                }}
             </p>
-            <div class="flex items-center">
-                <button
-                    @click="decrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-l-md"
-                >
-                    <span>-</span>
-                </button>
-                <div class="px-3 py-1 border border-gray-300 w-16 text-center">
-                    <span>{{ equipmentDetails.quantity }}</span>
-                </div>
-                <button
-                    @click="incrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-r-md"
-                >
-                    <span>+</span>
-                </button>
-            </div>
+            
         </div>
     </div>
 </template>
@@ -69,6 +64,7 @@ export default {
         };
     },
     mounted() {
+        
         this.getEquipmentNameAndImage();
         this.getEquipmentCondition();
         this.getterMaxStockAll();
@@ -90,14 +86,7 @@ export default {
                     console.error("Error fetching equipment condition:", error);
                 });
         },
-        getConditionName(condition_id) {
-            const condition = this.equipmentCondition[condition_id];
-            if (condition) {
-                return condition.name || "Unknown";
-            } else {
-                return "Unknown";
-            }
-        },
+
         getEquipmentNameAndImage() {
             axios
                 .get("/get-equipment-name-and-image")

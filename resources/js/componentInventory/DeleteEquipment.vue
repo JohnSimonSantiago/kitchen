@@ -3,7 +3,7 @@
         label="Delete"
         icon="pi pi-delete-left"
         @click="visible = true"
-        class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+        class="bg-red-400 text-white px-4 py-2 hover:bg-red-500"
     />
     <Dialog
         v-model:visible="visible"

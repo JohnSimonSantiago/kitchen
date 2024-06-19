@@ -4,46 +4,50 @@
     >
         <div class="flex items-center justify-center p-2">
             <img
-                class="rounded-t-lg w-52 h-52"
+                class="rounded-md w-52 h-52"
                 :src="`/uploads/${equipmentDetails.image}`"
                 alt=""
             />
         </div>
-        <div class="p-5">
+        <div class="px-5 py-2.5">
             <a href="#">
                 <h5
-                    class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
                 >
                     {{ equipmentDetails.equipmentName }}
                 </h5>
             </a>
             <p class="font-normal text-gray-700 dark:text-gray-400">
-                Category:
                 {{ getCategoryName(equipmentDetails.categoryID) }}
             </p>
-            <p class="font-normal text-gray-700 dark:text-gray-400">
-                <Badge
+            <p
+                class="flex space-x-2.5 text-sm items-center justify-between py-5"
+            >
+                <div class="flex flex-col items-center">
+                    <p class="text-green-700">Good</p><Badge
                     :value="equipmentQuantities[1]"
                     size="large"
                     severity="success"
-                ></Badge>
-                <Badge
+                ></Badge></div>
+                 <div class="flex flex-col items-center">
+                    <p class="text-yellow-500">Slightly Damaged</p><Badge
                     :value="equipmentQuantities[2]"
                     size="large"
                     severity="warning"
-                ></Badge>
-                <Badge
+                ></Badge></div>
+                 <div class="flex flex-col items-center">
+                    <p class="text-red-500">Bad</p><Badge
                     :value="equipmentQuantities[3]"
                     size="large"
                     severity="danger"
-                ></Badge>
+                ></Badge></div>
             </p>
 
             <Button
                 @click="readMore"
                 label="View"
                 icon="pi pi-arrow-right"
-                class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
+                class="bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
             </Button>
         </div>

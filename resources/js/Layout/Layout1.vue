@@ -13,42 +13,35 @@
 
         <div>
             <div
-                class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
+                class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center px-5"
             >
                 <div class="flex text-center items-center">
                     <div class="space-y-20 text-center py-8">
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
+                                active-class="text-green-700"
                                 to="/dashboard"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click.native="toggleActive('/dashboard')"
-                                :style="{
-                                    borderRight:
-                                        isActive === '/dashboard'
-                                            ? '3px solid green'
-                                            : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                <p class="mx-10">
+                                <p class="">
                                     <i
                                         class="pi pi-th-large"
                                         style="font-size: 1.5rem"
-                                    ></i>
+                                    >
+                                    </i>
                                 </p>
                                 Dashboard</router-link
                             >
                         </div>
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
+                                active-class="text-green-700"
                                 to="/inventory"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click.native="toggleActive('/inventory')"
-                                :style="{
-                                    borderRight:
-                                        isActive === '/inventory'
-                                            ? '3px solid green'
-                                            : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 <p class="mx-10">
                                     <i
@@ -59,16 +52,13 @@
                                 Inventory</router-link
                             >
                         </div>
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
+                                active-class="text-green-700"
                                 to="/reservations"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click="toggleActive1"
-                                :style="{
-                                    borderRight: isActive1
-                                        ? '3px solid green'
-                                        : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-book"
@@ -78,16 +68,13 @@
                                 Reservations</router-link
                             >
                         </div>
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
+                                active-class="text-green-700"
                                 to="/calendar"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click="toggleActive2"
-                                :style="{
-                                    borderRight: isActive2
-                                        ? '3px solid green'
-                                        : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-calendar"
@@ -129,22 +116,9 @@ export default {
         Button,
     },
     data() {
-        return {
-            isActive: false,
-            isActive1: false,
-            isActive2: false,
-        };
+        return {};
     },
     methods: {
-        toggleActive(inventory) {
-            this.isActive = inventory;
-        },
-        toggleActive1() {
-            this.isActive1 = !this.isActive1;
-        },
-        toggleActive2() {
-            this.isActive2 = !this.isActive2;
-        },
         checkAuth() {
             axios.get("/checkUser").then(({ data }) => {
                 if (!data) {

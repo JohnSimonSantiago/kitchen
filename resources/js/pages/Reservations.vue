@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div
-                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 flex items-center justify-center"
+                            class="p-1 mt-4 flex items-center border-t border-dashed border-black h-30 justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -88,7 +88,7 @@
                             </span>
                         </div>
                         <div
-                            class="p-1 flex items-center border-b border-dashed border-black h-30 flex items-center justify-center"
+                            class="p-1 border-b border-dashed border-black h-30 flex items-center justify-center"
                         >
                             <svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
@@ -178,7 +178,7 @@ export default {
                 year: "numeric",
             });
         },
-        
+
         seeReservationDetails(data) {
             this.showReservationDetails = data;
         },

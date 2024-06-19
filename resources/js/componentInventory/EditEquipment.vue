@@ -3,7 +3,7 @@
         label="Edit Equipment"
         icon="pi pi-cog"
         @click="visible = true"
-        class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
+        class="bg-yellow-400 px-4 py-2 text-white hover:bg-yellow-500"
     />
     <Dialog
         v-model:visible="visible"

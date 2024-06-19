@@ -3,7 +3,7 @@
         label="Create Category"
         icon="pi pi-plus"
         @click="visible = true"
-        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+        class="bg-green-400 text-white px-4 py-2 hover:bg-green-500"
     />
     <Dialog
         v-model:visible="visible"
@@ -39,6 +39,7 @@
                         @click="visible = false"
                     ></Button>
                     <Button
+                        class="bg-green-400 px-4 py-2 text-white rounded-md"
                         type="button"
                         label="Save"
                         @click="saveAndSubmit"
@@ -73,7 +74,6 @@ export default {
         saveAndSubmit() {
             this.visible = false;
             this.submitCategory();
-            
         },
         submitCategory() {
             const { category } = this;
@@ -88,6 +88,7 @@ export default {
                         detail: "Category Created Successfully!",
                         life: 3000,
                     });
+                    this.$emit("success");
                 });
         },
     },
