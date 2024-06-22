@@ -3,7 +3,7 @@
         label="Create Equipment"
         icon="pi pi-plus"
         @click="visible = true"
-        class=""
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"

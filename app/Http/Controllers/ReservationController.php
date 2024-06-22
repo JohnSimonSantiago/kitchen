@@ -25,6 +25,7 @@ class ReservationController extends Controller
         $newReservation->user_id = $request->user_id;
         $newReservation->customerName = $request->customerName;
         $newReservation->customerNumber = $request->customerNumber;
+        $newReservation->email = $request->email;
         $newReservation->dateStart = Carbon::parse($request->dateStart)->toDateTimeString();
         $newReservation->dateEnd = Carbon::parse($request->dateEnd)->toDateTimeString();
         $newReservation->statusID = 1;
@@ -127,12 +128,11 @@ class ReservationController extends Controller
     $selectedReservation->statusID = 2;
     $selectedReservation->save();
 
-    // Create new transactions for each equipment in the reservation
     foreach ($getReservationQuantities as $reservationQuantity) {
         DB::table('transactions_table')->insert([
             'transaction_type' => 1,
             'equipment_id' => $reservationQuantity->equipment_id,
-            'condition_id' => 1, // Assuming condition_id is 1 for simplicity, modify as needed
+            'condition_id' => 1, 
             'quantity' => $reservationQuantity->quantity,
             'created_at' => now(),
             'updated_at' => now(),
@@ -148,7 +148,7 @@ class ReservationController extends Controller
             $receiveReservation = reservation::find($request->ID);
             $receiveReservation->statusID = 3;
             $res = $receiveReservation->save();
-            return response()->json(['message' => 'Reservation returned successfully.']);
+            return response()->json(['message' => 'Reservation Received successfully.']);
         }
 
 

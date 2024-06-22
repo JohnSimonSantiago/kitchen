@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('customerName');
             $table->string('customerNumber');
+            $table->string('email');
             $table->tinyInteger('statusID')->default(0);
             $table->date('dateStart');
             $table->date('dateEnd');
