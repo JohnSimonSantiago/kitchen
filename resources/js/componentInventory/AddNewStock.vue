@@ -3,7 +3,7 @@
         label="Add New Stock"
         icon="pi pi-database"
         @click="visible = true"
-        class="bg-yellow-400 px-4 py-2 rounded-md text-white hover:bg-yellow-500 transition-all"
+        class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"

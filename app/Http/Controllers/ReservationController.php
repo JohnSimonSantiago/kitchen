@@ -160,6 +160,14 @@ class ReservationController extends Controller
             $res = $returnReservation->save();
             return response()->json(['message' => 'Reservation returned successfully.']);
         }
+
+        public function returnReservationIncomplete(Request $request)
+        {   
+            $returnReservation = reservation::find($request->ID);
+            $returnReservation->statusID = 6;
+            $res = $returnReservation->save();
+            return response()->json(['message' => 'Reservation returned successfully.']);
+        }
         
         public function rejectReservation(Request $request)
         {   
@@ -167,6 +175,14 @@ class ReservationController extends Controller
             $rejectReservation->statusID = 5;
             $res = $rejectReservation->save();
             return response()->json(['message' => 'Reservation rejected successfully.']);
+        }
+
+        public function replaceReservation(Request $request)
+        {   
+            $replaceReservation = reservation::find($request->ID);
+            $replaceReservation->statusID = 4;
+            $res = $rejectReservation->save();
+            return response()->json(['message' => 'Reservation replaced successfully.']);
         }
         
         public function showReservationOrder(){

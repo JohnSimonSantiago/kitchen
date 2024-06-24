@@ -60,7 +60,10 @@ Route::post("/delete-reservation", [ReservationController::class, "deleteReserva
 Route::get("/get-reservation-orders", [ReservationController::class, "getReservationOrder"]);
 Route::post("/approve-reservation", [ReservationController::class, "approveReservation"]);
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
+Route::post("/replace-reservation", [ReservationController::class, "replaceReservation"]);
+Route::post("/receive-reservation", [ReservationController::class, "receiveReservation"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
+Route::post("/return-reservation-incomplete", [ReservationController::class, "returnReservationIncomplete"]);
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
 
 Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);

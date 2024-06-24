@@ -1,14 +1,14 @@
 <template>
     <Button
-        label="Reject Reservation"
-        icon="pi pi-thumbs-down-fill"
+        label="Submit Replacement"
+        icon="pi pi-sort-alt"
         @click="visible = true"
-        class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"
         modal
-        header="Reject Reservation"
+        header="Submit Replacement"
         :style="{ width: '25rem' }"
     >
         <Message :closable="false" severity="error"
@@ -23,7 +23,7 @@
             ></Button>
             <Button
                 type="button"
-                label="Reject"
+                label="Submit"
                 @click="saveAndSubmit"
             ></Button>
         </div>
@@ -60,7 +60,7 @@ export default {
         },
         rejectReservation() {
             axios
-                .post("/reject-reservation", { ID: this.idReservation })
+                .post("/replace-reservation", { ID: this.idReservation })
                 .then(() => {
                     this.$toast.add({
                         severity: "success",

@@ -3,7 +3,7 @@
         label="Create Category"
         icon="pi pi-plus"
         @click="visible = true"
-        class="bg-green-400 text-white px-4 py-2 hover:bg-green-500"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"

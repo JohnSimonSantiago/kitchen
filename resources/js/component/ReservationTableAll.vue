@@ -66,11 +66,16 @@
                             :idReservation="reservation.reservationNumber"
                             @Refresh="getterReservations"
                         ></RejectReservation>
+                        <SubmitReplacement
+                            v-if="reservation.statusID === 6"
+                            :idReservation="reservation.reservationNumber"
+                            @Refresh="getterReservations"
+                        ></SubmitReplacement>
                         <Button
                             @click="readMore(reservation)"
                             label="View"
                             icon="pi pi-arrow-right"
-                            class="bg-blue-500 border-md px-4 py-2 hover:bg-blue-600 text-white"
+                            class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
                         >
                         </Button>
                     </td>
@@ -88,13 +93,16 @@ import ReturnReservation from "../componentReservations/ReturnReservation.vue";
 import RejectReservation from "../componentReservations/RejectReservation.vue";
 import ApproveReservation from "../componentReservations/ApproveReservation.vue";
 import ReceiveReservation from "../componentReservations/ReceiveReservation.vue";
+import SubmitReplacement from "../componentReservations/SubmitReplacement.vue";
 import Message from "primevue/message";
+
 
 export default {
     components: {
         Modal,
         Button,
         Message,
+        SubmitReplacement,
         ReceiveReservation,
         ReturnReservation,
         RejectReservation,
@@ -124,6 +132,8 @@ export default {
                     return "success";
                 case 5:
                     return "error";
+                case 6:
+                    return "warn";
 
                 default:
                     return "info";

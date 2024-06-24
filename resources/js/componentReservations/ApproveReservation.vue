@@ -3,7 +3,8 @@
         label="Approve Reservation"
         icon="pi pi-thumbs-up-fill"
         @click="visible = true"
-        class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600"
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+        
     />
     <Dialog
         v-model:visible="visible"
@@ -12,16 +13,17 @@
         :style="{ width: '25rem' }"
     >
         <Message :closable="false" severity="warn"
-            >Note: You cannot edit Reservations once it has been
+            >Note: You cannot edit this reservations once it has been
             approved</Message
         >
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"
                 label="Cancel"
-                severity="secondary"
-                @click="visible = false"
+       
+                @click="closeDialog"
             ></Button>
+
             <Button
                 type="button"
                 label="Approve"
@@ -59,28 +61,36 @@ export default {
             this.approveReservation();
             this.visible = false;
         },
-        approveReservation() {
-            axios
-                .post("/approve-reservation", {
-                    ID: this.idReservation,
-                    id: this.idEquipment,
-                })
-                .then((response) => {
-                    if (response.data.success) {
-                        ToastService.add({
-                            severity: "success",
-                            summary: "Success!",
-                            detail: "Reservation Approved Successfully!",
-                            life: 3000,
-                        });
-                        this.$emit("Refresh");
-                    }
-                    this.visible = false; // Move this line inside the `then` block
-                })
-                .catch((error) => {
-                    console.error("Error approving reservation:", error);
-                });
+        closeDialog() {
+            this.visible = false;
+            this.currentStep = 1;
         },
+        approveReservation() {
+    axios
+        .post("/approve-reservation", { 
+            ID: this.idReservation,
+            id: this.idEquipment,
+        })
+        .then(() => {
+            this.$toast.add({
+                severity: "success",
+                summary: "Success!",
+                detail: "Reservation Approved Successfully!",
+                life: 3000,
+            });
+            this.$emit("Refresh");
+        })
+        .catch((error) => {
+            this.$toast.add({
+                severity: "error",
+                summary: "Error",
+                detail: "Failed to approve reservation. Please try again.",
+                life: 3000,
+            });
+            console.error(error);
+        });
+},
+
     },
 };
 </script>

@@ -14,12 +14,12 @@
                 >
                     <div class="p-2.5 flex gap-4">
                         <router-link to="/editstock">
-                            <button
-                                class="transition-all bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500"
+                            <Button
+                                class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
                             >
                                 <span class="pi pi-file-edit"></span>
                                 Edit Stock
-                            </button>
+                            </Button>
                         </router-link>
                         <CreateCategory
                             @success="getterCategoryList"
@@ -148,11 +148,13 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/Dialog";
+import Button from "primevue/button";
 
 export default {
     components: {
         CreateEquipment,
         Message,
+        Button,
         IconField,
         InputIcon,
         InputText,

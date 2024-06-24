@@ -17,7 +17,6 @@
                 </div>
                 <div>
                     <ReservationTableAll
-                        class=""
                         @clicked="seeReservationDetails, (this.visible = true)"
                         @reservationSelected="handleReservationSelected"
                     ></ReservationTableAll>
@@ -33,15 +32,15 @@
                     <div>
                         <h2 class="text-1 font-bold">
                             Order No.
-                            {{ this.showReservationDetails?.reservationNumber }}
+                            {{ showReservationDetails?.reservationNumber }}
                         </h2>
                     </div>
                     <Tag icon="pi pi-user">
                         <span style="font-weight: 600">
                             <div icon="pi pi-user"></div>
-                            {{ this.showReservationDetails?.customerName }}
-                        </span></Tag
-                    >
+                            {{ showReservationDetails?.customerName }}
+                        </span>
+                    </Tag>
 
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
@@ -76,11 +75,7 @@
 
                             <span>
                                 From:
-                                {{
-                                    formatDate(
-                                        this.showReservationDetails?.dateStart
-                                    )
-                                }}
+                                {{ formatDate(showReservationDetails?.dateStart) }}
                             </span>
                         </div>
                         <div
@@ -102,34 +97,28 @@
 
                             <span>
                                 To:
-                                {{
-                                    formatDate(
-                                        this.showReservationDetails?.dateEnd
-                                    )
-                                }}
+                                {{ formatDate(showReservationDetails?.dateEnd) }}
                             </span>
+
                         </div>
                     </div>
                     <div class="flex-col self-end">
                         <div class="flex items-center justify-center gap-2">
                             <router-link
-                                :to="
-                                    '/makeOrder/' +
-                                    showReservationDetails?.reservationNumber
-                                "
+                                :to="`/makeOrder/${showReservationDetails?.reservationNumber}`"
                             >
-                                <button
-                                    v-if="
+                                <Button
+                                  
+                                    class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
+                                >
+                                    <span class="pi pi-file-edit"></span>
+                                    Edit Order   v-if="
                                         showReservationDetails &&
                                         [1, 2].includes(
                                             showReservationDetails.statusID
                                         )
                                     "
-                                    class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
-                                >
-                                    <span class="pi pi-file-edit"></span>
-                                    Edit Order
-                                </button>
+                                </Button>
                             </router-link>
                         </div>
                     </div>
@@ -146,11 +135,14 @@ import Message from "primevue/message";
 import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
 import Dialog from "primevue/Dialog";
+import Button from "primevue/button";
+import axios from 'axios';
 
 export default {
     components: {
         Tag,
         Message,
+        Button,
         OrderCard,
         CreateReservation,
         ReservationTableAll,
@@ -158,7 +150,6 @@ export default {
     },
     mounted() {
         this.getterReservation();
-        this.getterReservationOrder();
     },
     data() {
         return {
@@ -177,7 +168,6 @@ export default {
                 year: "numeric",
             });
         },
-
         seeReservationDetails(data) {
             this.showReservationDetails = data;
         },
@@ -186,11 +176,6 @@ export default {
                 this.reservations = data;
             });
         },
-        RejectedReservation() {
-            this.getterReservation();
-            this.showReservationDetails = null;
-        },
-
         handleReservationSelected(reservationNumber) {
             this.getterReservationOrder(reservationNumber);
         },

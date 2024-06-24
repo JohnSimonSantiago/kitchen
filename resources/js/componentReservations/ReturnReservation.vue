@@ -3,7 +3,7 @@
         label="Return Reservation"
         icon="pi pi-undo"
         @click="visible = true"
-        class="bg-yellow-500 text-white rounded-md px-4 py-2 hover:bg-yellow-600"
+        class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"
@@ -16,17 +16,20 @@
             <div>
                 <p>Is Equipment Complete?</p>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                    label="Yes"
-                    @click="nextStep"
-                />
-                <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="No"
                     @click="skipToPart4"
                 />
+                <Button
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+                    label="Yes"
+                    @click="nextStep"
+                />
+
             </div>
         </div>
 
@@ -35,17 +38,20 @@
             <div>
                 <p>Is Equipment in Good Condition?</p>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                    label="Yes"
-                    @click="nextStep"
-                />
-                <Button
-                    class="px-4 py-2 ml-2 text-white bg-red-600 rounded-md text-sm"
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="No"
                     @click="skipToPar5"
                 />
+                <Button
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+                    label="Yes"
+                    @click="returnReservation"
+                />
+
             </div>
         </div>
 
@@ -80,11 +86,18 @@
                     <input v-model="missingQuantity" type="number" min="1" />
                 </div>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <Button
-                    class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                    label="Submit"
-                    @click="submitMissingEquipment"
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+                    label="Cancel"
+                    @click="closeDialog"
+                />
+                <Button
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+                    label="Return Now"
+                    @click="returnReservationIncomplete"
                 />
             </div>
         </div>
@@ -131,6 +144,23 @@ export default {
         },
         skipToPar5() {
             this.currentStep = 5;
+        },
+        closeDialog() {
+            this.visible = false;
+            this.currentStep = 1;
+        },
+        returnReservationIncomplete() {
+            axios
+                .post("/return-reservation-incomplete", { ID: this.idReservation })
+                .then(() => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success!",
+                        detail: "Equipment Returned Incompletely!",
+                        life: 3000,
+                    });
+                    this.$emit("Refresh");
+                });
         },
         returnReservation() {
             axios
