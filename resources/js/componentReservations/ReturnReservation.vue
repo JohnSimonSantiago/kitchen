@@ -156,7 +156,7 @@ export default {
                     this.$toast.add({
                         severity: "success",
                         summary: "Success!",
-                        detail: "Equipment Returned Incompletely!",
+                        detail: "Reservation Returned Incompletely!",
                         life: 3000,
                     });
                     this.$emit("Refresh");
@@ -169,7 +169,7 @@ export default {
                     this.$toast.add({
                         severity: "success",
                         summary: "Success!",
-                        detail: "Equipment Returned Successfully!",
+                        detail: "Reservation Returned Successfully!",
                         life: 3000,
                     });
                     this.$emit("Refresh");

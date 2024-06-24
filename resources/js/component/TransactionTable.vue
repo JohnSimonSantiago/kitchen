@@ -23,7 +23,7 @@
             <tbody>
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td class="text-center">
-                        {{ transaction.id }}
+                        {{ transaction.transaction_number }}
                     </td>
                     <td class="text-center">
                         {{ transaction.transaction_type }}

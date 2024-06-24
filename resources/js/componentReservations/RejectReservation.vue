@@ -58,6 +58,10 @@ export default {
             this.rejectReservation();
             this.visible = false;
         },
+        closeDialog() {
+            this.visible = false;
+            this.currentStep = 1;
+        },
         rejectReservation() {
             axios
                 .post("/reject-reservation", { ID: this.idReservation })

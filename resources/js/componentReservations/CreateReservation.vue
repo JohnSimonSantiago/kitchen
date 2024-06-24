@@ -142,7 +142,6 @@ export default {
                     life: 3000,
                 });
                 this.$emit("success");
-                this.$router.push('/reservations');
             })
             .catch(error => {
                 this.$toast.add({
