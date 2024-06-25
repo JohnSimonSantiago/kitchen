@@ -17,7 +17,7 @@
                 </div>
                 <div>
                     <ReservationTableAll
-                        @clicked="seeReservationDetails, (this.visible = true)"
+                        @clicked="seeReservationDetails"
                         @reservationSelected="handleReservationSelected"
                     ></ReservationTableAll>
                 </div>
@@ -75,7 +75,11 @@
 
                             <span>
                                 From:
-                                {{ formatDate(showReservationDetails?.dateStart) }}
+                                {{
+                                    formatDate(
+                                        showReservationDetails?.dateStart
+                                    )
+                                }}
                             </span>
                         </div>
                         <div
@@ -97,27 +101,28 @@
 
                             <span>
                                 To:
-                                {{ formatDate(showReservationDetails?.dateEnd) }}
+                                {{
+                                    formatDate(showReservationDetails?.dateEnd)
+                                }}
                             </span>
-
                         </div>
                     </div>
                     <div class="flex-col self-end">
-                        <div class="flex items-center justify-center gap-2">
+                        <div
+                            v-if="
+                                showReservationDetails &&
+                                [1, 2].includes(showReservationDetails.statusID)
+                            "
+                            class="flex items-center justify-center gap-2"
+                        >
                             <router-link
                                 :to="`/makeOrder/${showReservationDetails?.reservationNumber}`"
                             >
                                 <Button
-                                  
                                     class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
                                 >
                                     <span class="pi pi-file-edit"></span>
-                                    Edit Order   v-if="
-                                        showReservationDetails &&
-                                        [1, 2].includes(
-                                            showReservationDetails.statusID
-                                        )
-                                    "
+                                    Edit Order
                                 </Button>
                             </router-link>
                         </div>
@@ -136,7 +141,7 @@ import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
 import Dialog from "primevue/Dialog";
 import Button from "primevue/button";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     components: {
@@ -169,6 +174,8 @@ export default {
             });
         },
         seeReservationDetails(data) {
+            this.visible = true;
+            console.log(data);
             this.showReservationDetails = data;
         },
         getterReservation() {

@@ -96,7 +96,6 @@ import ReceiveReservation from "../componentReservations/ReceiveReservation.vue"
 import SubmitReplacement from "../componentReservations/SubmitReplacement.vue";
 import Message from "primevue/message";
 
-
 export default {
     components: {
         Modal,
@@ -155,6 +154,7 @@ export default {
             });
         },
         readMore(reservation) {
+            console.log(reservation);
             this.$emit("clicked", reservation);
 
             this.$emit("reservationSelected", reservation.reservationNumber);
