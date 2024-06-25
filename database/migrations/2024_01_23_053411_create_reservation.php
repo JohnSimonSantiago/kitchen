@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('customerNumber');
             $table->string('email');
             $table->tinyInteger('statusID')->default(0);
+            $table->string('remarks');
             $table->date('dateStart');
             $table->date('dateEnd');
             $table->timestamps();

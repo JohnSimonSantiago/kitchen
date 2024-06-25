@@ -109,9 +109,10 @@ export default {
             axios
                 .post("/login", { email, password })
                 .then((res) => {
+                    console.log(res);
                     if (res.status == 200) {
                         if (res.data.role === 2) {
-                            this.$router.push("/inventory");
+                            this.$router.push("/dashboard");
                         } else {
                             this.$router.push("/home");
                         }

@@ -9,11 +9,26 @@
         v-model:visible="visible"
         modal
         header="Reject Reservation"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
     >
         <Message :closable="false" severity="error"
             >Warning: You cannot undo this action</Message
         >
+        <div>
+            <label
+                for="description"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Remarks</label
+            >
+            <textarea
+                v-model="remarks"
+                id="remarks"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Note"
+                rows="3"
+                required
+            ></textarea>
+        </div>
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"

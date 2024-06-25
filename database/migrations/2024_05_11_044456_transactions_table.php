@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions_table', function (Blueprint $table) {
             $table->id('id');
+            $table->string('transaction_number');
             $table->string('transaction_type');
             $table->string('equipment_id');
             $table->tinyInteger('condition_id');
