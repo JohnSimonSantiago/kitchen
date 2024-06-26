@@ -25,22 +25,22 @@
             <Dialog
                 v-model:visible="visible"
                 modal
-                header="Edit Profile"
                 :style="{ width: '45rem' }"
             >
-                <div>
-                    <div>
-                        <h2 class="text-1 font-bold">
-                            Order No.
-                            {{ showReservationDetails?.reservationNumber }}
-                        </h2>
-                    </div>
-                    <Tag icon="pi pi-user">
+                <template #header>
+                    <Message Tag icon="pi pi-user"  :closable="false" severity="info">
+          
                         <span style="font-weight: 600">
                             <div icon="pi pi-user"></div>
                             {{ showReservationDetails?.customerName }}
                         </span>
-                    </Tag>
+
+                </Message>
+                </template>
+                        <h1 class="text-1 font-bold">
+                            Order No.
+                            {{ showReservationDetails?.reservationNumber }}
+                        </h1>
 
                     <!-- drawer component -->
                     <div class="my-2 grid grid-cols-1">
@@ -127,7 +127,7 @@
                             </router-link>
                         </div>
                     </div>
-                </div>
+               
             </Dialog>
         </div>
     </Layout>
@@ -142,6 +142,7 @@ import OrderCard from "../Card_small/OrderCard.vue";
 import Dialog from "primevue/Dialog";
 import Button from "primevue/button";
 import axios from "axios";
+
 
 export default {
     components: {

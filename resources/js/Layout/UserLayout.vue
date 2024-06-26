@@ -19,14 +19,10 @@
                     <div class="space-y-32 text-center py-8">
                         <div>
                             <router-link
-                                to="/Home"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click="toggleActive1"
-                                :style="{
-                                    borderRight: isActive1
-                                        ? '3px solid green'
-                                        : 'none',
-                                }"
+                            active-class="text-green-700"
+                                to="/home"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
+
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-home"
@@ -38,14 +34,10 @@
                         </div>
                         <div>
                             <router-link
+                            active-class="text-green-700"
                                 to="/myReservations"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click="toggleActive1"
-                                :style="{
-                                    borderRight: isActive1
-                                        ? '3px solid green'
-                                        : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
+
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-book"
@@ -57,15 +49,10 @@
                         </div>
                         <div>
                             <router-link
+                            active-class="text-green-700"
                                 to="/rent"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
-                                @click.native="toggleActive('/rent')"
-                                :style="{
-                                    borderRight:
-                                        isActive === '/rent'
-                                            ? '3px solid green'
-                                            : 'none',
-                                }"
+                                class="text-sm font-medium text-gray-900 dark:text-white"
+
                             >
                                 <p class="mx-10">
                                     <i

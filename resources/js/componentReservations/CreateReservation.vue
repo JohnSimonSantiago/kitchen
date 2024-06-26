@@ -82,7 +82,7 @@
                 ></Button>
                 <Button
                     type="button"
-                    label="Save"
+                    label="Submit"
                     @click="saveAndSubmit"
                 ></Button>
             </div>
