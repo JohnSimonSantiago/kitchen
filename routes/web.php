@@ -7,6 +7,7 @@ use App\Http\Controllers\studentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\ReplacementController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TransactionsController;
 
@@ -67,6 +68,8 @@ Route::post("/return-reservation-incomplete", [ReservationController::class, "re
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
 
 Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);
+
+Route::post("/submit-replacement-details", [ReplacementController::class, 'submitReplacementDetails'])->name('submitReplacementDetails');
 
 //kababaan amin
 Route::get('/{vue?}', function(){

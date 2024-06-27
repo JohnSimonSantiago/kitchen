@@ -17,6 +17,13 @@
             <div>
                 <p>Is Equipment Complete?</p>
             </div>
+
+                <div class="bg-gray-200 rounded-md px-4 py-2">
+                    <div v-for="order in reservationOrder" :key="order.id">
+                        <OrderCard :orderDetails="order" />
+                    </div>
+                </div>
+     
             <div class="flex gap-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -35,13 +42,7 @@
 
         <!-- Part 2 -->
         <div v-if="currentStep === 2">
-            <div>
-                <div class="bg-gray-200 rounded-md px-4 py-2">
-                    <div v-for="order in reservationOrder" :key="order.id">
-                        <EditQuantityOrderCard :orderDetails="order" />
-                    </div>
-                </div>
-            </div>
+
             <div class="flex gap-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -92,6 +93,7 @@ import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dialog from "primevue/Dialog";
 import EditQuantityOrderCard from "../Card_small/EditQuantityOrderCard.vue";
+import OrderCard from "../Card_small/OrderCard.vue";
 
 export default {
     props: ["idReservation"],
@@ -113,6 +115,7 @@ export default {
         Toast,
         Dialog,
         Modal,
+        OrderCard,
         Button,
         EditQuantityOrderCard,
     },
@@ -126,7 +129,6 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
-                    console.log(this.reservationOrder);
                 });
         },
         rejectReservation() {

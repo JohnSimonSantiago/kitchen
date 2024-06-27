@@ -16,6 +16,11 @@
             <div>
                 <p>Is Equipment Complete?</p>
             </div>
+            <div class="bg-gray-200 rounded-md px-4 py-2">
+                    <div v-for="order in reservationOrder" :key="order.id">
+                        <OrderCard :orderDetails="order" />
+                    </div>
+                </div>
             <div class="flex gap-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -65,27 +70,12 @@
         </div>
 
         <div v-if="currentStep === 4">
-            <div>
-                <p>Specify the missing equipment and quantity:</p>
-                <div>
-                    <label for="missingEquipment"
-                        >Select missing equipment:</label
-                    >
-                    <select v-model="selectedEquipment" id="missingEquipment">
-                        <option
-                            v-for="equipment in availableEquipment"
-                            :key="equipment.id"
-                            :value="equipment.id"
-                        >
-                            {{ equipment.name }}
-                        </option>
-                    </select>
+            <p>Input Missing Equipment</p>
+            <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+                    <div v-for="order in reservationOrder" :key="order.id">
+                        <InputMissingEquipmentCard :orderDetails="order" />
+                    </div>
                 </div>
-                <div>
-                    <label for="missingQuantity">Specify the quantity:</label>
-                    <input v-model="missingQuantity" type="number" min="1" />
-                </div>
-            </div>
             <div class="flex gap-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -96,8 +86,8 @@
                 <Button
                     icon="pi pi-thumbs-up-fill"
                     class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
-                    label="Return Now"
-                    @click="returnReservationIncomplete"
+                    label="Confirm"
+                    @click="submitReplacementDetails"
                 />
             </div>
         </div>
@@ -116,6 +106,9 @@ import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dialog from "primevue/Dialog";
+import OrderCard from "../Card_small/OrderCard.vue";
+import InputMissingEquipmentCard from "../Card_small/InputMissingEquipmentCard.vue";
+
 
 export default {
     props: ["idReservation"],
@@ -123,6 +116,7 @@ export default {
         return {
             visible: false,
             currentStep: 1,
+            reservationOrder: [],
             modalContent: {
                 title: "Return Reservation",
                 content: "",
@@ -131,11 +125,28 @@ export default {
     },
     components: {
         Toast,
+        OrderCard,
+        InputMissingEquipmentCard,
         Dialog,
         Modal,
         Button,
     },
+    mounted() {
+        this.getterReservationOrder();
+    },
     methods: {
+        getterReservationOrder() {
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: this.idReservation,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                    console.log(this.reservationOrder);
+                });
+        },
         nextStep() {
             this.currentStep++;
         },
@@ -157,6 +168,22 @@ export default {
                         severity: "success",
                         summary: "Success!",
                         detail: "Reservation Returned Incompletely!",
+                        life: 3000,
+                    });
+                    this.$emit("Refresh");
+                });
+        },
+        submitReplacementDetails() {
+            const { category } = this;
+            axios
+                .post("/submit-replacement-details", {
+                    category,
+                })
+                .then(() => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success!",
+                        detail: "Category Created Successfully!",
                         life: 3000,
                     });
                     this.$emit("Refresh");
