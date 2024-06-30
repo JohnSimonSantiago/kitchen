@@ -232,11 +232,11 @@ class ReservationController extends Controller
         }
         
 
-        public function replaceReservation(Request $request)
+        public function SubmitReplaceReservation(Request $request)
         {   
-            $replaceReservation = reservation::find($request->ID);
-            $replaceReservation->statusID = 4;
-            $res = $rejectReservation->save();
+            $submitReplaceReservation = reservation::find($request->ID);
+            $submitReplaceReservation->statusID = 4;
+            $res = $submitReplaceReservation->save();
             return response()->json(['message' => 'Reservation replaced successfully.']);
         }
         

@@ -55,10 +55,10 @@ export default {
     },
     methods: {
         saveAndSubmit() {
-            this.rejectReservation();
+            this.replaceReservation();
             this.visible = false;
         },
-        rejectReservation() {
+        replaceReservation() {
             axios
                 .post("/replace-reservation", { ID: this.idReservation })
                 .then(() => {
