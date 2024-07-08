@@ -70,6 +70,7 @@ Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]
 Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);
 
 Route::post("/submit-replacement-details", [ReplacementController::class, 'submitReplacementDetails'])->name('submitReplacementDetails');
+Route::get("/get-replacement-details", [ReplacementController::class, 'getReplacementDetails']);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

@@ -19,7 +19,7 @@
                         <h3 class="text-lg font-semibold mb-2">
                             Number of Reservations this Month
                         </h3>
-                        <div>{{ numberOfReservations }}</div>
+                        <div>{{ 15 }}</div>
                     </div>
 
                     <!-- Number of Disposed Equipment Box -->
@@ -29,19 +29,37 @@
                         <h3 class="text-lg font-semibold mb-2">
                             Number of Disposed Equipment this Month
                         </h3>
-                        <div>{{ numberOfDisposedEquipment }}</div>
+                        <div>{{ 20 }}</div>
                     </div>
-                </div>
-                <div class="my-2 gap-5">
+                    <div class="my-2">
                     <div>
+                        <div
+                        class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                    >
+                        <h3 class="text-lg font-semibold mb-2">
+                            Transaction Record
+                        </h3>
+                    </div>
                         <TransactionTable
-                            class=""
-                            @clicked="seeReservationDetails"
-                            @reservationSelected="handleReservationSelected"
                         ></TransactionTable>
                     </div>
                 </div>
-            </div>
+                <div class="my-2">
+                    <div
+                        class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                    >
+                        <h3 class="text-lg font-semibold mb-2">
+                            Replacement Record
+                        </h3>
+                    </div>
+                    <div>
+                        <ReplacementTable
+                        ></ReplacementTable>
+                    </div>  
+                </div>
+            </div>  
+                </div>
+
 
             <!-- Right Section -->
             <div
@@ -54,10 +72,12 @@
 <script>
 import axios from "axios";
 import TransactionTable from "../component/TransactionTable.vue";
+import ReplacementTable from "../component/ReplacementTable.vue";
 
 export default {
     components: {
         TransactionTable,
+        ReplacementTable,
     },
     data() {
         return {};

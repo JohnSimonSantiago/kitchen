@@ -9,44 +9,38 @@ class ReplacementController extends Controller
 {
     public function submitReplacementDetails(Request $request)
     {
-        $data = $request->validate([
-            'replacementDetails' => 'required|array',  // Validate replacementDetails as a required array
+        $validatedData = $request->validate([
+            'equipment_id' => 'required|exists:equipments,equipment_id',
+            'quantity' => 'required|integer|min:0',
         ]);
     
-        $validatedData = [];
-        foreach ($data['replacementDetails'] as $replacementDetail) {
-            $validated = Validator::make($replacementDetail, [
-                'reservationNumber' => 'required|integer',
-                'equipment_id' => 'required|integer',
-                'quantity' => 'required|integer|min:1',
-            ]);
+        $reservationNumber = $request->reservationNumber;
+        $equipment_id = $request->equipment_id;
+        $quantity = $request->quantity;
     
-            if ($validated->fails()) {
-                return response()->json($validated->errors(), 422); // Unprocessable Entity
-            }
+        
+        $existingReservationDetail = replacement_details::where('equipment_id', $equipment_id)
+            ->where('reservationNumber', $reservationNumber)
+            ->first();
     
-            // Assuming you are adding reservationNumber to each detail
-            $replacementDetail['reservationNumber'] = $request->input('reservationNumber');
-    
-            $validatedData[] = $replacementDetail;
+        if ($existingReservationDetail) {
+            
+            $existingReservationDetail->quantity += $quantity;
+            $existingReservationDetail->save();
+        } else {
+
+            $newReservationDetail = new reservation_details();
+            $newReservationDetail->reservationNumber = $reservationNumber;
+            $newReservationDetail->equipment_id = $equipment_id;
+            $newReservationDetail->quantity = $quantity;
+            $newReservationDetail->save();
         }
     
-        try {
-            // Example: Insert validated data into the database using Eloquent or Query Builder
-            foreach ($validatedData as $detail) {
-                // Assuming you have a Replacement model to handle replacement details
-                Replacement::create([
-                    'reservation_number' => $detail['reservationNumber'],
-                    'equipment_id' => $detail['equipment_id'],
-                    'quantity' => $detail['quantity'],
-                ]);
-            }
-    
-            return response()->json(['message' => 'Replacement details submitted successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to submit replacement details.'], 500);
-        }
+        return response()->json(['success' => true]);
     }
-    
+    public function getReplacementDetails(Request $request) {
+        $getReplacementDetails = replacement_details::all();
+        return $getReplacementDetails; 
+    }
     
 }
