@@ -47,7 +47,7 @@
 <script>
 import Toast from "primevue/toast";
 import Button from "primevue/button";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 
 export default {
     components: {

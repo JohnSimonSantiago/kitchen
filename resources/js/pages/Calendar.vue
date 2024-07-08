@@ -57,7 +57,7 @@ import axios from "axios";
 import Message from "primevue/message";
 import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
-import Dialog from "primevue/dialog";
+import Dialog from 'primevue/dialog';
 
 export default {
     components: { Message, Tag, OrderCard, Dialog },

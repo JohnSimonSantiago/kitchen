@@ -105,7 +105,7 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 import OrderCard from "../Card_small/OrderCard.vue";
 import InputMissingEquipmentCard from "../Card_small/InputMissingEquipmentCard.vue";
 

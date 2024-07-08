@@ -178,7 +178,7 @@
 import axios from "axios";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 
 export default {
     props: ["equipment_id"],

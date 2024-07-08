@@ -147,7 +147,7 @@ import Message from "primevue/message";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 import Button from "primevue/button";
 
 export default {

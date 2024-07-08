@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 

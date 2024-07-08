@@ -91,7 +91,7 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 import EditQuantityOrderCard from "../Card_small/EditQuantityOrderCard.vue";
 import OrderCard from "../Card_small/OrderCard.vue";
 

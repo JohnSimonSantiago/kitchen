@@ -139,7 +139,7 @@ import ReservationTableAll from "../component/ReservationTableAll.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";
 import OrderCard from "../Card_small/OrderCard.vue";
-import Dialog from "primevue/Dialog";
+import Dialog from 'primevue/dialog';
 import Button from "primevue/button";
 import axios from "axios";
 
