@@ -2,42 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\replacement_details;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use App\Models\replacement_details;
 
 class ReplacementController extends Controller
 {
+
     public function submitReplacementDetails(Request $request)
     {
-        $validatedData = $request->validate([
-            'equipment_id' => 'required|exists:equipments,equipment_id',
-            'quantity' => 'required|integer|min:0',
+
+        $validated = $request->validate([
+            'replacementDetails' => 'required|array',
+            'replacementDetails.*.reservationNumber' => 'required|integer',
+            'replacementDetails.*.equipment_id' => 'required|integer',
+            'replacementDetails.*.quantity' => 'required|integer|min:1',
         ]);
     
-        $reservationNumber = $request->reservationNumber;
-        $equipment_id = $request->equipment_id;
-        $quantity = $request->quantity;
-    
-        
-        $existingReservationDetail = replacement_details::where('equipment_id', $equipment_id)
-            ->where('reservationNumber', $reservationNumber)
-            ->first();
-    
-        if ($existingReservationDetail) {
-            
-            $existingReservationDetail->quantity += $quantity;
-            $existingReservationDetail->save();
-        } else {
-
-            $newReservationDetail = new reservation_details();
-            $newReservationDetail->reservationNumber = $reservationNumber;
-            $newReservationDetail->equipment_id = $equipment_id;
-            $newReservationDetail->quantity = $quantity;
-            $newReservationDetail->save();
+        // If validation passes, insert each replacement detail into the database
+        foreach ($validated['replacementDetails'] as $detail) {
+            DB::table('replacement_details')->insert([
+                'reservationNumber' => $detail['reservationNumber'],
+                'equipment_id' => $detail['equipment_id'],
+                'quantity' => $detail['quantity'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     
-        return response()->json(['success' => true]);
+        return response()->json(['message' => 'Replacement details submitted successfully'], 200);
     }
+    
+    
+
+
+
     public function getReplacementDetails(Request $request) {
         $getReplacementDetails = replacement_details::all();
         return $getReplacementDetails; 

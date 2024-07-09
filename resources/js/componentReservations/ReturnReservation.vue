@@ -69,28 +69,29 @@
             />
         </div>
 
+        <!-- Part : -->
         <div v-if="currentStep === 4">
-            <p>Input Missing Equipment</p>
-            <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
-                    <div v-for="order in reservationOrder" :key="order.id">
-                        <InputMissingEquipmentCard :orderDetails="order" />
-                    </div>
-                </div>
-            <div class="flex gap-2">
-                <Button
-                    icon="pi pi-thumbs-down-fill"
-                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
-                    label="Cancel"
-                    @click="closeDialog"
-                />
-                <Button
-                    icon="pi pi-thumbs-up-fill"
-                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
-                    label="Confirm"
-                    @click="submitReplacementDetails"
-                />
-            </div>
+    <p>Input Missing Equipment</p>
+    <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+        <div v-for="order in reservationOrder" :key="order.id">
+            <InputMissingEquipmentCard :orderDetails="order" />
         </div>
+    </div>
+    <div class="flex gap-2">
+        <Button
+            icon="pi pi-thumbs-down-fill"
+            class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+            label="Cancel"
+            @click="closeDialog"
+        />
+        <Button
+            icon="pi pi-thumbs-up-fill"
+            class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+            label="Confirm"
+            @click="submitReplacementDetails"
+        />
+    </div>
+</div>
 
         <!-- Part 5: -->
         <div v-if="currentStep === 5">
@@ -174,21 +175,32 @@ export default {
                 });
         },
         submitReplacementDetails() {
-            const { category } = this;
-            axios
-                .post("/submit-replacement-details", {
-                    category,
-                })
-                .then(() => {
-                    this.$toast.add({
-                        severity: "success",
-                        summary: "Success!",
-                        detail: "Category Created Successfully!",
-                        life: 3000,
-                    });
-                    this.$emit("Refresh");
+        const replacementDetails = this.reservationOrder.map(order => ({
+            reservationNumber: this.idReservation,
+            equipment_id: order.equipment_id,
+            quantity: order.quantity,
+        }));
+
+        axios.post("/submit-replacement-details", replacementDetails)
+            .then(() => {
+                this.$toast.add({
+                    severity: "success",
+                    summary: "Success!",
+                    detail: "Replacement details submitted successfully!",
+                    life: 3000,
                 });
-        },
+                this.$emit("Refresh");
+            })
+            .catch(error => {
+                console.error("Error submitting replacement details:", error);
+                this.$toast.add({
+                    severity: "error",
+                    summary: "Error",
+                    detail: "Failed to submit replacement details.",
+                    life: 3000,
+                });
+            });
+    },
         returnReservation() {
             axios
                 .post("/return-reservation", { ID: this.idReservation })
