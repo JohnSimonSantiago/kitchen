@@ -104,6 +104,33 @@ class EquipmentController extends Controller
     
         return response()->json(['success' => true]);
     }
+    public function removeEquipmentOrder(Request $request)
+{
+    $validatedData = $request->validate([
+        'equipment_id' => 'required|exists:equipments,equipment_id',
+        'reservationNumber' => 'required|exists:reservation_details,reservationNumber',
+    ]);
+
+    $reservationNumber = $request->reservationNumber;
+    $equipment_id = $request->equipment_id;
+
+    $existingReservationDetail = reservation_details::where('equipment_id', $equipment_id)
+        ->where('reservationNumber', $reservationNumber)
+        ->first();
+
+    if ($existingReservationDetail) {
+        if ($existingReservationDetail->quantity > 1) {
+            $existingReservationDetail->quantity -= 1;
+            $existingReservationDetail->save();
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['error' => 'Quantity cannot be less than 1'], 400);
+        }
+    } else {
+        return response()->json(['error' => 'Reservation detail not found'], 404);
+    }
+}
+
     public function AddandDisposeEquipmentStock(Request $request)
     {
         $validatedData = $request->validate([

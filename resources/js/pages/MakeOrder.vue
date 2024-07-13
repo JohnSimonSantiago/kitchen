@@ -53,6 +53,7 @@
                         <AddItemToReservationCard
                             :equipmentDetails="equipment"
                             @clicked="submitEquipmentOrder"
+                            @remove="removeEquipmentOrder"
                             @refreshOrders="getterReservationOrder"
                         />
                     </div>
@@ -88,7 +89,7 @@
                                 v-for="order in reservationOrder"
                                 :key="order.id"
                             >
-                                <EditQuantityOrderCard :orderDetails="order" />
+                                <OrderCard :orderDetails="order" />
                             </div>
                         </div>
                     </div>
@@ -96,12 +97,15 @@
                     <div
                         class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
                     ></div>
-                    <button
-                        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button"
-                    >
-                        <span class="pi pi-file-export"></span>
-                        Submit Order
-                    </button>
+                    <router-link to="/reservations">
+    <button
+        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button"
+    >
+        <span class="pi pi-file-export"></span>
+        Finish Order
+    </button>
+</router-link>
+
                 </div>
             </div>
         </div>
@@ -112,7 +116,7 @@
 import AddItemToReservationCard from "../Cards/AddItemToReservationCard.vue";
 import Message from "primevue/message";
 import Button from "primevue/button";
-import EditQuantityOrderCard from "../Card_small/EditQuantityOrderCard.vue";
+import OrderCard from "../Card_small/OrderCard.vue";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
@@ -121,7 +125,7 @@ export default {
     components: {
         AddItemToReservationCard,
         InputText,
-        EditQuantityOrderCard,
+        OrderCard,
         Button,
         IconField,
         Message,
@@ -171,6 +175,20 @@ export default {
             const { equipmentDetails, quantity } = data;
             axios
                 .post("/submit-equipment-order", {
+                    equipment_id: equipmentDetails.equipment_id,
+                    reservationNumber: this.reservationNumber,
+                    quantity,
+                })
+                .then(({ data }) => {
+                    this.id = "";
+                    this.quantity = "";
+                    this.$emit("success");
+                });
+        },
+        removeEquipmentOrder(data) {
+            const { equipmentDetails, quantity } = data;
+            axios
+                .post("/remove-equipment-order", {
                     equipment_id: equipmentDetails.equipment_id,
                     reservationNumber: this.reservationNumber,
                     quantity,

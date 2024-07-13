@@ -32,7 +32,11 @@
                 </button>
             </div>
 
-
+            <div class="ml-2 flex items-center">
+                <p class="text-gray-900 dark:text-white">
+                    P {{ totalAmount.toFixed(2) }}
+                </p>
+            </div>
         </div>
     </div>
 </template>
@@ -117,6 +121,11 @@ export default {
             }
         },
     },
-
+    computed: {
+        totalAmount() {
+            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
+            return this.localQuantity * price;
+        },
+    },
 };
 </script>

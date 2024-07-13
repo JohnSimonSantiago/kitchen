@@ -43,6 +43,7 @@ Route::post("/add-dispose-equipment-stock", [EquipmentController::class, "Addand
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
 Route::post('/submit-equipment-order', [EquipmentController::class, 'submitEquipmentOrder']);
+Route::post('/remove-equipment-order', [EquipmentController::class, 'removeEquipmentOrder']);
 Route::get("/get-equipment-condition", [EquipmentController::class, "getEquipmentCondition"]);
 Route::get("/get-equipment-category", [EquipmentController::class, "getEquipmentCategory"]);
 Route::get('/get-equipment-status-quantity', [EquipmentController::class, 'getEquipmentStatusQuantity']);

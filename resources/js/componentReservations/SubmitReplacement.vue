@@ -11,9 +11,13 @@
         header="Submit Replacement"
         :style="{ width: '25rem' }"
     >
-        <Message :closable="false" severity="error"
-            >Warning: You cannot undo this action</Message
-        >
+
+        <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+        <div v-for="order in reservationOrder" :key="order.id">
+            <ReplacementCard :orderDetails="order" />
+        </div>
+    </div>
+
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"
@@ -35,23 +39,31 @@
 import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Message from "primevue/message";
+
 import Button from "primevue/button";
 import Dialog from 'primevue/dialog';
 import Toast from "primevue/toast";
+import ReplacementCard from "../Card_small/ReplacementCard.vue";
 
 export default {
     data() {
         return {
             visible: false,
+            replacementDetails: [],
         };
     },
     props: ["idReservation"],
     components: {
         Modal,
         Dialog,
+        ReplacementCard,
         Button,
         Toast,
         Message,
+    },
+    mounted() {
+        this.getterReplacementDetails();
+        this.getterReservationOrder();
     },
     methods: {
         saveAndSubmit() {
@@ -70,6 +82,23 @@ export default {
                     });
                     this.$emit("Refresh");
                 });
+        },
+        getterReservationOrder() {
+            axios
+                .get("/get-replacement-details", {
+                    params: {
+                        reservationNumber: this.idReservation,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                    console.log(this.reservationOrder);
+                });
+        },
+        getterReplacementDetails() {
+            axios.get("/get-replacement-details").then(({ data }) => {
+                this.replacementDetails = data;
+            });
         },
     },
 };

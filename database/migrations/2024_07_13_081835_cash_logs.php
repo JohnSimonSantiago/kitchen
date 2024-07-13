@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('replacement_details', function (Blueprint $table) {
-            $table->id();
-            $table->integer('reservationNumber');
-            $table->integer('quantity');
-            $table->integer('equipment_id');
+        Schema::create('cash_logs', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('transaction_number');
+            $table->string('equipment_id');
+            $table->integer('cashAmount');
             $table->timestamps();
+
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('replacement_details');
+        Schema::dropIfExists('cash_logs');
     }
 };

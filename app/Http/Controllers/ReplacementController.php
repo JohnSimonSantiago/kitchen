@@ -58,8 +58,6 @@ class ReplacementController extends Controller
         }
     }
     
-    
-    
     public function getReplacementDetails(Request $request) {
         $getReplacementDetails = replacement_details::all();
         return $getReplacementDetails; 

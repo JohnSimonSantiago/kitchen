@@ -98,6 +98,7 @@ export default {
         Toast,
         Dialog,
     },
+
     mounted() {
         this.getterEquipmentList();
     },

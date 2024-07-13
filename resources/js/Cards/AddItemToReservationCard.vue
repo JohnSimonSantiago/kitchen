@@ -20,14 +20,21 @@
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 Price:
                 {{ equipmentDetails.price }}
-            </p>
+            </p> <div class="grid gap-2 md:grid-cols-2">
             <Button
                 @click="addItem"
-                label="Add Item"
+                label="Add"
                 icon="pi pi-cart-plus"
                 class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
             >
             </Button>
+            <Button
+                @click="removeItem"
+                label="Remove"
+                icon="pi pi-minus"
+                class="border border-red-500 p-2 hover:bg-red-700 hover:text-white"
+            >
+            </Button></div>
             <Toast />
         </div>
     </div>
@@ -64,6 +71,19 @@ export default {
                 severity: "success",
                 summary: "Success!",
                 detail: "Item added to reservation.",
+                life: 1000,
+            });
+        },
+        removeItem() {
+            this.$emit("remove", {
+                equipmentDetails: this.equipmentDetails,
+                quantity: 1,
+            });
+            this.$emit("refreshOrders");
+            this.$toast.add({
+                severity: "success",
+                summary: "Success!",
+                detail: "Item removed from reservation.",
                 life: 1000,
             });
         },
