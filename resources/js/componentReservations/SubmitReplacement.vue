@@ -1,45 +1,55 @@
 <template>
-    <Button
-        label="Submit Replacement"
-        icon="pi pi-sort-alt"
-        @click="visible = true"
-        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
-    />
-    <Dialog
-        v-model:visible="visible"
-        modal
-        header="Submit Replacement"
-        :style="{ width: '25rem' }"
-    >
+    <div>
+        <Button
+            label="Submit Replacement"
+            icon="pi pi-sort-alt"
+            @click="visible = true"
+            class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+        />
+        <Dialog
+            v-model:visible="visible"
+            modal
+            header="Submit Replacement"
+            :style="{ width: '40rem' }"
+        >
+            <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+                <div class="text-right mb-2 mr-14">
+                    <span class="text-gray-900 dark:text-white font-bold mr-8">Replacement</span>
+                    <span class="text-gray-900 dark:text-white font-bold">Cash Replacement</span>
+                </div>
+                <div v-for="order in reservationOrder" :key="order.id">
+                    <ReplacementCard
+                        :orderDetails="order"
+                        @updateTotalAmount="updateTotalAmount"
+                    />
+                </div>
+                <div class="text-right mt-4">
+                    <p class="text-gray-900 dark:text-white">
+                        Final Total Price: P {{ finalTotalPrice.toFixed(2) }}
+                    </p>
+                </div>
+            </div>
 
-        <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
-        <div v-for="order in reservationOrder" :key="order.id">
-            <ReplacementCard :orderDetails="order" />
-        </div>
+            <div class="flex justify-content-end gap-2">
+                <Button
+                    type="button"
+                    label="Cancel"
+                    severity="secondary"
+                    @click="visible = false"
+                ></Button>
+                <Button
+                    type="button"
+                    label="Submit"
+                    @click="saveAndSubmit"
+                ></Button>
+            </div>
+        </Dialog>
+        <Toast />
     </div>
-
-        <div class="flex justify-content-end gap-2">
-            <Button
-                type="button"
-                label="Cancel"
-                severity="secondary"
-                @click="visible = false"
-            ></Button>
-            <Button
-                type="button"
-                label="Submit"
-                @click="saveAndSubmit"
-            ></Button>
-        </div>
-    </Dialog>
-    <Toast />
 </template>
 
 <script>
 import axios from "axios";
-import Modal from "../component/Modal.vue";
-import Message from "primevue/message";
-
 import Button from "primevue/button";
 import Dialog from 'primevue/dialog';
 import Toast from "primevue/toast";
@@ -49,21 +59,21 @@ export default {
     data() {
         return {
             visible: false,
-            replacementDetails: [],
+            reservationOrder: [],
+            totalAmounts: [], // Array to store totalAmount from child components
         };
     },
     props: ["idReservation"],
     components: {
-        Modal,
-        Dialog,
-        ReplacementCard,
         Button,
+        Dialog,
         Toast,
-        Message,
+        ReplacementCard,
     },
-    mounted() {
-        this.getterReplacementDetails();
-        this.getterReservationOrder();
+    computed: {
+        finalTotalPrice() {
+            return this.totalAmounts.reduce((acc, amount) => acc + parseFloat(amount.totalAmount), 0);
+        },
     },
     methods: {
         saveAndSubmit() {
@@ -83,6 +93,18 @@ export default {
                     this.$emit("Refresh");
                 });
         },
+        updateTotalAmount(amount) {
+            // Find the index of the current order in totalAmounts
+            const index = this.totalAmounts.findIndex(orderAmount => orderAmount.id === amount.id);
+            
+            if (index !== -1) {
+                // Update the existing order amount
+                this.totalAmounts[index] = amount.totalAmount;
+            } else {
+                // Add a new order amount
+                this.totalAmounts.push(amount);
+            }
+        },
         getterReservationOrder() {
             axios
                 .get("/get-replacement-details", {
@@ -92,14 +114,11 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
-                    console.log(this.reservationOrder);
                 });
         },
-        getterReplacementDetails() {
-            axios.get("/get-replacement-details").then(({ data }) => {
-                this.replacementDetails = data;
-            });
-        },
+    },
+    mounted() {
+        this.getterReservationOrder();
     },
 };
 </script>

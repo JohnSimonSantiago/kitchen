@@ -13,6 +13,7 @@
                 </h5>
             </a>
         </div>
+        
         <div class="p-2 flex items-center">
             <div class="flex items-center">
                 <button
@@ -32,7 +33,11 @@
                 </button>
             </div>
 
-
+            <div class="ml-2 flex items-center">
+                <p class="text-gray-900 dark:text-white">
+                    P {{ totalAmount.toFixed(2) }}
+                </p>
+            </div>
         </div>
     </div>
 </template>
@@ -41,9 +46,11 @@
 import axios from "axios";
 import Button from "primevue/button";
 
+
 export default {
     components: {
         Button,
+
     },
     props: ["orderDetails"],
     data() {
@@ -109,14 +116,37 @@ export default {
         incrementQuantity() {
             if (this.localQuantity < this.orderDetails.quantity) {
                 this.localQuantity += 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum quantity reached.",
+                    life: 3000,
+                });
             }
         },
         decrementQuantity() {
             if (this.localQuantity > 0) {
                 this.localQuantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum quantity reached.",
+                    life: 3000,
+                });
             }
         },
     },
-
+    computed: {
+        totalAmount() {
+            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
+            return this.localQuantity * price;
+        },
+    },
 };
 </script>
+
+<style scoped>
+/* Add your component-specific styles here if needed */
+</style>

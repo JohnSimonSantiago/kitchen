@@ -21,16 +21,12 @@
         </div>
         <div class="p-2 flex items-center">
             <div class="flex items-center">
-                <div class="px-3 py-1 border border-gray-300 w-16 text-center">
+                <div class="px-3 py-1 w-16 font-bold text-center">
                     <span>{{ orderDetails.quantity }}</span>
                 </div>
             </div>
 
-            <div class="ml-2 flex items-center">
-                <p class="text-gray-900 dark:text-white">
-                    P {{ totalAmount.toFixed(2) }}
-                </p>
-            </div>
+
         </div>
     </div>
 </template>
@@ -105,13 +101,6 @@ export default {
             }
         },
     },
-    computed: {
-        totalAmount() {
-            const price = this.getEquipmentPrice(
-                this.orderDetails.equipment_id
-            );
-            return this.orderDetails.quantity * price;
-        },
-    },
+
 };
 </script>

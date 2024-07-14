@@ -11,14 +11,12 @@
         header="Reject Reservation"
         :style="{ width: '30rem' }"
     >
-        <Message :closable="false" severity="error"
-            >Warning: You cannot undo this action</Message
-        >
+
         <div>
             <label
                 for="description"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Remarks</label
+                >Remarks:</label
             >
             <textarea
                 v-model="remarks"
@@ -29,6 +27,9 @@
                 required
             ></textarea>
         </div>
+        <Message :closable="false" severity="error"
+            >Warning: You cannot undo this action</Message
+        >
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"

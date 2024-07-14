@@ -9,7 +9,7 @@
         v-model:visible="visible"
         modal
         header="Receive Reservation"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
         @hide="resetDialog"
     >
         <!-- Part 1 -->
@@ -24,7 +24,7 @@
                     </div>
                 </div>
      
-            <div class="flex gap-2">
+            <div class="flex gap-2 mt-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
@@ -43,7 +43,7 @@
         <!-- Part 2 -->
         <div v-if="currentStep === 2">
 
-            <div class="flex gap-2">
+            <div class="flex gap-2 mt-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
@@ -69,7 +69,7 @@
                     <EditQuantityOrderCard :orderDetails="order" />
                 </div>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 mt-2">
                 <Button
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="Cancel"

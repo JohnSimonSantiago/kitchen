@@ -1,24 +1,19 @@
 <template>
-    <div
-        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center"
-    >
+    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center">
         <img
-            :src="`/uploads/${
-                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
-            }`"
+            :src="`/uploads/${equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc}`"
             alt="Equipment Image"
             class="rounded-t-lg w-10 h-10"
         />
 
         <div class="p-2 flex-1">
             <a href="#">
-                <h5
-                    class="font-bold tracking-tight text-gray-900 dark:text-white"
-                >
+                <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">
                     {{ getName(orderDetails.equipment_id) }}
                 </h5>
             </a>
         </div>
+        
         <div class="p-2 flex items-center">
             <div class="flex items-center">
                 <button
@@ -28,7 +23,7 @@
                     <span>-</span>
                 </button>
                 <div class="px-3 py-1 border border-gray-300 w-16 text-center">
-                    <span>{{ orderDetails.quantity }}</span>
+                    <span>{{ localQuantity }}</span>
                 </div>
                 <button
                     @click="incrementQuantity"
@@ -46,27 +41,26 @@
         </div>
     </div>
 </template>
+
 <script>
+import axios from "axios";
 import Button from "primevue/button";
+
 export default {
     components: {
         Button,
     },
-    mounted() {
-        this.getEquipmentNameAndImage();
-        this.getterEquipmentPrice();
-        this.getEquipmentPrice();
-        this.getterMaxPossibleOrder();
-    },
-
     props: ["orderDetails"],
     data() {
         return {
-            quantity: 1,
-            maxPossibleOrder: [],
+            localQuantity: this.orderDetails.quantity,
             equipmentNameAndImage: {},
             equipmentsPrice: [],
         };
+    },
+    mounted() {
+        this.getEquipmentNameAndImage();
+        this.getterEquipmentPrice();
     },
     methods: {
         getterEquipmentPrice() {
@@ -86,7 +80,6 @@ export default {
                 return 0;
             }
         },
-
         getEquipmentNameAndImage() {
             axios
                 .get("/get-equipment-name-and-image")
@@ -119,42 +112,36 @@ export default {
             }
         },
         incrementQuantity() {
-            const maxPossibleOrder =
-                this.maxPossibleOrder[this.orderDetails.equipment_id];
+            const maxQuantity = this.orderDetails.quantity; // Assume maxQuantity is from orderDetails or another source
 
-            if (!maxPossibleOrder) {
-                console.warn("Max stock not available.");
-                return;
-            }
-
-            if (this.orderDetails.quantity < maxPossibleOrder) {
-                this.orderDetails.quantity += 1;
+            if (this.localQuantity < maxQuantity) {
+                this.localQuantity += 1;
             } else {
                 this.$toast.add({
                     severity: "warn",
                     summary: "Warning",
-                    detail: "Maximum stock reached.",
+                    detail: "Maximum quantity reached.",
                     life: 3000,
                 });
             }
         },
         decrementQuantity() {
-            if (this.orderDetails.quantity > 0) {
-                this.orderDetails.quantity -= 1;
+            if (this.localQuantity > 0) {
+                this.localQuantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum quantity reached.",
+                    life: 3000,
+                });
             }
-        },
-        getterMaxPossibleOrder() {
-            axios.get("/get-max-possible-order").then(({ data }) => {
-                this.maxPossibleOrder = data;
-            });
         },
     },
     computed: {
         totalAmount() {
-            const price = this.getEquipmentPrice(
-                this.orderDetails.equipment_id
-            );
-            return this.orderDetails.quantity * price;
+            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
+            return this.localQuantity * price; // Use localQuantity instead of orderDetails.quantity
         },
     },
 };

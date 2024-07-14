@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center">
+    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center mb-4">
         <img
             :src="`/uploads/${equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc}`"
             alt="Equipment Image"
@@ -14,24 +14,44 @@
             </a>
         </div>
         <div class="p-2 flex items-center">
-            <div class="flex items-center">
-                <button
-                    @click="decrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-l-md"
-                >
-                    <span>-</span>
-                </button>
-                <div class="px-3 py-1 border border-gray-300 w-16 text-center">
-                    <span>{{ localQuantity }}</span>
+            <div class="flex flex-col items-center mr-4">
+                <div class="flex items-center">
+                    <button
+                        @click="decrementLeft"
+                        class="px-3 py-1 border border-gray-300 rounded-l-md"
+                    >
+                        <span>-</span>
+                    </button>
+                    <div class="px-3 py-1 border border-gray-300 w-16 text-center">
+                        <span>{{ leftQuantity }}</span>
+                    </div>
+                    <button
+                        @click="incrementLeft"
+                        class="px-3 py-1 border border-gray-300 rounded-r-md"
+                    >
+                        <span>+</span>
+                    </button>
                 </div>
-                <button
-                    @click="incrementQuantity"
-                    class="px-3 py-1 border border-gray-300 rounded-r-md"
-                >
-                    <span>+</span>
-                </button>
             </div>
-
+            <div class="flex flex-col items-center">
+                <div class="flex items-center">
+                    <button
+                        @click="decrementRight"
+                        class="px-3 py-1 border border-gray-300 rounded-l-md"
+                    >
+                        <span>-</span>
+                    </button>
+                    <div class="px-3 py-1 border border-gray-300 w-16 text-center">
+                        <span>{{ rightQuantity }}</span>
+                    </div>
+                    <button
+                        @click="incrementRight"
+                        class="px-3 py-1 border border-gray-300 rounded-r-md"
+                    >
+                        <span>+</span>
+                    </button>
+                </div>
+            </div>
             <div class="ml-2 flex items-center">
                 <p class="text-gray-900 dark:text-white">
                     P {{ totalAmount.toFixed(2) }}
@@ -43,16 +63,13 @@
 
 <script>
 import axios from "axios";
-import Button from "primevue/button";
 
 export default {
-    components: {
-        Button,
-    },
     props: ["orderDetails"],
     data() {
         return {
-            localQuantity: this.orderDetails.quantity,
+            leftQuantity: this.orderDetails.quantity,
+            rightQuantity: 0,
             equipmentNameAndImage: {},
             equipmentsPrice: [],
         };
@@ -110,22 +127,38 @@ export default {
                 return "Unknown";
             }
         },
-        incrementQuantity() {
-            if (this.localQuantity < this.orderDetails.quantity) {
-                this.localQuantity += 1;
+        incrementLeft() {
+            if (this.leftQuantity < this.orderDetails.quantity) {
+                this.leftQuantity += 1;
+                this.rightQuantity -= 1;
             }
         },
-        decrementQuantity() {
-            if (this.localQuantity > 0) {
-                this.localQuantity -= 1;
+        decrementLeft() {
+            if (this.leftQuantity > 0) {
+                this.leftQuantity -= 1;
+                this.rightQuantity += 1;
+            }
+        },
+        incrementRight() {
+            if (this.rightQuantity < this.orderDetails.quantity) {
+                this.rightQuantity += 1;
+                this.leftQuantity -= 1;
+            }
+        },
+        decrementRight() {
+            if (this.rightQuantity > 0) {
+                this.rightQuantity -= 1;
+                this.leftQuantity += 1;
             }
         },
     },
     computed: {
         totalAmount() {
             const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
-            return this.localQuantity * price;
+            return this.rightQuantity * price;
         },
     },
 };
 </script>
+
+

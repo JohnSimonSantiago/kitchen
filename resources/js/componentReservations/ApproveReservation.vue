@@ -10,8 +10,13 @@
         v-model:visible="visible"
         modal
         header="Approve Reservation"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
     >
+                <div class="bg-gray-200 rounded-md px-4 py-2">
+                    <div v-for="order in reservationOrder" :key="order.id">
+                        <OrderCard :orderDetails="order" />
+                    </div>
+                </div>
         <Message :closable="false" severity="warn"
             >Note: You cannot edit this reservations once it has been
             approved</Message
@@ -41,22 +46,40 @@ import Message from "primevue/message";
 import Dialog from 'primevue/dialog';
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import OrderCard from "../Card_small/OrderCard.vue";
 
 export default {
+    props: ["idReservation"],
     data() {
         return {
             visible: false,
+            reservationOrder: [],
         };
+    },
+    mounted() {
+        this.getterReservationOrder();
     },
     props: ["idReservation", "idEquipment"],
     components: {
         Modal,
+        OrderCard,
         Dialog,
         Button,
         Toast,
         Message,
     },
     methods: {
+        getterReservationOrder() {
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: this.idReservation,
+                    },
+                })
+                .then(({ data }) => {
+                    this.reservationOrder = data;
+                });
+        },
         saveAndSubmit() {
             this.approveReservation();
             this.visible = false;

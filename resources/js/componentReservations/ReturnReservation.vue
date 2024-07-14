@@ -9,7 +9,7 @@
         v-model:visible="visible"
         modal
         header="Return Reservation"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
     >
         <!-- Part 1: -->
         <div v-if="currentStep === 1">
@@ -21,7 +21,7 @@
                         <OrderCard :orderDetails="order" />
                     </div>
                 </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 my-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
@@ -41,20 +41,20 @@
         <!-- Part 2: -->
         <div v-if="currentStep === 2">
             <div>
-                <p>Is Equipment in Good Condition?</p>
+                Is Equipment in Good Condition?
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 my-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="No"
-                    @click="skipToPar5"
+                    @click="skipToPart5"
                 />
                 <Button
                     icon="pi pi-thumbs-up-fill"
                     class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Yes"
-                    @click="returnReservation"
+                    @click="skipToPart3"
                 />
 
             </div>
@@ -62,14 +62,39 @@
 
         <!-- Part 3: -->
         <div v-if="currentStep === 3">
+
+            <div>
+                    <label
+                        for="description"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >Remarks:</label
+                    >
+                    <textarea
+                        v-model="remarks"
+                        id="remarks"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Note"
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+            <div class="flex gap-2 my-2">
+                <Button
+                type="button"
+                label="Cancel"
+       
+                @click="closeDialog"
+            ></Button>
             <Button
-                class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                label="Return Equipment Now"
-                @click="returnReservation"
-            />
+                type="button"
+                label="Confirm"
+                @click="Submit"
+            ></Button>
+
+            </div>
         </div>
 
-        <!-- Part : -->
+        <!-- Part 4: -->
         <div v-if="currentStep === 4">
     <p>Input Missing Equipment</p>
     <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
@@ -77,7 +102,7 @@
             <InputMissingEquipmentCard :orderDetails="order" />
         </div>
     </div>
-    <div class="flex gap-2">
+    <div class="flex gap-2 my-2">
         <Button
             icon="pi pi-thumbs-down-fill"
             class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
@@ -151,10 +176,13 @@ export default {
         nextStep() {
             this.currentStep++;
         },
+        skipToPart3() {
+            this.currentStep = 3;
+        },
         skipToPart4() {
             this.currentStep = 4;
         },
-        skipToPar5() {
+        skipToPart5() {
             this.currentStep = 5;
         },
         closeDialog() {
