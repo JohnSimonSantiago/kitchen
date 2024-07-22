@@ -18,12 +18,12 @@
                 <p>Is Equipment Complete?</p>
             </div>
 
-                <div class="bg-gray-200 rounded-md px-4 py-2">
-                    <div v-for="order in reservationOrder" :key="order.id">
-                        <OrderCard :orderDetails="order" />
-                    </div>
+            <div class="bg-gray-200 rounded-md px-4 py-2">
+                <div v-for="order in reservationOrder" :key="order.id">
+                    <OrderCard :orderDetails="order" />
                 </div>
-     
+            </div>
+
             <div class="flex gap-2 mt-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -42,7 +42,6 @@
 
         <!-- Part 2 -->
         <div v-if="currentStep === 2">
-
             <div class="flex gap-2 mt-2">
                 <Button
                     icon="pi pi-thumbs-down-fill"
@@ -78,7 +77,7 @@
                 <Button
                     class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Confirm"
-                    @click=""
+                    @click="ReceiveReservationIncomplete"
                 />
             </div>
         </div>
@@ -91,7 +90,7 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 import EditQuantityOrderCard from "../Card_small/EditQuantityOrderCard.vue";
 import OrderCard from "../Card_small/OrderCard.vue";
 
@@ -166,6 +165,35 @@ export default {
                         life: 3000,
                     });
                     this.$emit("Refresh");
+                });
+        },
+
+        ReceiveReservationIncomplete() {
+            const reservationDetails = this.reservationOrder.map((order) => ({
+                reservationNumber: this.idReservation,
+                equipment_id: order.equipment_id,
+                quantity: order.quantity,
+            }));
+
+            axios
+                .post("/receive-reservation-incomplete", reservationDetails)
+                .then(() => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success!",
+                        detail: "Reservation details updated successfully!",
+                        life: 3000,
+                    });
+                    this.$emit("Refresh");
+                })
+                .catch((error) => {
+                    console.error("Error updating reservation details:", error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to update reservation details.",
+                        life: 3000,
+                    });
                 });
         },
     },

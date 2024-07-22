@@ -1,19 +1,27 @@
 <template>
-    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center">
+    <div
+        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center"
+    >
         <img
-            :src="`/uploads/${equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc}`"
+            :src="`/uploads/${
+                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
+            }`"
             alt="Equipment Image"
             class="rounded-t-lg w-10 h-10"
         />
 
         <div class="p-2 flex-1">
             <a href="#">
-                <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">
-                    {{ getName(orderDetails.equipment_id) }}
+                <h5
+                    class="font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {{ getName(orderDetails.equipment_id) }} ({{
+                        orderDetails.quantity
+                    }})
                 </h5>
             </a>
         </div>
-        
+
         <div class="p-2 flex items-center">
             <div class="flex items-center">
                 <button
@@ -140,7 +148,9 @@ export default {
     },
     computed: {
         totalAmount() {
-            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
+            const price = this.getEquipmentPrice(
+                this.orderDetails.equipment_id
+            );
             return this.localQuantity * price; // Use localQuantity instead of orderDetails.quantity
         },
     },

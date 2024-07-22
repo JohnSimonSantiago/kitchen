@@ -62,6 +62,7 @@ Route::post("/approve-reservation", [ReservationController::class, "approveReser
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
 
 Route::post("/receive-reservation", [ReservationController::class, "receiveReservation"]);
+Route::post("/receive-reservation-incomplete", [ReservationController::class, "receiveReservationIncomplete"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
 Route::post("/return-reservation-incomplete", [ReservationController::class, "returnReservationIncomplete"]);
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);

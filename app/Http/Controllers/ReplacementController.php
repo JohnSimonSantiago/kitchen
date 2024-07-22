@@ -14,7 +14,6 @@ class ReplacementController extends Controller
     public function submitReplacementDetails(Request $request)
     {
         $requestParameters = $request->all();
-    
         for ($counter = 0; $counter < count($requestParameters); $counter++) {
             // Validate each item in the requestParameters array
             $validator = Validator::make($requestParameters[$counter], [
