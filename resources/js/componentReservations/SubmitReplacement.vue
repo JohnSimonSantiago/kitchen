@@ -12,10 +12,20 @@
             header="Submit Replacement"
             :style="{ width: '40rem' }"
         >
+            <Message :closable="false" severity="info"
+                >Note: 1 Equipment = 3 Replacements</Message
+            >
             <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+                <span class="text-gray-900 dark:text-white font-bold mr-8"
+                    >Replacement</span
+                >
                 <div class="text-right mb-2 mr-14">
-                    <span class="text-gray-900 dark:text-white font-bold mr-8">Replacement</span>
-                    <span class="text-gray-900 dark:text-white font-bold">Cash Replacement</span>
+                    <span class="text-gray-900 dark:text-white font-bold mr-8"
+                        >Replacement</span
+                    >
+                    <span class="text-gray-900 dark:text-white font-bold"
+                        >Cash Replacement</span
+                    >
                 </div>
                 <div v-for="order in reservationOrder" :key="order.id">
                     <ReplacementCard
@@ -51,9 +61,10 @@
 <script>
 import axios from "axios";
 import Button from "primevue/button";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
 import ReplacementCard from "../Card_small/ReplacementCard.vue";
+import Message from "primevue/message";
 
 export default {
     data() {
@@ -66,13 +77,17 @@ export default {
     props: ["idReservation"],
     components: {
         Button,
+        Message,
         Dialog,
         Toast,
         ReplacementCard,
     },
     computed: {
         finalTotalPrice() {
-            return this.totalAmounts.reduce((acc, amount) => acc + parseFloat(amount.totalAmount), 0);
+            return this.totalAmounts.reduce(
+                (acc, amount) => acc + parseFloat(amount.totalAmount),
+                0
+            );
         },
     },
     methods: {
@@ -95,8 +110,10 @@ export default {
         },
         updateTotalAmount(amount) {
             // Find the index of the current order in totalAmounts
-            const index = this.totalAmounts.findIndex(orderAmount => orderAmount.id === amount.id);
-            
+            const index = this.totalAmounts.findIndex(
+                (orderAmount) => orderAmount.id === amount.id
+            );
+
             if (index !== -1) {
                 // Update the existing order amount
                 this.totalAmounts[index] = amount.totalAmount;

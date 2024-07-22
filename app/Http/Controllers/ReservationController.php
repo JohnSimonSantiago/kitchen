@@ -179,6 +179,48 @@ class ReservationController extends Controller
         
             return response()->json(['message' => 'Reservation Received successfully.']);
         }
+        public function receiveReservationIncomplete(Request $request)
+{
+    $receiveReservation = Reservation::find($request->ID);
+    $receiveReservation->statusID = 3;
+    $res = $receiveReservation->save();
+
+    // Fetch the reservation details for the given reservation
+    $reservationDetails = DB::table('reservation_details')
+        ->where('reservationNumber', $receiveReservation->reservationNumber)
+        ->get();
+
+    // Use a database transaction to ensure atomicity
+    DB::transaction(function () use ($reservationDetails) {
+        // Get the current maximum transaction number from the transactions_table
+        $maxTransactionNumber = DB::table('transactions_table')->max('transaction_number');
+        $transactionNumber = $maxTransactionNumber ? $maxTransactionNumber + 1 : 1;
+
+        foreach ($reservationDetails as $reservationDetail) {
+            // Update the reservation details
+            DB::table('reservation_details')
+                ->where('id', $reservationDetail->id)
+                ->update([
+                    'quantity' => $reservationDetail->quantity, // Update fields as needed
+                    'updated_at' => now(),
+                ]);
+
+            // Insert into the transactions_table
+            DB::table('transactions_table')->insert([
+                'transaction_type' => 2,
+                'equipment_id' => $reservationDetail->equipment_id,
+                'condition_id' => 1, // Assuming the condition_id is 1, change as needed
+                'quantity' => $reservationDetail->quantity,
+                'transaction_number' => $transactionNumber,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    });
+
+    return response()->json(['message' => 'Reservation Received and updated successfully.']);
+}
+
         
 
 

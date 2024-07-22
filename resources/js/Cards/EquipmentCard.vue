@@ -30,7 +30,7 @@
                     severity="success"
                 ></Badge></div>
                  <div class="flex flex-col items-center">
-                    <p class="text-yellow-500">Slightly Damaged</p><Badge
+                    <p class="text-yellow-500">Damaged</p><Badge
                     :value="equipmentQuantities[2]"
                     size="large"
                     severity="warning"

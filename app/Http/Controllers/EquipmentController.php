@@ -162,23 +162,6 @@ class EquipmentController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function returnMissingEquipment(Request $request)
-{
-    
-    $validatedData = $request->validate([
-        'equipmentID' => 'required|exists:equipment,equipmentID',
-        'missingQuantity' => 'required|numeric|min:1',
-    ]);
-
-    $equipment = Equipment::findOrFail($validatedData['equipmentID']);
-    $newQuantity = $equipment->quantity - $validatedData['missingQuantity'];
-    $newQuantity = max(0, $newQuantity);
-
-    $equipment->quantity = $newQuantity;
-    $equipment->save();
-
-    return response()->json(['message' => 'Missing equipment updated successfully.']);
-}
 
 
 public function getAllEquipmentStatus(){
@@ -223,27 +206,5 @@ public function getEquipmentStatusQuantity(Request $request)
 }
 
 
-public function getMaxPossibleOrder(Request $request)
-{
-    $reservationNumber = $request->reservationNumber;
-
-    // Fetch reservation details for the given reservation number
-    $reservationDetails = reservation_details::where('reservationNumber', $reservationNumber)->get();
-
-    // Calculate total quantity of equipment needed based on the reservation details
-    $totalQuantity = $reservationDetails->sum('quantity');
-
-    // Retrieve equipment quantities from the equipment_status table
-    $getEquipmentQuantities = equipment_status::where('condition_id', 1)
-        ->pluck('quantity', 'equipment_id');
-
-    // Check available stock for each equipment and calculate the maximum possible order
-    $maxPossibleOrder = [];
-    foreach ($getEquipmentQuantities as $equipmentId => $availableStock) {
-        $maxPossibleOrder[$equipmentId] = floor($availableStock / $totalQuantity);
-    }
-
-    return response()->json(['maxPossibleOrder' => $maxPossibleOrder]);
-}
 
 }
