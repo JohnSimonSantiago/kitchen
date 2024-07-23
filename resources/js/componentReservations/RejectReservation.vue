@@ -11,7 +11,6 @@
         header="Reject Reservation"
         :style="{ width: '30rem' }"
     >
-
         <div>
             <label
                 for="description"
@@ -52,7 +51,7 @@ import axios from "axios";
 import Modal from "../component/Modal.vue";
 import Message from "primevue/message";
 import Button from "primevue/button";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
 
 export default {
@@ -80,7 +79,10 @@ export default {
         },
         rejectReservation() {
             axios
-                .post("/reject-reservation", { ID: this.idReservation })
+                .post("/reject-reservation", {
+                    ID: this.idReservation,
+                    remarks: this.remarks, // Include remarks in the request payload
+                })
                 .then(() => {
                     this.$toast.add({
                         severity: "success",
@@ -89,6 +91,15 @@ export default {
                         life: 3000,
                     });
                     this.$emit("Refresh");
+                })
+                .catch((error) => {
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error!",
+                        detail:
+                            "Failed to reject reservation: " + error.message,
+                        life: 3000,
+                    });
                 });
         },
     },

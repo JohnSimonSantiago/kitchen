@@ -15,9 +15,7 @@
                 <h5
                     class="font-bold tracking-tight text-gray-900 dark:text-white"
                 >
-                    {{ getName(orderDetails.equipment_id) }} ({{
-                        orderDetails.quantity
-                    }})
+                    {{ getName(orderDetails.equipment_id) }}
                 </h5>
             </a>
         </div>

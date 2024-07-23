@@ -12,11 +12,15 @@
                         Equipment List
                     </h1>
                 </div>
-                <div class="">
+                <div class="flex gap-2">
                     <AddNewStock
                         @conditionSelected="addItem"
                         @refresh="getterAllEquipmentStatus"
                     ></AddNewStock>
+                    <DisposeStock
+                        @conditionSelected="addItem"
+                        @refresh="getterAllEquipmentStatus"
+                    ></DisposeStock>
                 </div>
                 <div class="my-2 grid grid-cols-6 gap-5">
                     <div v-for="equipment in equipmentsStatus" class="">
@@ -37,11 +41,13 @@
 <script>
 import EditStockCard from "../Cards/EditStockCard.vue";
 import AddNewStock from "../componentInventory/AddNewStock.vue";
+import DisposeStock from "../componentInventory/DisposeStock.vue";
 
 export default {
     components: {
         EditStockCard,
         AddNewStock,
+        DisposeStock,
     },
     mounted() {
         this.getterEquipment();

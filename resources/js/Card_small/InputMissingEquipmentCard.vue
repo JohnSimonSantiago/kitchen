@@ -1,19 +1,26 @@
 <template>
-    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center">
+    <div
+        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center"
+    >
         <img
-            :src="`/uploads/${equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc}`"
+            :src="`/uploads/${
+                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
+            }`"
             alt="Equipment Image"
             class="rounded-t-lg w-10 h-10"
         />
 
         <div class="p-2 flex-1">
             <a href="#">
-                <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">
-                    {{ getName(orderDetails.equipment_id) }} ({{ orderDetails.quantity }})
+                <h5
+                    class="font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {{ getName(orderDetails.equipment_id) }} ({{
+                        orderDetails.quantity
+                    }})
                 </h5>
             </a>
         </div>
-        
         <div class="p-2 flex items-center">
             <div class="flex items-center">
                 <button
@@ -23,7 +30,7 @@
                     <span>-</span>
                 </button>
                 <div class="px-3 py-1 border border-gray-300 w-16 text-center">
-                    <span>{{ localQuantity }}</span>
+                    <span>{{ orderDetails.quantity }}</span>
                 </div>
                 <button
                     @click="incrementQuantity"
@@ -43,30 +50,28 @@
 </template>
 
 <script>
-import axios from "axios";
-import Button from "primevue/button";
-
+import axios from 'axios';
+import Button from 'primevue/button';
 
 export default {
     components: {
         Button,
-
-    },
-    props: ["orderDetails"],
-    data() {
-        return {
-            localQuantity: this.orderDetails.quantity,
-            equipmentNameAndImage: {},
-            equipmentsPrice: [],
-        };
     },
     mounted() {
         this.getEquipmentNameAndImage();
         this.getterEquipmentPrice();
     },
+    props: ['orderDetails'],
+    data() {
+        return {
+            equipmentNameAndImage: {},
+            equipmentsPrice: [],
+            maxQuantity: this.orderDetails.quantity, // Store the max quantity separately
+        };
+    },
     methods: {
         getterEquipmentPrice() {
-            axios.get("/get-equipments").then(({ data }) => {
+            axios.get('/get-equipments').then(({ data }) => {
                 this.equipmentsPrice = data.map((equipment) => equipment.price);
             });
         },
@@ -84,7 +89,7 @@ export default {
         },
         getEquipmentNameAndImage() {
             axios
-                .get("/get-equipment-name-and-image")
+                .get('/get-equipment-name-and-image')
                 .then(({ data }) => {
                     data.forEach((equipment) => {
                         this.equipmentNameAndImage[equipment.equipment_id] = {
@@ -94,59 +99,50 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    console.error("Error fetching equipment data:", error);
+                    console.error('Error fetching equipment data:', error);
                 });
         },
         getImageSrc(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
-                return equipment.imageSrc || "Unknown";
+                return equipment.imageSrc || 'Unknown';
             } else {
-                return "Unknown";
+                return 'Unknown';
             }
         },
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
-                return equipment.name || "Unknown";
+                return equipment.name || 'Unknown';
             } else {
-                return "Unknown";
+                return 'Unknown';
             }
         },
         incrementQuantity() {
-            if (this.localQuantity < this.orderDetails.quantity) {
-                this.localQuantity += 1;
+            if (this.orderDetails.quantity < this.maxQuantity) {
+                this.orderDetails.quantity += 1;
             } else {
                 this.$toast.add({
-                    severity: "warn",
-                    summary: "Warning",
-                    detail: "Maximum quantity reached.",
+                    severity: 'warn',
+                    summary: 'Warning',
+                    detail: 'Maximum stock reached.',
                     life: 3000,
                 });
             }
         },
         decrementQuantity() {
-            if (this.localQuantity > 0) {
-                this.localQuantity -= 1;
-            } else {
-                this.$toast.add({
-                    severity: "warn",
-                    summary: "Warning",
-                    detail: "Minimum quantity reached.",
-                    life: 3000,
-                });
+            if (this.orderDetails.quantity > 0) {
+                this.orderDetails.quantity -= 1;
             }
         },
     },
     computed: {
         totalAmount() {
-            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
-            return this.localQuantity * price;
+            const price = this.getEquipmentPrice(
+                this.orderDetails.equipment_id
+            );
+            return this.orderDetails.quantity * price;
         },
     },
 };
 </script>
-
-<style scoped>
-/* Add your component-specific styles here if needed */
-</style>

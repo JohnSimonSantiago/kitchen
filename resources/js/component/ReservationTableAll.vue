@@ -71,14 +71,19 @@
                             :idReservation="reservation.reservationNumber"
                             @Refresh="getterReservations"
                         ></SubmitReplacement>
-                        <Button v-if="reservation.statusID >= 1 && reservation.statusID <= 5"
+                        <Button
+                            v-if="
+                                reservation.statusID >= 1 &&
+                                reservation.statusID <= 5
+                            "
                             @click="readMore(reservation)"
                             label="View"
                             icon="pi pi-arrow-right"
                             class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
                         >
                         </Button>
-                        <Button v-if="reservation.statusID === 6"
+                        <Button
+                            v-if="reservation.statusID === 6"
                             @click="viewReplacementDetails(reservation)"
                             label="View Replacements"
                             icon="pi pi-arrow-right"
@@ -172,12 +177,15 @@ export default {
 
             this.$emit("reservationSelected", reservation.reservationNumber);
         },
-        
+
         viewReplacementDetails(replacementDetails) {
             console.log(replacementDetails);
-            this.$emit("clicked", replacementDetails);
+            this.$emit("clickedReplacement", replacementDetails);
 
-            this.$emit("reservationSelected", replacementDetails.reservationNumber);
+            this.$emit(
+                "reservationSelected",
+                replacementDetails.reservationNumber
+            );
         },
         formatDate(dateString) {
             const date = new Date(dateString);

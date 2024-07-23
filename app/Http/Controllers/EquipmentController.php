@@ -131,7 +131,7 @@ class EquipmentController extends Controller
     }
 }
 
-    public function AddandDisposeEquipmentStock(Request $request)
+    public function AddEquipmentStock(Request $request)
     {
         $validatedData = $request->validate([
             'equipment_id' => 'required|exists:equipments,equipment_id',
@@ -162,6 +162,36 @@ class EquipmentController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function DisposeEquipmentStock(Request $request)
+    {
+        $validatedData = $request->validate([
+            'equipment_id' => 'required|exists:equipments,equipment_id',
+            'quantity' => 'required|integer|min:0',
+        ]);
+    
+        $equipment_id = $request->equipment_id;
+        $condition_id = $request->condition_id;
+        $quantity = $request->quantity;
+    
+        $existingEquipmentStock = equipment_status::where('equipment_id', $equipment_id)
+            ->where('condition_id', $condition_id)
+            ->first();
+    
+        if ($existingEquipmentStock) {
+
+            $existingEquipmentStock->quantity -= $quantity;
+            $existingEquipmentStock->save();
+        } else {
+
+            $newEquipmentStock = new equipment_status();
+            $newEquipmentStock->equipment_id = $equipment_id;
+            $newEquipmentStock->condition_id = $condition_id;
+            $newEquipmentStock->quantity = $quantity;
+            $newEquipmentStock->save();
+        }
+    
+        return response()->json(['success' => true]);
+    }
 
 
 public function getAllEquipmentStatus(){

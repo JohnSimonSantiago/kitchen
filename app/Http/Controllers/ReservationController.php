@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\equipment_status;
 use Illuminate\Support\Facades\DB;
 use App\Models\reservation_details;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -181,11 +182,10 @@ class ReservationController extends Controller
         }
 
 
-        
-        function ReceiveReservationIncomplete($request) {
+      
+        public function receiveReservationIncomplete(Request $request)
+        {
             $requestParameters = $request->all();
-           
-            
             for ($counter = 0; $counter < count($requestParameters); $counter++) {
                 // Validate each item in the requestParameters array
                 $validator = Validator::make($requestParameters[$counter], [
@@ -200,26 +200,35 @@ class ReservationController extends Controller
                     print_r($validator->errors());
                 } else {
                     // Validation passed, update the database
-                    $updateResult = DB::table('reservation_details')
+                    DB::table('reservation_details')
                         ->where('reservationNumber', $requestParameters[$counter]['reservationNumber'])
                         ->where('equipment_id', $requestParameters[$counter]['equipment_id'])
                         ->update([
                             'quantity' => $requestParameters[$counter]['quantity'],
                             'updated_at' => now(),
                         ]);
-        
-                    if ($updateResult) {
-                        echo "Updated item $counter in the database.<br>";
-                    } else {
-                        echo "No matching record found for item $counter.<br>";
-                    }
+                    echo "Updated item $counter in the database.<br>";
                 }
             }
-        }
-
         
-
-
+            // Update the reservation statusID after processing all reservation details
+            $reservationNumber = $requestParameters[0]['reservationNumber']; // Assuming all requestParameters have the same reservationNumber
+            $receiveIncompleteReservation = Reservation::where('reservationNumber', $reservationNumber)->first();
+        
+            if ($receiveIncompleteReservation) {
+                $receiveIncompleteReservation->statusID = 3; 
+                $res = $receiveIncompleteReservation->save();
+        
+                if ($res) {
+                    return response()->json(['message' => 'Reservation details updated successfully.'], 200);
+                } else {
+                    return response()->json(['message' => 'Failed to update reservation status.'], 500);
+                }
+            } else {
+                return response()->json(['message' => 'Reservation not found.'], 404);
+            }
+        }
+        
         public function returnReservation(Request $request)
         {   
             $returnReservation = reservation::find($request->ID);
@@ -237,9 +246,23 @@ class ReservationController extends Controller
         }
         
         public function rejectReservation(Request $request)
-        {   
+        {
+            // Validate the incoming request to ensure 'ID' and 'remarks' are provided
+            $request->validate([
+                'ID' => 'required|integer',
+                'remarks' => 'required|string',
+            ]);
+        
+            // Find the reservation by the provided ID
             $rejectReservation = reservation::find($request->ID);
+        
+            if (!$rejectReservation) {
+                return response()->json(['message' => 'Reservation not found.'], 404);
+            }
+        
+            // Update the statusID and remarks
             $rejectReservation->statusID = 5;
+            $rejectReservation->remarks = $request->remarks;
             $res = $rejectReservation->save();
         
             // Fetch the reservation details for the given reservation

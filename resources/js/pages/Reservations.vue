@@ -18,6 +18,7 @@
                 <div>
                     <ReservationTableAll
                         @clicked="seeReservationDetails"
+                        @clickedReplacement="seeReplacementDetails"
                         @reservationSelected="handleReservationSelected"
                     ></ReservationTableAll>
                 </div>
@@ -45,11 +46,21 @@
                 <div class="my-2 grid grid-cols-1">
                     <div class="bg-gray-300 rounded-md px-4 py-2">
                         <div class="my-5">
-                            <div
-                                v-for="order in reservationOrder"
-                                :key="order.id"
-                            >
-                                <OrderCard :orderDetails="order" />
+                            <div v-if="isReservationDetails">
+                                <div
+                                    v-for="order in reservationOrder"
+                                    :key="order.id"
+                                >
+                                    <OrderCard :orderDetails="order" />
+                                </div>
+                            </div>
+                            <div v-if="!isReservationDetails">
+                                <div
+                                    v-for="order in replacementDetails"
+                                    :key="order.id"
+                                >
+                                    <OrderCard :orderDetails="order" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,7 +82,6 @@
                                 d="M4 10h16M8 14h8m-4-7V4M7 7V4m10 3V4M5 20h14c.6 0 1-.4 1-1V7c0-.6-.4-1-1-1H5a1 1 0 0 0-1 1v12c0 .6.4 1 1 1Z"
                             />
                         </svg>
-
                         <span>
                             From:
                             {{ formatDate(showReservationDetails?.dateStart) }}
@@ -93,12 +103,23 @@
                                 clip-rule="evenodd"
                             />
                         </svg>
-
                         <span>
                             To:
                             {{ formatDate(showReservationDetails?.dateEnd) }}
                         </span>
                     </div>
+                </div>
+                <div
+                    class="bg-yellow-100 rounded-md px-4 py-2"
+                    v-if="
+                        showReservationDetails &&
+                        [4, 5].includes(showReservationDetails.statusID)
+                    "
+                >
+                    <span>
+                        Remarks:
+                        {{ showReservationDetails?.remarks }}
+                    </span>
                 </div>
                 <div class="flex-col self-end">
                     <div
@@ -152,8 +173,11 @@ export default {
         return {
             reservations: null,
             showReservationDetails: null,
+            showReplacementDetails: null,
             reservationOrder: [],
+            replacementDetails: [],
             visible: false,
+            isReservationDetails: true, // Flag to determine which details to show
         };
     },
     methods: {
@@ -167,8 +191,15 @@ export default {
         },
         seeReservationDetails(data) {
             this.visible = true;
-            console.log(data);
             this.showReservationDetails = data;
+            this.isReservationDetails = true;
+            this.getterReservationOrder(data.reservationNumber);
+        },
+        seeReplacementDetails(data) {
+            this.visible = true;
+            this.showReplacementDetails = data;
+            this.isReservationDetails = false;
+            this.getterReplacementDetails(data.reservationNumber);
         },
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
@@ -187,6 +218,17 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
+                });
+        },
+        getterReplacementDetails(reservationNumber) {
+            axios
+                .get("/get-reservation-orders", {
+                    params: {
+                        reservationNumber: reservationNumber,
+                    },
+                })
+                .then(({ data }) => {
+                    this.replacementDetails = data;
                 });
         },
     },

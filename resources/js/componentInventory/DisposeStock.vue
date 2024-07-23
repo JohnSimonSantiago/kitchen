@@ -1,14 +1,14 @@
 <template>
     <Button
-        label="Add New Stock"
-        icon="pi pi-plus"
+        label="Dispose Stock"
+        icon="pi pi-minus"
         @click="visible = true"
-        class="border border-green-500 p-2 hover:bg-green-400 hover:text-white"
+        class="border border-red-500 p-2 hover:bg-red-400 hover:text-white"
     />
     <Dialog
         v-model:visible="visible"
         modal
-        header="Add Stock"
+        header="Dispose Stock"
         :style="{ width: '25rem' }"
     >
         <div v-if="Error">Error</div>
@@ -76,7 +76,7 @@
                         ></Button>
                         <Button
                             type="button"
-                            label="Add"
+                            label="Dispose"
                             @click="saveAndSubmit"
                         ></Button>
                     </div>
@@ -143,7 +143,7 @@ export default {
             }
 
             axios
-                .post("/add-equipment-stock", {
+                .post("/dispose-equipment-stock", {
                     equipment_id: this.selectedEquipment,
                     condition_id: conditionId,
                     quantity: this.quantity,
