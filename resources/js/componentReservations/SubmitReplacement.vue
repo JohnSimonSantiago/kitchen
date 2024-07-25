@@ -4,7 +4,7 @@
             label="Submit Replacement"
             icon="pi pi-sort-alt"
             @click="visible = true"
-            class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+            class="border border-green-500 w-full p-2 hover:bg-green-600 hover:text-white"
         />
         <Dialog
             v-model:visible="visible"

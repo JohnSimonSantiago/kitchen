@@ -1,7 +1,7 @@
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left rtl:text-right dark:text-gray-400"
         >
             <thead>
                 <tr
@@ -17,79 +17,81 @@
                     <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="">
                 <tr v-for="(reservation, index) in reservations">
-                    <td class="text-center">
+                    <td class="text-center text-base">
                         No. {{ reservation.reservationNumber }}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center text-base">
                         {{ reservation.customerName }}
                     </td>
-                    <td
-                        class="text-center flex items-center justify-center"
-                        align="center"
-                    >
-                        <Message
-                            class="text-center w-fit"
-                            :closable="false"
-                            :severity="getStatusSeverity(reservation.statusID)"
-                        >
-                            {{ getStatus(reservation.statusID) }}
-                        </Message>
-                    </td>
                     <td class="text-center">
+                        <div class="flex justify-center">
+                            <Message
+                                :closable="false"
+                                :severity="
+                                    getStatusSeverity(reservation.statusID)
+                                "
+                            >
+                                {{ getStatus(reservation.statusID) }}
+                            </Message>
+                        </div>
+                    </td>
+                    <td class="text-center text-base">
                         {{ formatDate(reservation.dateStart) }}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center text-base">
                         {{ formatDate(reservation.dateEnd) }}
                     </td>
-                    <td class="space-x-2.5" align="center">
-                        <ApproveReservation
-                            v-if="reservation.statusID === 1"
-                            :idReservation="reservation.reservationNumber"
-                            @Refresh="getterReservations"
-                        ></ApproveReservation>
-                        <ReceiveReservation
-                            v-if="reservation.statusID === 2"
-                            :idReservation="reservation.reservationNumber"
-                            @Refresh="getterReservations"
-                        >
-                        </ReceiveReservation>
-                        <ReturnReservation
-                            v-if="reservation.statusID === 3"
-                            :idReservation="reservation.reservationNumber"
-                            @Refresh="getterReservations"
-                        >
-                        </ReturnReservation>
-                        <RejectReservation
-                            v-if="reservation.statusID === 1"
-                            :idReservation="reservation.reservationNumber"
-                            @Refresh="getterReservations"
-                        ></RejectReservation>
-                        <SubmitReplacement
-                            v-if="reservation.statusID === 6"
-                            :idReservation="reservation.reservationNumber"
-                            @Refresh="getterReservations"
-                        ></SubmitReplacement>
-                        <Button
-                            v-if="
-                                reservation.statusID >= 1 &&
-                                reservation.statusID <= 5
-                            "
-                            @click="readMore(reservation)"
-                            label="View"
-                            icon="pi pi-arrow-right"
-                            class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
-                        >
-                        </Button>
-                        <Button
-                            v-if="reservation.statusID === 6"
-                            @click="viewReplacementDetails(reservation)"
-                            label="View Replacements"
-                            icon="pi pi-arrow-right"
-                            class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
-                        >
-                        </Button>
+                    <td class="text-center">
+                        <div class="flex flex-col justify-center gap-2 p-2">
+                            <ApproveReservation
+                                v-if="reservation.statusID === 1"
+                                :idReservation="reservation.reservationNumber"
+                                @Refresh="getterReservations"
+                            ></ApproveReservation>
+                            <ReceiveReservation
+                                v-if="reservation.statusID === 2"
+                                :idReservation="reservation.reservationNumber"
+                                @Refresh="getterReservations"
+                            >
+                            </ReceiveReservation>
+                            <ReturnReservation
+                                v-if="reservation.statusID === 3"
+                                :idReservation="reservation.reservationNumber"
+                                @Refresh="getterReservations"
+                            >
+                            </ReturnReservation>
+                            <RejectReservation
+                                v-if="reservation.statusID === 1"
+                                :idReservation="reservation.reservationNumber"
+                                @Refresh="getterReservations"
+                            ></RejectReservation>
+                            <SubmitReplacement
+                                v-if="reservation.statusID === 6"
+                                :idReservation="reservation.reservationNumber"
+                                @Refresh="getterReservations"
+                            ></SubmitReplacement>
+                            <Button
+                                v-if="
+                                    reservation.statusID >= 1 &&
+                                    reservation.statusID <= 5
+                                "
+                                @click="readMore(reservation)"
+                                label="View"
+                                icon="pi pi-arrow-right"
+                                class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
+                            >
+                            </Button>
+                            <Button
+                                v-if="reservation.statusID === 6"
+                                @click="viewReplacementDetails(reservation)"
+                                label="View Replacements"
+                                icon="pi pi-arrow-right"
+                                class="border border-blue-500 p-2 hover:bg-blue-400 hover:text-white"
+                            >
+                            </Button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
