@@ -11,6 +11,7 @@
         header="Receive Reservation"
         :style="{ width: '30rem' }"
         @hide="resetDialog"
+        :closable="false"
     >
         <!-- Part 1 -->
         <div v-if="currentStep === 1">
@@ -101,6 +102,7 @@ export default {
             visible: false,
             currentStep: 1,
             reservationOrder: [],
+            initialOrderDetails: [], // Store initial order details for reset
             modalContent: {
                 title: "Return Reservation",
                 content: "",
@@ -128,7 +130,13 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
+                    this.initialOrderDetails = JSON.parse(JSON.stringify(data)); // Store initial details
                 });
+        },
+        resetQuantities() {
+            this.reservationOrder = JSON.parse(
+                JSON.stringify(this.initialOrderDetails)
+            ); // Reset to initial values
         },
         rejectReservation() {
             axios
@@ -152,8 +160,8 @@ export default {
         closeDialog() {
             this.visible = false;
             this.currentStep = 1;
+            this.resetQuantities(); // Reset quantities when closing dialog
         },
-
         receiveReservation() {
             axios
                 .post("/receive-reservation", { ID: this.idReservation })
@@ -167,7 +175,6 @@ export default {
                     this.$emit("Refresh");
                 });
         },
-
         ReceiveReservationIncomplete() {
             const reservationDetails = this.reservationOrder.map((order) => ({
                 reservationNumber: this.idReservation,

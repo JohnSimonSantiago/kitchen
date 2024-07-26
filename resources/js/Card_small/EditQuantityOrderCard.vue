@@ -16,7 +16,7 @@
                     class="font-bold tracking-tight text-gray-900 dark:text-white"
                 >
                     {{ getName(orderDetails.equipment_id) }} ({{
-                        orderDetails.quantity
+                        initialQuantity
                     }})
                 </h5>
             </a>
@@ -39,19 +39,13 @@
                     <span>+</span>
                 </button>
             </div>
-
-            <div class="ml-2 flex items-center">
-                <p class="text-gray-900 dark:text-white">
-                    P {{ totalAmount.toFixed(2) }}
-                </p>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import Button from 'primevue/button';
+import axios from "axios";
+import Button from "primevue/button";
 
 export default {
     components: {
@@ -61,17 +55,18 @@ export default {
         this.getEquipmentNameAndImage();
         this.getterEquipmentPrice();
     },
-    props: ['orderDetails'],
+    props: ["orderDetails"],
     data() {
         return {
             equipmentNameAndImage: {},
             equipmentsPrice: [],
             maxQuantity: this.orderDetails.quantity, // Store the max quantity separately
+            initialQuantity: this.orderDetails.quantity, // Store the initial quantity
         };
     },
     methods: {
         getterEquipmentPrice() {
-            axios.get('/get-equipments').then(({ data }) => {
+            axios.get("/get-equipments").then(({ data }) => {
                 this.equipmentsPrice = data.map((equipment) => equipment.price);
             });
         },
@@ -89,7 +84,7 @@ export default {
         },
         getEquipmentNameAndImage() {
             axios
-                .get('/get-equipment-name-and-image')
+                .get("/get-equipment-name-and-image")
                 .then(({ data }) => {
                     data.forEach((equipment) => {
                         this.equipmentNameAndImage[equipment.equipment_id] = {
@@ -99,23 +94,23 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    console.error('Error fetching equipment data:', error);
+                    console.error("Error fetching equipment data:", error);
                 });
         },
         getImageSrc(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
-                return equipment.imageSrc || 'Unknown';
+                return equipment.imageSrc || "Unknown";
             } else {
-                return 'Unknown';
+                return "Unknown";
             }
         },
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
-                return equipment.name || 'Unknown';
+                return equipment.name || "Unknown";
             } else {
-                return 'Unknown';
+                return "Unknown";
             }
         },
         incrementQuantity() {
@@ -123,9 +118,9 @@ export default {
                 this.orderDetails.quantity += 1;
             } else {
                 this.$toast.add({
-                    severity: 'warn',
-                    summary: 'Warning',
-                    detail: 'Maximum stock reached.',
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum Quantity reached.",
                     life: 3000,
                 });
             }
@@ -133,15 +128,14 @@ export default {
         decrementQuantity() {
             if (this.orderDetails.quantity > 0) {
                 this.orderDetails.quantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum Quantity reached.",
+                    life: 3000,
+                });
             }
-        },
-    },
-    computed: {
-        totalAmount() {
-            const price = this.getEquipmentPrice(
-                this.orderDetails.equipment_id
-            );
-            return this.orderDetails.quantity * price;
         },
     },
 };

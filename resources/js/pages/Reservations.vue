@@ -5,17 +5,31 @@
         >
             <!-- Middle Section -->
             <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
-                <div
-                    class="border-b border-gray-400 flex items-center justify-between mb-4"
-                >
+                <div class="flex items-center justify-between mb-4">
                     <h1 class="text-l font-semibold">Orders</h1>
-                    <div class="mb-4 space-x-1">
+                </div>
+                <div
+                    class="flex space-x-5 border items-center rounded-md border-gray-200"
+                >
+                    <div class="p-2.5 flex gap-4">
                         <CreateReservation
                             @success="getterReservation"
                         ></CreateReservation>
                     </div>
+                    <div>
+                        <select
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full"
+                        >
+                            <option value="">All</option>
+                            <option value="">Pending</option>
+                            <option value="">Accepted</option>
+                            <option value="">Rejected</option>
+                            <option value="">Completed</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
+
+                <div class="my-2 gap-5">
                     <ReservationTableAll
                         @clicked="seeReservationDetails"
                         @clickedReplacement="seeReplacementDetails"

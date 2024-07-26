@@ -3,9 +3,7 @@
         <div class="min-h-screen w-full border-t border-gray-300 mt-11 flex">
             <!-- Middle Section -->
             <div class="flex-1 flex flex-col p-5 bg-gray-50">
-                <div
-                    class="border-b border-gray-400 flex items-center justify-between mb-4"
-                >
+                <div class="flex items-center justify-between mb-4">
                     <h1 class="text-l font-semibold p-4">Dashboard</h1>
                     <div class="space-x-1"></div>
                 </div>
@@ -67,6 +65,11 @@
                             <CashTable></CashTable>
                         </div>
                     </div>
+                    <div class="my-2">
+                        <div>
+                            <Calendar></Calendar>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,11 +81,13 @@ import axios from "axios";
 import TransactionTable from "../component/TransactionTable.vue";
 import ReplacementTable from "../component/ReplacementTable.vue";
 import CashTable from "../component/CashTable.vue";
+import Calendar from "./Calendar.vue";
 
 export default {
     components: {
         TransactionTable,
         ReplacementTable,
+        Calendar,
         CashTable,
     },
     data() {

@@ -10,6 +10,7 @@
         modal
         header="Return Reservation"
         :style="{ width: '30rem' }"
+        :closable="false"
     >
         <!-- Part 1: -->
         <div v-if="currentStep === 1">
@@ -150,6 +151,8 @@ export default {
             visible: false,
             currentStep: 1,
             reservationOrder: [],
+            originalReservationOrder: [],
+            remarks: "",
             modalContent: {
                 title: "Return Reservation",
                 content: "",
@@ -177,6 +180,10 @@ export default {
                 })
                 .then(({ data }) => {
                     this.reservationOrder = data;
+                    // Deep clone to preserve original state
+                    this.originalReservationOrder = JSON.parse(
+                        JSON.stringify(data)
+                    );
                     console.log(this.reservationOrder);
                 });
         },
@@ -195,6 +202,7 @@ export default {
         closeDialog() {
             this.visible = false;
             this.currentStep = 1;
+            this.resetReservationOrder();
         },
         returnReservationIncomplete() {
             axios
@@ -269,7 +277,14 @@ export default {
         },
         SubmitReturn() {
             this.returnReservation();
+            this.resetReservationOrder();
             this.closeDialog();
+        },
+        resetReservationOrder() {
+            // Reset the reservationOrder to its original state
+            this.reservationOrder = JSON.parse(
+                JSON.stringify(this.originalReservationOrder)
+            );
         },
     },
 };
