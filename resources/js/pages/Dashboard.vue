@@ -55,6 +55,18 @@
                             <ReplacementTable></ReplacementTable>
                         </div>
                     </div>
+                    <div class="my-2">
+                        <div
+                            class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">
+                                Cash Record
+                            </h3>
+                        </div>
+                        <div>
+                            <CashTable></CashTable>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,11 +77,13 @@
 import axios from "axios";
 import TransactionTable from "../component/TransactionTable.vue";
 import ReplacementTable from "../component/ReplacementTable.vue";
+import CashTable from "../component/CashTable.vue";
 
 export default {
     components: {
         TransactionTable,
         ReplacementTable,
+        CashTable,
     },
     data() {
         return {};

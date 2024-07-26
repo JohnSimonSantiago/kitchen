@@ -1,15 +1,23 @@
 <template>
-    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center mb-4">
+    <div
+        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center mb-4"
+    >
         <img
-            :src="`/uploads/${equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc}`"
+            :src="`/uploads/${
+                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
+            }`"
             alt="Equipment Image"
             class="rounded-t-lg w-10 h-10"
         />
 
         <div class="p-2 flex-1">
             <a href="#">
-                <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">
-                    {{ getName(orderDetails.equipment_id) }} ({{ orderDetails.quantity }})
+                <h5
+                    class="font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {{ getName(orderDetails.equipment_id) }} ({{
+                        orderDetails.quantity
+                    }})
                 </h5>
             </a>
         </div>
@@ -22,7 +30,9 @@
                     >
                         <span>-</span>
                     </button>
-                    <div class="px-3 py-1 border border-gray-300 w-16 text-center">
+                    <div
+                        class="px-3 py-1 border border-gray-300 w-16 text-center"
+                    >
                         <span>{{ leftQuantity }}</span>
                     </div>
                     <button
@@ -41,7 +51,9 @@
                     >
                         <span>-</span>
                     </button>
-                    <div class="px-3 py-1 border border-gray-300 w-16 text-center">
+                    <div
+                        class="px-3 py-1 border border-gray-300 w-16 text-center"
+                    >
                         <span>{{ rightQuantity }}</span>
                     </div>
                     <button
@@ -53,9 +65,7 @@
                 </div>
             </div>
             <div class="ml-2 flex items-center">
-                <p class="text-gray-900 dark:text-white">
-                    P {{ totalAmount.toFixed(2) }}
-                </p>
+                <p class="text-gray-900 dark:text-white">₱ {{ totalAmount }}</p>
             </div>
         </div>
     </div>
@@ -68,10 +78,10 @@ export default {
     props: ["orderDetails"],
     data() {
         return {
-            leftQuantity: this.orderDetails.quantity,
+            leftQuantity: this.orderDetails.quantity * 3,
             rightQuantity: 0,
             equipmentNameAndImage: {},
-            equipmentsPrice: [],
+            equipmentPrices: {}, // Changed to object for mapping equipment_id to price
         };
     },
     mounted() {
@@ -80,21 +90,20 @@ export default {
     },
     methods: {
         getterEquipmentPrice() {
-            axios.get("/get-equipments").then(({ data }) => {
-                this.equipmentsPrice = data.map((equipment) => equipment.price);
-            });
-        },
-        getEquipmentPrice(equipment_id) {
-            if (equipment_id && this.equipmentsPrice.length > 0) {
-                const index = equipment_id - 1;
-                if (index >= 0 && index < this.equipmentsPrice.length) {
-                    return this.equipmentsPrice[index];
-                } else {
-                    return 0;
-                }
-            } else {
-                return 0;
-            }
+            axios
+                .get("/get-equipments")
+                .then(({ data }) => {
+                    console.log("API response data:", data);
+
+                    this.equipmentPrices = data.reduce((acc, equipment) => {
+                        console.log("Processing equipment:", equipment);
+                        acc[equipment.equipment_id] = equipment.price;
+                        return acc;
+                    }, {});
+                })
+                .catch((error) => {
+                    console.error("Error fetching equipment prices:", error);
+                });
         },
         getEquipmentNameAndImage() {
             axios
@@ -127,8 +136,11 @@ export default {
                 return "Unknown";
             }
         },
+        getEquipmentPrice(equipment_id) {
+            return this.equipmentPrices[equipment_id] || 0;
+        },
         incrementLeft() {
-            if (this.leftQuantity < this.orderDetails.quantity) {
+            if (this.leftQuantity < this.orderDetails.quantity * 3) {
                 this.leftQuantity += 1;
                 this.rightQuantity -= 1;
             }
@@ -140,7 +152,7 @@ export default {
             }
         },
         incrementRight() {
-            if (this.rightQuantity < this.orderDetails.quantity) {
+            if (this.rightQuantity < this.orderDetails.quantity * 3) {
                 this.rightQuantity += 1;
                 this.leftQuantity -= 1;
             }
@@ -154,11 +166,13 @@ export default {
     },
     computed: {
         totalAmount() {
-            const price = this.getEquipmentPrice(this.orderDetails.equipment_id);
-            return this.rightQuantity * price;
+            const price = this.getEquipmentPrice(
+                this.orderDetails.equipment_id
+            );
+            const amount = this.rightQuantity * price;
+
+            return amount;
         },
     },
 };
 </script>
-
-

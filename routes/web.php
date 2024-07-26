@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\signUpController;
 use App\Http\Controllers\studentController;
@@ -72,6 +73,9 @@ Route::get("/get-transactions", [TransactionsController::class, 'getTransactions
 
 Route::post("/submit-replacement-details", [ReplacementController::class, 'submitReplacementDetails'])->name('submitReplacementDetails');
 Route::get("/get-replacement-details", [ReplacementController::class, 'getReplacementDetails']);
+
+Route::get("/get-cash-logs", [CashController::class, 'getCashLogs']);
+
 
 //kababaan amin
 Route::get('/{vue?}', function(){

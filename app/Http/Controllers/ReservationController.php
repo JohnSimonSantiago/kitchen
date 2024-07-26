@@ -129,9 +129,8 @@ class ReservationController extends Controller
             $selectedReservation->statusID = 2;
             $selectedReservation->save();
         
-            // Get the current maximum transaction number from the transactions_table
-            $maxTransactionNumber = DB::table('transactions_table')->max('transaction_number');
-            $transactionNumber = $maxTransactionNumber ? $maxTransactionNumber + 1 : 1;
+            $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+            $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
         
             foreach ($getReservationQuantities as $reservationQuantity) {
                 DB::table('transactions_table')->insert([
@@ -139,7 +138,7 @@ class ReservationController extends Controller
                     'equipment_id' => $reservationQuantity->equipment_id,
                     'condition_id' => 1,
                     'quantity' => $reservationQuantity->quantity,
-                    'transaction_number' => $transactionNumber,
+                    'reservation_number' => $ReservationNumber,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -230,12 +229,52 @@ class ReservationController extends Controller
         }
         
         public function returnReservation(Request $request)
-        {   
+        {
+            // Validate the incoming request to ensure 'ID' and 'remarks' are provided
+            $request->validate([
+                'ID' => 'required|integer',
+                'remarks' => 'required|string',
+            ]);
+        
+            // Find the reservation by the provided ID
             $returnReservation = reservation::find($request->ID);
+        
+            if (!$returnReservation) {
+                return response()->json(['message' => 'Reservation not found.'], 404);
+            }
+        
+            // Update the statusID and remarks
             $returnReservation->statusID = 4;
+            $returnReservation->remarks = $request->remarks;
             $res = $returnReservation->save();
+        
+            // Fetch the reservation details for the given reservation
+            $reservationDetails = DB::table('reservation_details')
+                ->where('reservationNumber', $returnReservation->reservationNumber)
+                ->get();
+        
+            // Use a database transaction to ensure atomicity
+            DB::transaction(function () use ($reservationDetails) {
+                // Get the current maximum transaction number from the transactions_table
+                $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+                $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
+        
+                foreach ($reservationDetails as $reservationDetail) {
+                    DB::table('transactions_table')->insert([
+                        'transaction_type' => 4, 
+                        'equipment_id' => $reservationDetail->equipment_id,
+                        'condition_id' => 1, 
+                        'quantity' => $reservationDetail->quantity,
+                        'reservation_number' => $ReservationNumber,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            });
+        
             return response()->json(['message' => 'Reservation returned successfully.']);
         }
+        
 
         public function returnReservationIncomplete(Request $request)
         {   
@@ -273,8 +312,8 @@ class ReservationController extends Controller
             // Use a database transaction to ensure atomicity
             DB::transaction(function () use ($reservationDetails) {
                 // Get the current maximum transaction number from the transactions_table
-                $maxTransactionNumber = DB::table('transactions_table')->max('transaction_number');
-                $transactionNumber = $maxTransactionNumber ? $maxTransactionNumber + 1 : 1;
+                $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+                $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
         
                 foreach ($reservationDetails as $reservationDetail) {
                     DB::table('transactions_table')->insert([
@@ -282,7 +321,7 @@ class ReservationController extends Controller
                         'equipment_id' => $reservationDetail->equipment_id,
                         'condition_id' => 1, // Assuming the condition_id is 1, change as needed
                         'quantity' => $reservationDetail->quantity,
-                        'transaction_number' => $transactionNumber,
+                        'reservation_number' => $ReservationNumber,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);

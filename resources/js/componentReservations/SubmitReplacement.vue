@@ -35,7 +35,7 @@
                 </div>
                 <div class="text-right mt-4">
                     <p class="text-gray-900 dark:text-white">
-                        Final Total Price: P {{ finalTotalPrice.toFixed(2) }}
+                        Final Total Price:
                     </p>
                 </div>
             </div>
@@ -71,7 +71,6 @@ export default {
         return {
             visible: false,
             reservationOrder: [],
-            totalAmounts: [], // Array to store totalAmount from child components
         };
     },
     props: ["idReservation"],
@@ -82,14 +81,7 @@ export default {
         Toast,
         ReplacementCard,
     },
-    computed: {
-        finalTotalPrice() {
-            return this.totalAmounts.reduce(
-                (acc, amount) => acc + parseFloat(amount.totalAmount),
-                0
-            );
-        },
-    },
+
     methods: {
         saveAndSubmit() {
             this.replaceReservation();
@@ -108,20 +100,7 @@ export default {
                     this.$emit("Refresh");
                 });
         },
-        updateTotalAmount(amount) {
-            // Find the index of the current order in totalAmounts
-            const index = this.totalAmounts.findIndex(
-                (orderAmount) => orderAmount.id === amount.id
-            );
 
-            if (index !== -1) {
-                // Update the existing order amount
-                this.totalAmounts[index] = amount.totalAmount;
-            } else {
-                // Add a new order amount
-                this.totalAmounts.push(amount);
-            }
-        },
         getterReservationOrder() {
             axios
                 .get("/get-replacement-details", {

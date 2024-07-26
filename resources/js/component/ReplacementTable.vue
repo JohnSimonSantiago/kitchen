@@ -1,25 +1,27 @@
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        >
             <thead>
-                <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                <tr
+                    class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
+                >
                     <th scope="col" class="text-center px-6 py-3">
                         Replacement Number
                     </th>
                     <th scope="col" class="text-center px-6 py-3">
-                        Reservation Number 
+                        Reservation Number
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
-                        Equipment
-                    </th>
-
-                    <th scope="col" class="text-center px-6 py-3">
-                        Quantity
-                    </th>
+                    <th scope="col" class="text-center px-6 py-3">Equipment</th>
+                    <th scope="col" class="text-center px-6 py-3">Quantity</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(replacement, index) in replacementDetails" :key="replacement.id">
+                <tr
+                    v-for="(replacement, index) in replacementDetails"
+                    :key="replacement.id"
+                >
                     <td class="text-center">
                         {{ replacement.id }}
                     </td>
@@ -27,9 +29,8 @@
                         {{ replacement.reservationNumber }}
                     </td>
                     <td class="text-center">
-                        {{ replacement.equipment_id }}
+                        {{ getName(replacement.equipment_id) }}
                     </td>
-
                     <td class="text-center">
                         {{ replacement.quantity }}
                     </td>
@@ -55,21 +56,46 @@ export default {
     data() {
         return {
             replacementDetails: [],
+            equipmentNameAndImage: {},
         };
     },
     mounted() {
         this.getterReplacementDetails();
+        this.getEquipmentNameAndImage();
     },
     methods: {
         getterReplacementDetails() {
-            axios.get("/get-replacement-details")
+            axios
+                .get("/get-replacement-details")
                 .then(({ data }) => {
-                    console.log(data); // Log the data to the console
                     this.replacementDetails = data;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error("Error fetching replacement details:", error);
                 });
+        },
+        getEquipmentNameAndImage() {
+            axios
+                .get("/get-equipment-name-and-image")
+                .then(({ data }) => {
+                    data.forEach((equipment) => {
+                        this.equipmentNameAndImage[equipment.equipment_id] = {
+                            name: equipment.equipmentName,
+                            imageSrc: equipment.image,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching equipment data:", error);
+                });
+        },
+        getName(equipment_id) {
+            const equipment = this.equipmentNameAndImage[equipment_id];
+            if (equipment) {
+                return equipment.name || "Unknown";
+            } else {
+                return "Unknown";
+            }
         },
     },
 };

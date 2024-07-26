@@ -5,7 +5,7 @@ import Reservations from "@/pages/Reservations.vue";
 import MakeOrder from "@/pages/MakeOrder.vue";
 import Signup from "@/pages/Signup.vue";
 import Rent from "@/pagesUser/Rent.vue";
-import Reservations2 from "@/pages/Reservations2.vue";
+
 import EditStock from "@/pages/EditStock.vue";
 import Dashboard from "./pages/Dashboard.vue";
 import MyReservations from "@/pagesUser/MyReservations.vue";
@@ -42,11 +42,7 @@ export const routes = [
         name: "editstock",
         component: EditStock,
     },
-    {
-        path: "/reservations2",
-        name: "reservations2",
-        component: Reservations2,
-    },
+
     {
         path: "/rent",
         name: "rent",

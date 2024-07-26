@@ -8,39 +8,32 @@
                     class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
                 >
                     <th scope="col" class="text-center px-6 py-3">
-                        Transaction Number
+                        Cash Log Number
                     </th>
                     <th scope="col" class="text-center px-6 py-3">
                         Reservation Number
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
-                        Transaction Type
-                    </th>
                     <th scope="col" class="text-center px-6 py-3">Equipment</th>
-
                     <th scope="col" class="text-center px-6 py-3">Quantity</th>
+                    <th scope="col" class="text-center px-6 py-3">Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <tr
-                    v-for="(transaction, index) in transactions"
-                    :key="transaction.id"
-                >
+                <tr v-for="cashLogs in cashLogsDetails" :key="cashLogs.id">
                     <td class="text-center">
-                        {{ transaction.id }}
+                        {{ cashLogs.id }}
                     </td>
                     <td class="text-center">
-                        {{ transaction.reservation_number }}
+                        {{ cashLogs.reservation_number }}
                     </td>
                     <td class="text-center">
-                        {{ getTransactionType(transaction.transaction_type) }}
+                        {{ getName(cashLogs.equipment_id) }}
                     </td>
                     <td class="text-center">
-                        {{ getName(transaction.equipment_id) }}
+                        {{ cashLogs.quantity }}
                     </td>
-
                     <td class="text-center">
-                        {{ transaction.quantity }}
+                        {{ cashLogs.cashAmount }}
                     </td>
                 </tr>
             </tbody>
@@ -63,23 +56,23 @@ export default {
 
     data() {
         return {
-            transactions: [],
+            cashLogsDetails: [],
             equipmentNameAndImage: {},
         };
     },
     mounted() {
-        this.getterTransactions();
+        this.getterCashLogs();
         this.getEquipmentNameAndImage();
     },
     methods: {
-        getterTransactions() {
+        getterCashLogs() {
             axios
-                .get("/get-transactions")
+                .get("/get-cash-logs")
                 .then(({ data }) => {
-                    this.transactions = data;
+                    this.cashLogsDetails = data;
                 })
                 .catch((error) => {
-                    console.error("Error fetching transactions:", error);
+                    console.error("Error fetching replacement details:", error);
                 });
         },
         getEquipmentNameAndImage() {
@@ -103,34 +96,6 @@ export default {
                 return equipment.name || "Unknown";
             } else {
                 return "Unknown";
-            }
-        },
-        getCondition(condition_id) {
-            switch (condition_id) {
-                case 1:
-                    return "Good";
-                case 2:
-                    return "Damaged";
-                case 3:
-                    return "Bad";
-                default:
-                    return "Unknown";
-            }
-        },
-        getTransactionType(transaction_type) {
-            switch (transaction_type) {
-                case 1:
-                    return "Approve";
-                case 2:
-                    return "Receive";
-                case 3:
-                    return "Reject";
-                case 4:
-                    return "Return";
-                case 5:
-                    return "Replacement";
-                default:
-                    return "Unknown";
             }
         },
     },

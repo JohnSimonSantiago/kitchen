@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('cash_logs', function (Blueprint $table) {
             $table->id('id');
-            $table->string('transaction_number');
+            $table->string('reservation_number');
             $table->string('equipment_id');
+            $table->integer('quantity');
             $table->integer('cashAmount');
             $table->timestamps();
 
