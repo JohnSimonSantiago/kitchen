@@ -66,13 +66,16 @@ Route::post("/reject-reservation", [ReservationController::class, "rejectReserva
 Route::post("/receive-reservation", [ReservationController::class, "receiveReservation"]);
 Route::post("/receive-reservation-incomplete", [ReservationController::class, "receiveReservationIncomplete"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
+Route::post("/submit-replacement-reservation", [ReservationController::class, "SubmitReplacementReservation"]);
 Route::post("/return-reservation-incomplete", [ReservationController::class, "returnReservationIncomplete"]);
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
+
 
 Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);
 
 Route::post("/submit-replacement-details", [ReplacementController::class, 'submitReplacementDetails'])->name('submitReplacementDetails');
 Route::get("/get-replacement-details", [ReplacementController::class, 'getReplacementDetails']);
+Route::get("/get-replacement-all", [ReplacementController::class, 'getReplacementAll']);
 
 Route::get("/get-cash-logs", [CashController::class, 'getCashLogs']);
 

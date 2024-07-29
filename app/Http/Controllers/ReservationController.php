@@ -67,83 +67,91 @@ class ReservationController extends Controller
         }
         
         public function approveReservation(Request $request)
-        {
-            $selectedReservation = reservation::find($request->ID);
-            $getReservationQuantities = DB::table('reservations')
-                ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-                ->select('reservation_details.quantity', 'reservation_details.equipment_id')
-                ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
-                ->get();
-        
-            $selectedReservationDateRange = [
-                'dateStart' => $selectedReservation->dateStart,
-                'dateEnd' => $selectedReservation->dateEnd
-            ];
-            $approvedReservations = reservation::where('statusID', 2)
-                ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
-                ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
-                ->get();
-        
-            $approvedReservationQuantities = [];
-            foreach ($approvedReservations as $approvedReservation) {
-                $approvedReservationDetails = DB::table('reservations')
-                    ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
-                    ->select('reservation_details.quantity', 'reservation_details.equipment_id')
-                    ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
-                    ->get();
-        
-                foreach ($approvedReservationDetails as $detail) {
-                    if (!isset($approvedReservationQuantities[$detail->equipment_id])) {
-                        $approvedReservationQuantities[$detail->equipment_id] = 0;
-                    }
-                    $approvedReservationQuantities[$detail->equipment_id] += $detail->quantity;
-                }
+{
+    $selectedReservation = reservation::find($request->ID);
+    $getReservationQuantities = DB::table('reservations')
+        ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
+        ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+        ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
+        ->get();
+
+    $selectedReservationDateRange = [
+        'dateStart' => $selectedReservation->dateStart,
+        'dateEnd' => $selectedReservation->dateEnd
+    ];
+    $approvedReservations = reservation::where('statusID', 2)
+        ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
+        ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
+        ->get();
+
+    $approvedReservationQuantities = [];
+    foreach ($approvedReservations as $approvedReservation) {
+        $approvedReservationDetails = DB::table('reservations')
+            ->join('reservation_details', 'reservations.reservationNumber', '=', 'reservation_details.reservationNumber')
+            ->select('reservation_details.quantity', 'reservation_details.equipment_id')
+            ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
+            ->get();
+
+        foreach ($approvedReservationDetails as $detail) {
+            if (!isset($approvedReservationQuantities[$detail->equipment_id])) {
+                $approvedReservationQuantities[$detail->equipment_id] = 0;
             }
-        
-            $getEquipmentQuantities = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
-            $totalQuantities = [];
-        
-            foreach ($getReservationQuantities as $reservationQuantity) {
-                $equipmentId = $reservationQuantity->equipment_id;
-                $quantity = $reservationQuantity->quantity;
-                if (!isset($totalQuantities[$equipmentId])) {
-                    $totalQuantities[$equipmentId] = 0;
-                }
-                $totalQuantities[$equipmentId] += $quantity;
-            }
-        
-            foreach ($approvedReservationQuantities as $equipmentId_ => $quantity) {
-                if (!isset($totalQuantities[$equipmentId_])) {
-                    $totalQuantities[$equipmentId_] = 0;
-                }
-                $totalQuantities[$equipmentId_] += $quantity;
-            }
-        
-            foreach ($totalQuantities as $equipmentId => $totalQuantity) {
-                $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
-                if ($totalQuantity > $availableStock) {
-                    die("Error: Not enough stock for equipment_id $equipmentId.");
-                }
-            }
-        
-            $selectedReservation->statusID = 2;
-            $selectedReservation->save();
-        
-            $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
-            $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
-        
-            foreach ($getReservationQuantities as $reservationQuantity) {
-                DB::table('transactions_table')->insert([
-                    'transaction_type' => 1,
-                    'equipment_id' => $reservationQuantity->equipment_id,
-                    'condition_id' => 1,
-                    'quantity' => $reservationQuantity->quantity,
-                    'reservation_number' => $ReservationNumber,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+            $approvedReservationQuantities[$detail->equipment_id] += $detail->quantity;
         }
+    }
+
+    $getEquipmentQuantities = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
+    $totalQuantities = [];
+
+    foreach ($getReservationQuantities as $reservationQuantity) {
+        $equipmentId = $reservationQuantity->equipment_id;
+        $quantity = $reservationQuantity->quantity;
+        if (!isset($totalQuantities[$equipmentId])) {
+            $totalQuantities[$equipmentId] = 0;
+        }
+        $totalQuantities[$equipmentId] += $quantity;
+    }
+
+    foreach ($approvedReservationQuantities as $equipmentId_ => $quantity) {
+        if (!isset($totalQuantities[$equipmentId_])) {
+            $totalQuantities[$equipmentId_] = 0;
+        }
+        $totalQuantities[$equipmentId_] += $quantity;
+    }
+
+    $errors = [];
+    foreach ($totalQuantities as $equipmentId => $totalQuantity) {
+        $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
+        if ($totalQuantity > $availableStock) {
+            $errors[] = "Not enough stock for equipment_id $equipmentId.";
+        }
+    }
+
+    if (!empty($errors)) {
+        return response()->json(['errors' => $errors], 400);
+    }
+
+    $selectedReservation->statusID = 2;
+    $selectedReservation->save();
+
+    $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+    $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
+
+    foreach ($getReservationQuantities as $reservationQuantity) {
+        DB::table('transactions_table')->insert([
+            'transaction_type' => 1,
+            'equipment_id' => $reservationQuantity->equipment_id,
+            'condition_id' => 1,
+            'quantity' => $reservationQuantity->quantity,
+            'reservation_number' => $ReservationNumber,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    return response()->json(['message' => 'Reservation Approved Successfully!'], 200);
+}
+
         
         
 
@@ -161,8 +169,8 @@ class ReservationController extends Controller
             // Use a database transaction to ensure atomicity
             DB::transaction(function () use ($reservationDetails) {
                 // Get the current maximum transaction number from the transactions_table
-                $maxTransactionNumber = DB::table('transactions_table')->max('transaction_number');
-                $transactionNumber = $maxTransactionNumber ? $maxTransactionNumber + 1 : 1;
+                $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+                $reservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
         
                 foreach ($reservationDetails as $reservationDetail) {
                     DB::table('transactions_table')->insert([
@@ -170,7 +178,7 @@ class ReservationController extends Controller
                         'equipment_id' => $reservationDetail->equipment_id,
                         'condition_id' => 1, // Assuming the condition_id is 1, change as needed
                         'quantity' => $reservationDetail->quantity,
-                        'transaction_number' => $transactionNumber,
+                        'reservation_number' => $reservationNumber,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
@@ -332,14 +340,88 @@ class ReservationController extends Controller
         }
         
 
-        public function SubmitReplaceReservation(Request $request)
-        {   
-            $submitReplaceReservation = reservation::find($request->ID);
-            $submitReplaceReservation->statusID = 4;
-            $res = $submitReplaceReservation->save();
-            return response()->json(['message' => 'Reservation replaced successfully.']);
-        }
+        public function SubmitReplacementReservation(Request $request)
+        {
+            DB::beginTransaction();
         
+            try {
+                $submitReplaceReservation = Reservation::find($request->ID);
+                $submitReplaceReservation->statusID = 4;
+                $submitReplaceReservation->save();
+        
+                // Get the current maximum reservation number from the transactions_table
+                $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+                $newReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
+        
+                // Process the replacement quantities
+                foreach ($request->replacements as $replacement) {
+                    $equipmentId = $replacement['equipment_id'];
+                    $leftQuantity = $replacement['quantity'];
+                    $rightQuantity = $replacement['right_quantity'];
+                    $totalAmount = $replacement['total_amount'];
+        
+                    // Update the equipment_status table
+                    $equipmentStatus = DB::table('equipment_status')
+                        ->where('equipment_id', $equipmentId)
+                        ->where('condition_id', 1)
+                        ->first();
+        
+                    if ($equipmentStatus) {
+                        DB::table('equipment_status')
+                            ->where('equipment_id', $equipmentId)
+                            ->where('condition_id', 1)
+                            ->update([
+                                'quantity' => $equipmentStatus->quantity + $leftQuantity,
+                                'updated_at' => now(),
+                            ]);
+                    } else {
+                        DB::table('equipment_status')->insert([
+                            'equipment_id' => $equipmentId,
+                            'condition_id' => 1,
+                            'quantity' => $leftQuantity,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+        
+                    // Update the status in replacement_details table
+                    DB::table('replacement_details')
+                        ->where('reservationNumber', $request->ID)
+                        ->where('equipment_id', $equipmentId)
+                        ->update([
+                            'status' => 1,
+                            'updated_at' => now(),
+                        ]);
+        
+                    // Insert into cash_logs table
+                    DB::table('cash_logs')->insert([
+                        'reservation_number' => $request->ID,
+                        'equipment_id' => $equipmentId,
+                        'quantity' => $rightQuantity,
+                        'cashAmount' => $totalAmount,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+        
+                    // Insert into transactions_table
+                    DB::table('transactions_table')->insert([
+                        'transaction_type' => 5,
+                        'equipment_id' => $equipmentId,
+                        'condition_id' => 1, // Assuming the condition_id is 1, change as needed
+                        'quantity' => $leftQuantity,
+                        'reservation_number' => $newReservationNumber,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+        
+                DB::commit();
+                return response()->json(['message' => 'Replacement reservation submitted successfully'], 200);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['message' => 'Error submitting replacement reservation: ' . $e->getMessage()], 500);
+            }
+        }
         public function showReservationOrder(){
             return reservation_details::all();
         }

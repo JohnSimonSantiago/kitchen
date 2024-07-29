@@ -51,7 +51,7 @@
                             <option
                                 v-for="category in categoryList"
                                 :key="category.categoryID"
-                                :value="category.categoryID"
+                                :value="category.categoryID.toString()"
                             >
                                 {{ category.category }}
                             </option>
@@ -147,8 +147,9 @@ import Message from "primevue/message";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 import Button from "primevue/button";
+import axios from "axios";
 
 export default {
     components: {
@@ -184,21 +185,21 @@ export default {
     },
     computed: {
         filteredEquipments() {
-            if (!this.selectedCategory) {
-                return this.equipments.filter((equipment) =>
-                    equipment.equipmentName
-                        .toLowerCase()
-                        .includes(this.searchTerm.toLowerCase())
-                );
-            } else {
-                return this.equipments.filter(
-                    (equipment) =>
-                        equipment.categoryID === this.selectedCategory &&
-                        equipment.equipmentName
-                            .toLowerCase()
-                            .includes(this.searchTerm.toLowerCase())
-                );
-            }
+            console.log("Selected Category:", this.selectedCategory);
+            console.log("Search Term:", this.searchTerm);
+
+            let filteredList = this.equipments.filter((equipment) => {
+                let matchesCategory =
+                    !this.selectedCategory ||
+                    equipment.categoryID == this.selectedCategory;
+                let matchesSearchTerm = equipment.equipmentName
+                    .toLowerCase()
+                    .includes(this.searchTerm.toLowerCase());
+                return matchesCategory && matchesSearchTerm;
+            });
+
+            console.log("Filtered List:", filteredList);
+            return filteredList;
         },
     },
     methods: {
@@ -220,7 +221,6 @@ export default {
             this.getterEquipment();
             this.showCardDetails = null;
         },
-
         getterCategory() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
@@ -230,6 +230,9 @@ export default {
             axios.get("/get-conditions").then(({ data }) => {
                 this.conditions = data;
             });
+        },
+        filterByCategory() {
+            this.selectedCategory = parseInt(this.selectedCategory);
         },
     },
 };

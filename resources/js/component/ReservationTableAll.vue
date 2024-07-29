@@ -7,22 +7,24 @@
                 <tr
                     class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
                 >
-                    <th scope="col" class="text-center px-6 py-3">
+                    <th scope="col" class="text-center px-6 py-3 w-32">
                         Reservation Number
                     </th>
-                    <th scope="col" class="text-center">Customer Name</th>
-                    <th scope="col" class="text-center">Status</th>
+
+                    <th scope="col" class="text-center w-32">Customer Name</th>
+                    <th scope="col" class="text-center w-56">Status</th>
                     <th scope="col" class="text-center">Date Start</th>
                     <th scope="col" class="text-center">Date End</th>
                     <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody class="">
-                <tr v-for="(reservation, index) in reservations">
-                    <td class="text-center text-base">
+                <tr v-for="(reservation, index) in filteredReservations">
+                    <td class="text-center text-base w-32">
                         No. {{ reservation.reservationNumber }}
                     </td>
-                    <td class="text-center text-base">
+
+                    <td class="text-center text-base w-32">
                         {{ reservation.customerName }}
                     </td>
                     <td class="text-center">
@@ -124,16 +126,28 @@ export default {
     mounted() {
         this.getterReservations();
         this.getStatusTable();
+        this.filteredReservations = this.reservations;
     },
     data() {
         return {
             reservations: [],
             replacementDetails: [],
             statusTable: {},
+            filteredReservations: [],
         };
     },
     props: ["reservationDetails"],
     methods: {
+        filterByStatus(status) {
+            if (status === "") {
+                this.filteredReservations = [...this.reservations];
+            } else {
+                const statusNumber = Number(status);
+                this.filteredReservations = this.reservations.filter(
+                    (reservation) => reservation.statusID === statusNumber
+                );
+            }
+        },
         getStatusSeverity(statusID) {
             switch (statusID) {
                 case 1:
@@ -165,7 +179,8 @@ export default {
         },
         getterReservations() {
             axios.get("/get-reservations").then(({ data }) => {
-                this.reservations = data;
+                this.reservations = data.reverse();
+                this.filteredReservations = this.reservations;
             });
         },
         getterReplacementDetails() {

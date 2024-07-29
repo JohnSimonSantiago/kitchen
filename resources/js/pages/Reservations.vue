@@ -18,19 +18,24 @@
                     </div>
                     <div>
                         <select
+                            v-model="selectedStatus"
+                            @change="filterReservations"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full"
                         >
                             <option value="">All</option>
-                            <option value="">Pending</option>
-                            <option value="">Accepted</option>
-                            <option value="">Rejected</option>
-                            <option value="">Completed</option>
+                            <option :value="1">Pending</option>
+                            <option :value="2">Accepted</option>
+                            <option :value="3">Ongoing</option>
+                            <option :value="4">Completed</option>
+                            <option :value="5">Rejected</option>
+                            <option :value="6">Pending Replacement</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="my-2 gap-5">
                     <ReservationTableAll
+                        ref="reservationTable"
                         @clicked="seeReservationDetails"
                         @clickedReplacement="seeReplacementDetails"
                         @reservationSelected="handleReservationSelected"
@@ -191,10 +196,14 @@ export default {
             reservationOrder: [],
             replacementDetails: [],
             visible: false,
-            isReservationDetails: true, // Flag to determine which details to show
+            isReservationDetails: true,
+            selectedStatus: "",
         };
     },
     methods: {
+        filterReservations() {
+            this.$refs.reservationTable.filterByStatus(this.selectedStatus);
+        },
         formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString("en-US", {

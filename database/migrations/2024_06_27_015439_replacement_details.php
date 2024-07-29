@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('reservationNumber');
             $table->integer('quantity');
             $table->integer('equipment_id');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

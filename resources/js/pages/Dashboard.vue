@@ -9,8 +9,7 @@
                 </div>
 
                 <!-- Boxes -->
-                <div class="grid grid-cols-2 gap-2">
-                    <!-- Number of Reservations Box -->
+                <div class="grid grid-cols-4 gap-2">
                     <div
                         class="bg-white border border-gray-200 rounded-lg shadow flex flex-col items-center justify-center"
                     >
@@ -19,35 +18,69 @@
                         </h3>
                         <div>{{ 15 }}</div>
                     </div>
-
-                    <!-- Number of Disposed Equipment Box -->
                     <div
                         class="bg-white border border-gray-200 rounded-lg shadow flex flex-col items-center justify-center"
                     >
                         <h3 class="text-lg font-semibold">
-                            Number of Disposed Equipment this Month
+                            Equipment Disposed this Month
                         </h3>
                         <div>{{ 20 }}</div>
                     </div>
+                    <div
+                        class="bg-white border border-gray-200 rounded-lg shadow flex flex-col items-center justify-center"
+                    >
+                        <h3 class="text-lg font-semibold">
+                            Equipment Replaced this Month
+                        </h3>
+                        <div>{{ 12 }}</div>
+                    </div>
+                    <div>
+                        <div
+                            class="bg-white border border-gray-200 rounded-lg shadow p-4"
+                        >
+                            <Calendar />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2">
                     <div class="my-2">
                         <div>
                             <div
-                                class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                                class="flex space-x-5 border items-center rounded-md border-gray-200 p-2"
                             >
                                 <h3 class="text-lg font-semibold mb-2">
                                     Transaction Record
                                 </h3>
+                                <select
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg"
+                                    required
+                                >
+                                    <option value="">All Categories</option>
+                                    <option value="">Approve</option>
+                                    <option value="">Receive</option>
+                                    <option value="">Reject</option>
+                                    <option value="">Replacement</option>
+                                </select>
                             </div>
                             <TransactionTable></TransactionTable>
                         </div>
                     </div>
                     <div class="my-2">
                         <div
-                            class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                            class="flex space-x-5 border items-center rounded-md border-gray-200 p-2"
                         >
                             <h3 class="text-lg font-semibold mb-2">
                                 Replacement Record
                             </h3>
+                            <select
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg"
+                                required
+                            >
+                                <option value="">All Categories</option>
+                                <option value="">Replaced</option>
+                                <option value="">Pending</option>
+                            </select>
                         </div>
                         <div>
                             <ReplacementTable></ReplacementTable>
@@ -55,7 +88,7 @@
                     </div>
                     <div class="my-2">
                         <div
-                            class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col items-center justify-center"
+                            class="flex space-x-5 border items-center rounded-md border-gray-200 p-2"
                         >
                             <h3 class="text-lg font-semibold mb-2">
                                 Cash Record
@@ -63,11 +96,6 @@
                         </div>
                         <div>
                             <CashTable></CashTable>
-                        </div>
-                    </div>
-                    <div class="my-2">
-                        <div>
-                            <Calendar></Calendar>
                         </div>
                     </div>
                 </div>

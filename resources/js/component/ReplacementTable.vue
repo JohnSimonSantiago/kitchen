@@ -15,6 +15,7 @@
                     </th>
                     <th scope="col" class="text-center px-6 py-3">Equipment</th>
                     <th scope="col" class="text-center px-6 py-3">Quantity</th>
+                    <th scope="col" class="text-center px-6 py-3">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,9 @@
                     </td>
                     <td class="text-center">
                         {{ replacement.quantity }}
+                    </td>
+                    <td class="text-center">
+                        {{ getStatusType(replacement.status) }}
                     </td>
                 </tr>
             </tbody>
@@ -66,7 +70,7 @@ export default {
     methods: {
         getterReplacementDetails() {
             axios
-                .get("/get-replacement-details")
+                .get("/get-replacement-all")
                 .then(({ data }) => {
                     this.replacementDetails = data;
                 })
@@ -95,6 +99,17 @@ export default {
                 return equipment.name || "Unknown";
             } else {
                 return "Unknown";
+            }
+        },
+        getStatusType(transaction_type) {
+            switch (transaction_type) {
+                case 0:
+                    return "Pending";
+                case 1:
+                    return "Replaced";
+
+                default:
+                    return "Unknown";
             }
         },
     },

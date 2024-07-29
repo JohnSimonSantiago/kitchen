@@ -9,7 +9,7 @@
         v-model:visible="visible"
         modal
         header="Return Reservation"
-        :style="{ width: '30rem' }"
+        :style="{ width: '40rem' }"
         :closable="false"
     >
         <!-- Part 1: -->
@@ -27,7 +27,7 @@
                     icon="pi pi-thumbs-down-fill"
                     class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                     label="No"
-                    @click="skipToPart4"
+                    @click="skipToPart6"
                 />
                 <Button
                     icon="pi pi-thumbs-up-fill"
@@ -129,7 +129,43 @@
 
         <!-- Part 5: -->
         <div v-if="currentStep === 5">
-            <p>This is Part 5 .</p>
+            <div>Input Equipment Condition?</div>
+            <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+                <div v-for="order in reservationOrder" :key="order.id">
+                    <ChangeConditonCard :orderDetails="order" />
+                </div>
+            </div>
+            <div class="flex gap-2 my-2">
+                <Button
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+                    label="Cancel"
+                    @click="closeDialog"
+                />
+                <Button
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+                    label="Confirm"
+                    @click="SubmitIncompleteAndChangeCondition"
+                />
+            </div>
+        </div>
+        <div v-if="currentStep === 6">
+            <div>Is Equipment Incomplete and Good Condition?</div>
+            <div class="flex gap-2 my-2">
+                <Button
+                    icon="pi pi-thumbs-down-fill"
+                    class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+                    label="No"
+                    @click="skipToPart5"
+                />
+                <Button
+                    icon="pi pi-thumbs-up-fill"
+                    class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
+                    label="Yes"
+                    @click="skipToPart4"
+                />
+            </div>
         </div>
     </Dialog>
     <Toast />
@@ -143,6 +179,7 @@ import Toast from "primevue/toast";
 import Dialog from "primevue/dialog";
 import OrderCard from "../Card_small/OrderCard.vue";
 import InputMissingEquipmentCard from "../Card_small/InputMissingEquipmentCard.vue";
+import ChangeConditonCard from "../Card_small/ChangeConditonCard.vue";
 
 export default {
     props: ["idReservation"],
@@ -165,6 +202,7 @@ export default {
         InputMissingEquipmentCard,
         Dialog,
         Modal,
+        ChangeConditonCard,
         Button,
     },
     mounted() {
@@ -198,6 +236,9 @@ export default {
         },
         skipToPart5() {
             this.currentStep = 5;
+        },
+        skipToPart6() {
+            this.currentStep = 6;
         },
         closeDialog() {
             this.visible = false;

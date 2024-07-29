@@ -2,9 +2,10 @@
     <div>
         <div>
             <VCalendar
-            
                 :attributes="attributes"
                 @dayclick="handleDayClick"
+                expanded
+                borderless
             ></VCalendar>
         </div>
 

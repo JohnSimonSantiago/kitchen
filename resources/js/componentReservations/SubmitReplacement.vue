@@ -31,11 +31,13 @@
                     <ReplacementCard
                         :orderDetails="order"
                         @updateTotalAmount="updateTotalAmount"
+                        @updateReplacementQuantity="updateReplacementQuantity"
+                        @updateRightQuantity="updateRightQuantity"
                     />
                 </div>
                 <div class="text-right mt-4">
                     <p class="text-gray-900 dark:text-white">
-                        Final Total Price:
+                        Final Total Price: ₱ {{ finalTotalPrice.toFixed(2) }}
                     </p>
                 </div>
             </div>
@@ -71,6 +73,9 @@ export default {
         return {
             visible: false,
             reservationOrder: [],
+            totalAmounts: {},
+            replacementQuantities: {},
+            rightQuantities: {},
         };
     },
     props: ["idReservation"],
@@ -81,27 +86,52 @@ export default {
         Toast,
         ReplacementCard,
     },
-
     methods: {
+        updateRightQuantity(data) {
+            this.rightQuantities[data.equipment_id] = data.quantity;
+        },
+        updateReplacementQuantity(data) {
+            this.replacementQuantities[data.equipment_id] = data.quantity;
+        },
         saveAndSubmit() {
-            this.replaceReservation();
+            this.submitReplacementReservation();
             this.visible = false;
         },
-        replaceReservation() {
+        submitReplacementReservation() {
+            const replacements = Object.entries(this.replacementQuantities).map(
+                ([equipment_id, quantity]) => ({
+                    equipment_id,
+                    quantity,
+                    right_quantity: this.rightQuantities[equipment_id] || 0,
+                    total_amount: this.totalAmounts[equipment_id] || 0,
+                })
+            );
+
             axios
-                .post("/replace-reservation", { ID: this.idReservation })
+                .post("/submit-replacement-reservation", {
+                    ID: this.idReservation,
+                    replacements: replacements,
+                })
                 .then(() => {
                     this.$toast.add({
                         severity: "success",
                         summary: "Success!",
-                        detail: "Reservation Rejected Successfully!",
+                        detail: "Reservation Replaced Successfully!",
                         life: 3000,
                     });
                     this.$emit("Refresh");
+                })
+                .catch((error) => {
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail:
+                            "Failed to replace reservation: " + error.message,
+                        life: 5000,
+                    });
                 });
         },
-
-        getterReservationOrder() {
+        getterReplacementDetails() {
             axios
                 .get("/get-replacement-details", {
                     params: {
@@ -112,9 +142,21 @@ export default {
                     this.reservationOrder = data;
                 });
         },
+        updateTotalAmount(equipmentId, amount) {
+            this.totalAmounts[equipmentId] = amount;
+            this.$forceUpdate(); // Force Vue to re-render
+        },
     },
     mounted() {
-        this.getterReservationOrder();
+        this.getterReplacementDetails();
+    },
+    computed: {
+        finalTotalPrice() {
+            return Object.values(this.totalAmounts).reduce(
+                (sum, amount) => sum + amount,
+                0
+            );
+        },
     },
 };
 </script>

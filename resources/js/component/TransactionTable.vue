@@ -7,18 +7,18 @@
                 <tr
                     class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
                 >
-                    <th scope="col" class="text-center px-6 py-3">
+                    <th scope="col" class="text-center px-2 py-3 w-16">
                         Transaction Number
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
+                    <th scope="col" class="text-center px-2 w-16">
                         Reservation Number
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
+                    <th scope="col" class="text-center px-2">
                         Transaction Type
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">Equipment</th>
+                    <th scope="col" class="text-center px-2">Equipment</th>
 
-                    <th scope="col" class="text-center px-6 py-3">Quantity</th>
+                    <th scope="col" class="text-center px-2">Quantity</th>
                 </tr>
             </thead>
             <tbody>
@@ -128,7 +128,7 @@ export default {
                 case 4:
                     return "Return";
                 case 5:
-                    return "Replacement";
+                    return "Submit Replacement";
                 default:
                     return "Unknown";
             }

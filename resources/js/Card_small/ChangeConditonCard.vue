@@ -25,7 +25,7 @@
             <div class="flex flex-col items-center mr-4">
                 <div class="flex items-center">
                     <button
-                        @click="decrementLeft"
+                        @click="decrementFirst"
                         class="px-3 py-1 border border-gray-300 rounded-l-md"
                     >
                         <span>-</span>
@@ -33,10 +33,31 @@
                     <div
                         class="px-3 py-1 border border-gray-300 w-16 text-center"
                     >
-                        <span>{{ leftQuantity }}</span>
+                        <span>{{ firstQuantity }}</span>
                     </div>
                     <button
-                        @click="incrementLeft"
+                        @click="incrementFirst"
+                        class="px-3 py-1 border border-gray-300 rounded-r-md"
+                    >
+                        <span>+</span>
+                    </button>
+                </div>
+            </div>
+            <div class="flex flex-col items-center mr-4">
+                <div class="flex items-center">
+                    <button
+                        @click="decrementSecond"
+                        class="px-3 py-1 border border-gray-300 rounded-l-md"
+                    >
+                        <span>-</span>
+                    </button>
+                    <div
+                        class="px-3 py-1 border border-gray-300 w-16 text-center"
+                    >
+                        <span>{{ secondQuantity }}</span>
+                    </div>
+                    <button
+                        @click="incrementSecond"
                         class="px-3 py-1 border border-gray-300 rounded-r-md"
                     >
                         <span>+</span>
@@ -46,7 +67,7 @@
             <div class="flex flex-col items-center">
                 <div class="flex items-center">
                     <button
-                        @click="decrementRight"
+                        @click="decrementThird"
                         class="px-3 py-1 border border-gray-300 rounded-l-md"
                     >
                         <span>-</span>
@@ -54,18 +75,15 @@
                     <div
                         class="px-3 py-1 border border-gray-300 w-16 text-center"
                     >
-                        <span>{{ rightQuantity }}</span>
+                        <span>{{ thirdQuantity }}</span>
                     </div>
                     <button
-                        @click="incrementRight"
+                        @click="incrementThird"
                         class="px-3 py-1 border border-gray-300 rounded-r-md"
                     >
                         <span>+</span>
                     </button>
                 </div>
-            </div>
-            <div class="ml-2 flex items-center">
-                <p class="text-gray-900 dark:text-white">₱ {{ totalAmount }}</p>
             </div>
         </div>
     </div>
@@ -78,38 +96,23 @@ export default {
     props: ["orderDetails"],
     data() {
         return {
-            leftQuantity: this.orderDetails.quantity * 3,
-            rightQuantity: 0,
+            firstQuantity: this.orderDetails.quantity * 3,
+            secondQuantity: 0,
+            thirdQuantity: 0,
             equipmentNameAndImage: {},
-            equipmentPrices: {}, // Changed to object for mapping equipment_id to price
+            equipmentPrices: {},
         };
     },
     mounted() {
         this.getEquipmentNameAndImage();
-        this.getterEquipmentPrice().then(() => {
-            this.emitCurrentState();
-        });
+        this.getterEquipmentPrice();
     },
     methods: {
-        emitCurrentState() {
-            this.$emit("updateReplacementQuantity", {
-                equipment_id: this.orderDetails.equipment_id,
-                quantity: this.leftQuantity,
-            });
-            this.$emit(
-                "updateTotalAmount",
-                this.orderDetails.equipment_id,
-                this.totalAmount
-            );
-        },
         getterEquipmentPrice() {
-            return axios
+            axios
                 .get("/get-equipments")
                 .then(({ data }) => {
-                    console.log("API response data:", data);
-
                     this.equipmentPrices = data.reduce((acc, equipment) => {
-                        console.log("Processing equipment:", equipment);
                         acc[equipment.equipment_id] = equipment.price;
                         return acc;
                     }, {});
@@ -135,77 +138,48 @@ export default {
         },
         getImageSrc(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
-            if (equipment) {
-                return equipment.imageSrc || "Unknown";
-            } else {
-                return "Unknown";
-            }
+            return equipment ? equipment.imageSrc || "Unknown" : "Unknown";
         },
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
-            if (equipment) {
-                return equipment.name || "Unknown";
-            } else {
-                return "Unknown";
-            }
+            return equipment ? equipment.name || "Unknown" : "Unknown";
         },
         getEquipmentPrice(equipment_id) {
             return this.equipmentPrices[equipment_id] || 0;
         },
-        incrementLeft() {
-            if (this.leftQuantity < this.orderDetails.quantity * 3) {
-                this.leftQuantity += 1;
-                this.rightQuantity -= 1;
+        incrementFirst() {
+            if (this.firstQuantity < this.orderDetails.quantity) {
+                this.firstQuantity += 1;
+                this.secondQuantity -= 1;
             }
         },
-        decrementLeft() {
-            if (this.leftQuantity > 0) {
-                this.leftQuantity -= 1;
-                this.rightQuantity += 1;
+        decrementFirst() {
+            if (this.firstQuantity > 0) {
+                this.firstQuantity -= 1;
+                this.secondQuantity += 1;
             }
         },
-        incrementRight() {
-            if (this.rightQuantity < this.orderDetails.quantity * 3) {
-                this.rightQuantity += 1;
-                this.leftQuantity -= 1;
+        incrementSecond() {
+            if (this.secondQuantity < this.orderDetails.quantity) {
+                this.secondQuantity += 1;
+                this.thirdQuantity -= 1;
             }
         },
-        decrementRight() {
-            if (this.rightQuantity > 0) {
-                this.rightQuantity -= 1;
-                this.leftQuantity += 1;
+        decrementSecond() {
+            if (this.secondQuantity > 0) {
+                this.secondQuantity -= 1;
+                this.thirdQuantity += 1;
             }
         },
-    },
-    computed: {
-        totalAmount() {
-            const price = this.getEquipmentPrice(
-                this.orderDetails.equipment_id
-            );
-            const amount = this.rightQuantity * price;
-
-            return amount;
+        incrementThird() {
+            if (this.thirdQuantity < this.orderDetails.quantity) {
+                this.thirdQuantity += 1;
+            }
         },
-    },
-    watch: {
-        totalAmount(newValue) {
-            this.$emit(
-                "updateTotalAmount",
-                this.orderDetails.equipment_id,
-                newValue
-            );
-        },
-        leftQuantity(newValue) {
-            this.$emit("updateReplacementQuantity", {
-                equipment_id: this.orderDetails.equipment_id,
-                quantity: newValue,
-            });
-        },
-        rightQuantity(newValue) {
-            this.$emit("updateRightQuantity", {
-                equipment_id: this.orderDetails.equipment_id,
-                quantity: newValue,
-            });
+        decrementThird() {
+            if (this.thirdQuantity > 0) {
+                this.thirdQuantity -= 1;
+            }
         },
     },
 };
