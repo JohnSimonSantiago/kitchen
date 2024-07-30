@@ -20,21 +20,23 @@
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 Price:
                 {{ equipmentDetails.price }}
-            </p> <div class="grid gap-2 md:grid-cols-2">
-            <Button
-                @click="addItem"
-                label="Add"
-                icon="pi pi-cart-plus"
-                class="border border-blue-500 p-2 hover:bg-blue-700 hover:text-white"
-            >
-            </Button>
-            <Button
-                @click="removeItem"
-                label="Remove"
-                icon="pi pi-minus"
-                class="border border-red-500 p-2 hover:bg-red-700 hover:text-white"
-            >
-            </Button></div>
+            </p>
+            <div class="gap-2 flex justify-start">
+                <Button
+                    @click="addItem"
+                    label="Add"
+                    icon="pi pi-plus"
+                    class="border border-green-500 p-2 hover:bg-green-700 hover:text-white"
+                >
+                </Button>
+                <Button
+                    @click="removeItem"
+                    label="Remove"
+                    icon="pi pi-minus"
+                    class="border border-red-500 p-2 hover:bg-red-700 hover:text-white"
+                >
+                </Button>
+            </div>
             <Toast />
         </div>
     </div>
@@ -55,9 +57,9 @@ export default {
         };
     },
     mounted() {
-    this.reservationNumber = this.$route.params.reservationNumber;
-    this.getterMaxPossibleOrder();
-},
+        this.reservationNumber = this.$route.params.reservationNumber;
+        this.getterMaxPossibleOrder();
+    },
 
     props: ["equipmentDetails"],
     methods: {
@@ -88,16 +90,18 @@ export default {
             });
         },
         getterMaxPossibleOrder() {
-    const reservationNumber = this.reservationNumber;
-    return axios.get(`/get-max-possible-order?reservationNumber=${reservationNumber}`)
-        .then(({ data }) => {
-            this.maxPossibleOrder = data;
-        })
-        .catch(error => {
-            console.error("Error fetching max possible order:", error);
-        });
-},
-
+            const reservationNumber = this.reservationNumber;
+            return axios
+                .get(
+                    `/get-max-possible-order?reservationNumber=${reservationNumber}`
+                )
+                .then(({ data }) => {
+                    this.maxPossibleOrder = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching max possible order:", error);
+                });
+        },
     },
 };
 </script>

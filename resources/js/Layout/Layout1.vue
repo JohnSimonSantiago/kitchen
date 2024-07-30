@@ -13,10 +13,10 @@
 
         <div>
             <div
-                class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center px-5"
+                class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="flex text-center items-center">
-                    <div class="space-y-20 text-center py-8">
+                    <div class="space-y-[100px] text-center py-8">
                         <div
                             class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
                         >
@@ -66,22 +66,6 @@
                                     ></i>
                                 </p>
                                 Reservations</router-link
-                            >
-                        </div>
-                        <div
-                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
-                        >
-                            <router-link
-                                active-class="text-green-700"
-                                to="/calendar"
-                                class="text-sm font-medium text-gray-900 dark:text-white"
-                                ><p class="mx-10">
-                                    <i
-                                        class="pi pi-calendar"
-                                        style="font-size: 1.5rem"
-                                    ></i>
-                                </p>
-                                Calendar</router-link
                             >
                         </div>
 

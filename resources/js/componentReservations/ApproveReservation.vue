@@ -1,6 +1,6 @@
 <template>
     <Button
-        label="Approve Reservation"
+        label="Approve"
         icon="pi pi-thumbs-up-fill"
         @click="visible = true"
         class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"

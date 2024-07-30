@@ -60,6 +60,7 @@ Route::get("/get-approved-reservations", [ReservationController::class, "getAppr
 Route::post("/submit-reservation", [ReservationController::class, 'submitReservation'])->name('submitReservation');
 Route::post("/delete-reservation", [ReservationController::class, "deleteReservation"]);
 Route::get("/get-reservation-orders", [ReservationController::class, "getReservationOrder"]);
+Route::get("/get-reservation-details", [ReservationController::class, "getReservationDetails"]);
 Route::post("/approve-reservation", [ReservationController::class, "approveReservation"]);
 Route::post("/reject-reservation", [ReservationController::class, "rejectReservation"]);
 

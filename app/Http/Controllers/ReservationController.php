@@ -43,7 +43,25 @@ class ReservationController extends Controller
         return $getReservation;
     }
     
-        
+    public function getReservationDetails(Request $request)
+    {
+        $reservationNumber = $request->reservationNumber;
+    
+        $getReservationDetails = DB::table('reservations')
+            ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
+            ->select(
+                'reservations.reservationNumber',
+                'reservations.dateStart',
+                'reservations.dateEnd',
+                'reservations.customerName',
+                
+                
+            )
+            ->where('reservations.reservationNumber', $reservationNumber)
+            ->first();
+    
+        return $getReservationDetails;
+    }
         public function getReservationOrder(Request $request){
             $reservationNumber = $request->reservationNumber;
         

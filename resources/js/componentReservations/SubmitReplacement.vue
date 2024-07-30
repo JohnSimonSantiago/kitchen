@@ -16,9 +16,6 @@
                 >Note: 1 Equipment = 3 Replacements</Message
             >
             <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
-                <span class="text-gray-900 dark:text-white font-bold mr-8"
-                    >Replacement</span
-                >
                 <div class="text-right mb-2 mr-14">
                     <span class="text-gray-900 dark:text-white font-bold mr-8"
                         >Replacement</span

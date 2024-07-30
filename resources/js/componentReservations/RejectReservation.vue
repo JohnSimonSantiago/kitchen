@@ -1,6 +1,6 @@
 <template>
     <Button
-        label="Reject Reservation"
+        label="Reject"
         icon="pi pi-thumbs-down-fill"
         @click="visible = true"
         class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"

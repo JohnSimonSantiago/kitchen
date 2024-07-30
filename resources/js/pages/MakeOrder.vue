@@ -20,7 +20,7 @@
                             <InputText
                                 v-model="searchTerm"
                                 placeholder="Search"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 pl-10"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full pl-8"
                             />
                         </IconField>
                     </div>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
- <!-- Right Section -->
+            <!-- Right Section -->
 
             <div
                 class="border-l border-gray-400 flex min-h-screen flex-col w-1/4 p-4 bg-gray-50"
@@ -98,14 +98,13 @@
                         class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full md:px-4"
                     ></div>
                     <router-link to="/reservations">
-    <button
-        class="border border-green-500 p-2 hover:bg-green-600 hover:text-white p-button"
-    >
-        <span class="pi pi-file-export"></span>
-        Finish Order
-    </button>
-</router-link>
-
+                        <button
+                            class="flex justify-center border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white p-button"
+                        >
+                            <span class="mr-1 pi pi-undo"></span>
+                            Back to Reservations
+                        </button>
+                    </router-link>
                 </div>
             </div>
         </div>

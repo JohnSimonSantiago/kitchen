@@ -1,6 +1,6 @@
 <template>
     <Button
-        label="Return Reservation"
+        label="Return"
         icon="pi pi-undo"
         @click="visible = true"
         class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
@@ -129,7 +129,12 @@
 
         <!-- Part 5: -->
         <div v-if="currentStep === 5">
-            <div>Input Equipment Condition?</div>
+            <div>Input Equipment Condition and Missing Equipment</div>
+            <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
+                <div v-for="order in reservationOrder" :key="order.id">
+                    <InputMissingEquipmentCard :orderDetails="order" />
+                </div>
+            </div>
             <div class="bg-gray-200 rounded-md px-4 py-2 my-2">
                 <div v-for="order in reservationOrder" :key="order.id">
                     <ChangeConditonCard :orderDetails="order" />

@@ -46,7 +46,7 @@
                         {{ formatDate(reservation.dateEnd) }}
                     </td>
                     <td class="text-center">
-                        <div class="flex flex-col justify-center gap-2 p-2">
+                        <div class="grid grid-cols-3 justify-center gap-2 p-2">
                             <ApproveReservation
                                 v-if="reservation.statusID === 1"
                                 :idReservation="reservation.reservationNumber"

@@ -1,6 +1,6 @@
 <template>
     <Button
-        label="Receive Reservation"
+        label="Receive"
         icon="pi pi-download"
         @click="visible = true"
         class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"

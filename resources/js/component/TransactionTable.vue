@@ -1,7 +1,7 @@
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            class="w-full h-[300px] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
         >
             <thead>
                 <tr
@@ -17,18 +17,15 @@
                         Transaction Type
                     </th>
                     <th scope="col" class="text-center px-2">Equipment</th>
-
                     <th scope="col" class="text-center px-2">Quantity</th>
                 </tr>
             </thead>
             <tbody>
                 <tr
-                    v-for="(transaction, index) in transactions"
+                    v-for="(transaction, index) in paginatedTransactions"
                     :key="transaction.id"
                 >
-                    <td class="text-center">
-                        {{ transaction.id }}
-                    </td>
+                    <td class="text-center">{{ transaction.id }}</td>
                     <td class="text-center">
                         {{ transaction.reservation_number }}
                     </td>
@@ -38,84 +35,84 @@
                     <td class="text-center">
                         {{ getName(transaction.equipment_id) }}
                     </td>
-
-                    <td class="text-center">
-                        {{ transaction.quantity }}
-                    </td>
+                    <td class="text-center">{{ transaction.quantity }}</td>
                 </tr>
             </tbody>
         </table>
+        <div class="flex justify-start p-2">
+            <button
+                @click="currentPage = 1"
+                :disabled="currentPage === 1"
+                class="px-3 py-1 mx-1 bg-gray-200 rounded"
+            >
+                First
+            </button>
+            <button
+                v-for="page in displayedPages"
+                :key="page"
+                @click="currentPage = page"
+                :class="[
+                    'px-3 py-1 mx-1 rounded',
+                    {
+                        'bg-gray-300': currentPage === page,
+                        'bg-gray-200': currentPage !== page,
+                    },
+                ]"
+            >
+                {{ page }}
+            </button>
+            <button
+                @click="currentPage = totalPages"
+                :disabled="currentPage === totalPages"
+                class="px-3 py-1 mx-1 bg-gray-200 rounded"
+            >
+                Last
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
-import Modal from "../component/Modal.vue";
-import Button from "primevue/button";
-import Message from "primevue/message";
-
 export default {
-    components: {
-        Modal,
-        Button,
-        Message,
-    },
-
+    props: ["transactions"],
     data() {
         return {
-            transactions: [],
-            equipmentNameAndImage: {},
+            currentPage: 1,
+            itemsPerPage: 10,
         };
     },
-    mounted() {
-        this.getterTransactions();
-        this.getEquipmentNameAndImage();
+    computed: {
+        totalPages() {
+            return Math.ceil(this.transactions.length / this.itemsPerPage);
+        },
+        paginatedTransactions() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = this.currentPage * this.itemsPerPage;
+            return this.transactions.slice(start, end);
+        },
+        displayedPages() {
+            const pages = [];
+            let startPage = Math.max(1, this.currentPage - 2);
+            let endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+            if (this.currentPage <= 3) {
+                endPage = Math.min(5, this.totalPages);
+            } else if (this.currentPage > this.totalPages - 3) {
+                startPage = Math.max(1, this.totalPages - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            return pages;
+        },
     },
     methods: {
-        getterTransactions() {
-            axios
-                .get("/get-transactions")
-                .then(({ data }) => {
-                    this.transactions = data;
-                })
-                .catch((error) => {
-                    console.error("Error fetching transactions:", error);
-                });
-        },
-        getEquipmentNameAndImage() {
-            axios
-                .get("/get-equipment-name-and-image")
-                .then(({ data }) => {
-                    data.forEach((equipment) => {
-                        this.equipmentNameAndImage[equipment.equipment_id] = {
-                            name: equipment.equipmentName,
-                            imageSrc: equipment.image,
-                        };
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error fetching equipment data:", error);
-                });
-        },
         getName(equipment_id) {
-            const equipment = this.equipmentNameAndImage[equipment_id];
-            if (equipment) {
-                return equipment.name || "Unknown";
-            } else {
-                return "Unknown";
-            }
-        },
-        getCondition(condition_id) {
-            switch (condition_id) {
-                case 1:
-                    return "Good";
-                case 2:
-                    return "Damaged";
-                case 3:
-                    return "Bad";
-                default:
-                    return "Unknown";
-            }
+            // This method should be implemented or passed as a prop from the parent component
+            // For now, we'll return a placeholder
+            return "Equipment Name";
         },
         getTransactionType(transaction_type) {
             switch (transaction_type) {

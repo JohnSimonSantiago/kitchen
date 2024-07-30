@@ -5,9 +5,6 @@
         >
             <!-- Middle Section -->
             <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
-                <div class="flex items-center justify-between mb-4">
-                    <h1 class="text-l font-semibold">Orders</h1>
-                </div>
                 <div
                     class="flex space-x-5 border items-center rounded-md border-gray-200"
                 >

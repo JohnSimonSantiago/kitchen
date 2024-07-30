@@ -96,7 +96,7 @@ export default {
     props: ["orderDetails"],
     data() {
         return {
-            firstQuantity: this.orderDetails.quantity * 3,
+            firstQuantity: this.orderDetails.quantity,
             secondQuantity: 0,
             thirdQuantity: 0,
             equipmentNameAndImage: {},
@@ -148,31 +148,27 @@ export default {
             return this.equipmentPrices[equipment_id] || 0;
         },
         incrementFirst() {
-            if (this.firstQuantity < this.orderDetails.quantity) {
+            if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.firstQuantity += 1;
-                this.secondQuantity -= 1;
             }
         },
         decrementFirst() {
             if (this.firstQuantity > 0) {
                 this.firstQuantity -= 1;
-                this.secondQuantity += 1;
             }
         },
         incrementSecond() {
-            if (this.secondQuantity < this.orderDetails.quantity) {
+            if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.secondQuantity += 1;
-                this.thirdQuantity -= 1;
             }
         },
         decrementSecond() {
             if (this.secondQuantity > 0) {
                 this.secondQuantity -= 1;
-                this.thirdQuantity += 1;
             }
         },
         incrementThird() {
-            if (this.thirdQuantity < this.orderDetails.quantity) {
+            if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.thirdQuantity += 1;
             }
         },
@@ -180,6 +176,11 @@ export default {
             if (this.thirdQuantity > 0) {
                 this.thirdQuantity -= 1;
             }
+        },
+        getTotalQuantity() {
+            return (
+                this.firstQuantity + this.secondQuantity + this.thirdQuantity
+            );
         },
     },
 };
