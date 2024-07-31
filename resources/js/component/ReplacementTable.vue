@@ -135,7 +135,7 @@ export default {
             axios
                 .get("/get-replacement-all")
                 .then(({ data }) => {
-                    this.replacementDetails = data;
+                    this.replacementDetails = data.reverse(); // Reverse the array for LIFO order
                     this.filterReplacements();
                 })
                 .catch((error) => {
@@ -163,12 +163,10 @@ export default {
                     return "warn";
                 case 1:
                     return "success";
-
                 default:
                     return "info";
             }
         },
-
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {

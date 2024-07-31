@@ -17,6 +17,7 @@
                         Transaction Type
                     </th>
                     <th scope="col" class="text-center px-2">Equipment</th>
+                    <th scope="col" class="text-center px-2">Condition</th>
                     <th scope="col" class="text-center px-2">Quantity</th>
                 </tr>
             </thead>
@@ -32,8 +33,11 @@
                     <td class="text-center">
                         {{ getTransactionType(transaction.transaction_type) }}
                     </td>
-                    <td class="text-center">
+                    <td clasys="text-center">
                         {{ getName(transaction.equipment_id) }}
+                    </td>
+                    <td class="text-center">
+                        {{ transaction.condition_id }}
                     </td>
                     <td class="text-center">{{ transaction.quantity }}</td>
                 </tr>
@@ -74,7 +78,10 @@
 
 <script>
 export default {
-    props: ["transactions"],
+    props: {
+        transactions: Array,
+        getName: Function,
+    },
     data() {
         return {
             currentPage: 1,
@@ -109,11 +116,6 @@ export default {
         },
     },
     methods: {
-        getName(equipment_id) {
-            // This method should be implemented or passed as a prop from the parent component
-            // For now, we'll return a placeholder
-            return "Equipment Name";
-        },
         getTransactionType(transaction_type) {
             switch (transaction_type) {
                 case 1:

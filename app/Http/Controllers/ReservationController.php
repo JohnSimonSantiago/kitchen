@@ -301,15 +301,97 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Reservation returned successfully.']);
         }
         
+        public function returnReservationChangeCondition(Request $request)
+{
+    // Validate the incoming request
+    $request->validate([
+        'ID' => 'required|integer',
+        'remarks' => 'required|string',
+        'equipment_conditions' => 'required|array',
+        'equipment_conditions.*.equipment_id' => 'required|integer',
+        'equipment_conditions.*.condition_id' => 'required|integer',
+        'equipment_conditions.*.quantity' => 'required|integer',
+    ]);
 
-        public function returnReservationIncomplete(Request $request)
-        {   
-            $returnReservation = reservation::find($request->ID);
-            $returnReservation->statusID = 6;
-            $res = $returnReservation->save();
-            return response()->json(['message' => 'Reservation returned successfully.']);
+    // Find the reservation by the provided ID
+    $returnReservation = reservation::find($request->ID);
+
+    if (!$returnReservation) {
+        return response()->json(['message' => 'Reservation not found.'], 404);
+    }
+
+    // Fetch the reservation details for the given reservation
+    $reservationDetails = DB::table('reservation_details')
+        ->where('reservationNumber', $returnReservation->reservationNumber)
+        ->get()
+        ->keyBy('equipment_id');
+
+    // Validate total quantities
+    $equipmentConditions = collect($request->equipment_conditions);
+    foreach ($reservationDetails as $equipmentId => $detail) {
+        $totalQuantity = $equipmentConditions
+            ->where('equipment_id', $equipmentId)
+            ->sum('quantity');
+
+        if ($totalQuantity !== $detail->quantity) {
+            return response()->json([
+                'message' => "Total quantity for equipment ID $equipmentId does not match the original order quantity."
+            ], 400);
         }
-        
+    }
+
+    // Update the statusID and remarks
+    $returnReservation->statusID = 4;
+    $returnReservation->remarks = $request->remarks;
+    $returnReservation->save();
+
+    // Use a database transaction to ensure atomicity
+    DB::transaction(function () use ($request) {
+        // Get the current maximum transaction number from the transactions_table
+        $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
+        $reservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
+
+        foreach ($request->equipment_conditions as $condition) {
+            if ($condition['quantity'] > 0) {
+                // Insert into transactions_table
+                DB::table('transactions_table')->insert([
+                    'transaction_type' => 4,
+                    'equipment_id' => $condition['equipment_id'],
+                    'condition_id' => $condition['condition_id'],
+                    'quantity' => $condition['quantity'],
+                    'reservation_number' => $reservationNumber,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Update equipment_status table
+                if ($condition['condition_id'] != 1) {
+                    // Decrement condition_id 1
+                    DB::table('equipment_status')
+                        ->where('equipment_id', $condition['equipment_id'])
+                        ->where('condition_id', 1)
+                        ->decrement('quantity', $condition['quantity']);
+
+                    // Increment the returned condition
+                    DB::table('equipment_status')
+                        ->updateOrInsert(
+                            [
+                                'equipment_id' => $condition['equipment_id'],
+                                'condition_id' => $condition['condition_id']
+                            ],
+                            [
+                                'quantity' => DB::raw('quantity + ' . $condition['quantity']),
+                                'updated_at' => now()
+                            ]
+                        );
+                }
+            }
+        }
+    });
+
+    return response()->json(['message' => 'Reservation returned successfully with updated conditions.']);
+}
+      
         public function rejectReservation(Request $request)
         {
             // Validate the incoming request to ensure 'ID' and 'remarks' are provided
@@ -443,6 +525,12 @@ class ReservationController extends Controller
         public function showReservationOrder(){
             return reservation_details::all();
         }
+
+
+
+
+
+        
 
         public function getStatusTable()
         {

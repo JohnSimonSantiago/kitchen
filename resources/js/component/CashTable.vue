@@ -20,21 +20,15 @@
             </thead>
             <tbody>
                 <tr v-for="cashLogs in cashLogsDetails" :key="cashLogs.id">
-                    <td class="text-center">
-                        {{ cashLogs.id }}
-                    </td>
+                    <td class="text-center">{{ cashLogs.id }}</td>
                     <td class="text-center">
                         {{ cashLogs.reservation_number }}
                     </td>
                     <td class="text-center">
                         {{ getName(cashLogs.equipment_id) }}
                     </td>
-                    <td class="text-center">
-                        {{ cashLogs.quantity }}
-                    </td>
-                    <td class="text-center">
-                        {{ cashLogs.cashAmount }}
-                    </td>
+                    <td class="text-center">{{ cashLogs.quantity }}</td>
+                    <td class="text-center">{{ cashLogs.cashAmount }}</td>
                 </tr>
             </tbody>
         </table>
@@ -69,10 +63,10 @@ export default {
             axios
                 .get("/get-cash-logs")
                 .then(({ data }) => {
-                    this.cashLogsDetails = data;
+                    this.cashLogsDetails = data.reverse(); // Reverse the array for LIFO order
                 })
                 .catch((error) => {
-                    console.error("Error fetching replacement details:", error);
+                    console.error("Error fetching cash logs details:", error);
                 });
         },
         getEquipmentNameAndImage() {

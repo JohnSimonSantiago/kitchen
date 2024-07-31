@@ -4,7 +4,7 @@
             <!-- Middle Section -->
             <div class="flex-1 flex flex-col p-5 bg-gray-50 mt-4">
                 <div
-                    class="flex space-x-5 border p-3 items-center rounded-md border-gray-200"
+                    class="flex space-x-5 border p-3 items-center rounded-md border-gray-400"
                 >
                     <h3 class="flex items-center ml-2 text-lg font-semibold">
                         Transaction Record:
@@ -46,6 +46,7 @@
                         <div>
                             <TransactionTable
                                 :transactions="filteredTransactions"
+                                :getName="getName"
                             ></TransactionTable>
                         </div>
                     </div>

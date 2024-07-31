@@ -6,7 +6,7 @@
             <!-- Middle Section -->
             <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
                 <div
-                    class="flex space-x-5 border items-center rounded-md border-gray-200"
+                    class="flex space-x-5 border items-center rounded-md border-gray-400"
                 >
                     <div class="p-2.5 flex gap-4">
                         <router-link to="/editstock">

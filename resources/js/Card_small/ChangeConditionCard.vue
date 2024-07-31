@@ -1,11 +1,9 @@
 <template>
     <div
-        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center mb-4"
+        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center    "
     >
         <img
-            :src="`/uploads/${
-                equipmentNameAndImage[orderDetails.equipment_id]?.imageSrc
-            }`"
+            :src="`/uploads/${getImageSrc(orderDetails.equipment_id)}`"
             alt="Equipment Image"
             class="rounded-t-lg w-10 h-10"
         />
@@ -93,6 +91,7 @@
 import axios from "axios";
 
 export default {
+    name: "ChangeConditionCard",
     props: ["orderDetails"],
     data() {
         return {
@@ -150,31 +149,73 @@ export default {
         incrementFirst() {
             if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.firstQuantity += 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         decrementFirst() {
             if (this.firstQuantity > 0) {
                 this.firstQuantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         incrementSecond() {
             if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.secondQuantity += 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         decrementSecond() {
             if (this.secondQuantity > 0) {
                 this.secondQuantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         incrementThird() {
             if (this.getTotalQuantity() < this.orderDetails.quantity) {
                 this.thirdQuantity += 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Maximum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         decrementThird() {
             if (this.thirdQuantity > 0) {
                 this.thirdQuantity -= 1;
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Minimum Quantity reached.",
+                    life: 3000,
+                });
             }
         },
         getTotalQuantity() {
