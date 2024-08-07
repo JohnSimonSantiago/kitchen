@@ -166,7 +166,7 @@
 </template>
 
 <script>
-import CreateReservation from "@/componentreservations/CreateReservation.vue";
+import CreateReservation from "@/componentReservations/CreateReservation.vue";
 import ReservationTableUser from "../component/ReservationTableUser.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";

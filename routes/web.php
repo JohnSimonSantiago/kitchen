@@ -38,7 +38,7 @@ Route::get("/get-equipments", [EquipmentController::class, "getEquipments"]);
 Route::get("/get-max-stock-all", [EquipmentController::class, "getMaxStockAll"]);
 Route::get("/get-all-equipment-status", [EquipmentController::class, "getAllEquipmentStatus"]);
 Route::get("/get-equipment-name-and-image", [EquipmentController::class, "getEquipmentNameAndImage"]);
-Route::post("/add-equipment-stock", [EquipmentController::class, "DisposeEquipmentStock"]);
+Route::post("/add-equipment-stock", [EquipmentController::class, "AddEquipmentStock"]);
 Route::post("/dispose-equipment-stock", [EquipmentController::class, "DisposeEquipmentStock"]);
 Route::post("/get-equipment", [EquipmentController::class, "getEquipment"]);
 Route::post("/delete-equipment", [EquipmentController::class, "deleteEquipment"]);
@@ -52,10 +52,10 @@ Route::get('/get-equipment-status-quantity', [EquipmentController::class, 'getEq
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');
 Route::get("/get-categories", [CategoryController::class, 'getCategories']);
 
-
 Route::get("/get-conditions", [ConditionController::class, 'getConditions']);
 
 Route::get("/get-reservations", [ReservationController::class, "getReservations"]);
+Route::get("/get-user-reservations", [ReservationController::class, "getUserReservations"]);
 Route::get("/get-approved-reservations", [ReservationController::class, "getApprovedReservations"]);
 Route::post("/submit-reservation", [ReservationController::class, 'submitReservation'])->name('submitReservation');
 Route::post("/delete-reservation", [ReservationController::class, "deleteReservation"]);

@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import CreateReservation from "@/componentreservations/CreateReservation.vue";
+import CreateReservation from "@/componentReservations/CreateReservation.vue";
 import ReservationTableAll from "../component/ReservationTableAll.vue";
 import Message from "primevue/message";
 import Tag from "primevue/tag";

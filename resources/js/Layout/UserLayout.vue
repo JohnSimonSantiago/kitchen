@@ -4,7 +4,7 @@
         <div
             class="bg-white-100 z-50 flex items-center border-b border-yellow-400 border-b-2 ps-2.5 pt-0.5 gap-2 fixed bg-white h-16 w-screen over-flow-clip"
         >
-            <img src="../../../public/Cbea.png" alt="" class="w-10 h-10" />
+            <img src="/CBEA.png" alt="" class="w-10 h-10" />
             <span
                 class="pl-11 fixed self-center text-xl font-semibold whitespace-nowrap dark:text-white"
                 >CBEA Kitchen Equipment</span
@@ -16,13 +16,14 @@
                 class="w-32 mt-16 fixed bg-white/60 shadow-sm backdrop-blur-sm h-full flex flex-col items-center"
             >
                 <div class="flex text-center items-center">
-                    <div class="space-y-32 text-center py-8">
-                        <div>
+                    <div class="space-y-[100px] text-center py-8">
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
-                            active-class="text-green-700"
+                                active-class="text-green-700"
                                 to="/home"
                                 class="text-sm font-medium text-gray-900 dark:text-white"
-
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-home"
@@ -32,27 +33,29 @@
                                 Home</router-link
                             >
                         </div>
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
-                            active-class="text-green-700"
+                                active-class="text-green-700"
                                 to="/myReservations"
                                 class="text-sm font-medium text-gray-900 dark:text-white"
-
                                 ><p class="mx-10">
                                     <i
                                         class="pi pi-book"
                                         style="font-size: 1.5rem"
                                     ></i>
                                 </p>
-                                My Reservations</router-link
+                                Reservations</router-link
                             >
                         </div>
-                        <div>
+                        <div
+                            class="hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <router-link
-                            active-class="text-green-700"
+                                active-class="text-green-700"
                                 to="/rent"
                                 class="text-sm font-medium text-gray-900 dark:text-white"
-
                             >
                                 <p class="mx-10">
                                     <i
@@ -60,17 +63,19 @@
                                         style="font-size: 1.5rem"
                                     ></i>
                                 </p>
-                                My Cart</router-link
+                                Cart</router-link
                             >
                         </div>
 
-                        <div class="flex justify-center items-center">
+                        <div
+                            class="flex justify-center hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <button
                                 @click="logout"
-                                class="flex flex-col items-center mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
+                                class="flex flex-col items-center text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             >
                                 <i
-                                    class="pi pi-sign-out"
+                                    class="pi pi-sign-out mb-2"
                                     style="font-size: 1.5rem"
                                 ></i>
                                 Logout

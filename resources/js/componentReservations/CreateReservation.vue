@@ -92,11 +92,11 @@
 </template>
 
 <script>
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     components: {
@@ -116,44 +116,43 @@ export default {
     },
 
     methods: {
-    saveAndSubmit() {
-        this.submitReservation();
-        this.visible = false;
-    },
-    submitReservation() {
-        const { customerName, customerNumber, email, selectedRange } = this;
-        let dateStart = selectedRange[0];
-        let dateEnd = selectedRange[1];
+        saveAndSubmit() {
+            this.submitReservation();
+            this.visible = false;
+        },
+        submitReservation() {
+            const { customerName, customerNumber, email, selectedRange } = this;
+            let dateStart = selectedRange[0];
+            let dateEnd = selectedRange[1];
 
-        axios
-            .post("/submit-reservation", {
-                user_id: 1, // Automatically set the user_id to 1
-                customerName,
-                customerNumber,
-                email,
-                dateStart,
-                dateEnd,
-            })
-            .then(({ data }) => {
-                this.$toast.add({
-                    severity: "success",
-                    summary: "Success!",
-                    detail: "Reservation Created Successfully!",
-                    life: 3000,
+            axios
+                .post("/submit-reservation", {
+                    user_id: 1, // Automatically set the user_id to 1
+                    customerName,
+                    customerNumber,
+                    email,
+                    dateStart,
+                    dateEnd,
+                })
+                .then(({ data }) => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success!",
+                        detail: "Reservation Created Successfully!",
+                        life: 3000,
+                    });
+                    this.$emit("success");
+                })
+                .catch((error) => {
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to create reservation",
+                        life: 3000,
+                    });
+                    console.error("Error submitting reservation:", error);
                 });
-                this.$emit("success");
-            })
-            .catch(error => {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error",
-                    detail: "Failed to create reservation",
-                    life: 3000,
-                });
-                console.error("Error submitting reservation:", error);
-            });
+        },
     },
-},
-
 };
 </script>

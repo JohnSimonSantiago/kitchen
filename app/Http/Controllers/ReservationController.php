@@ -9,38 +9,56 @@ use Illuminate\Http\Request;
 use App\Models\equipment_status;
 use Illuminate\Support\Facades\DB;
 use App\Models\reservation_details;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
-    public function submitReservation(Request $request){
+    public function submitReservation(Request $request)
+    {
         $request->validate([
             'customerName' => 'required',
             'customerNumber' => 'required|numeric|digits:9',
-            'dateStart' => 'required',
-            'dateEnd' => 'required',
+            'email' => 'required|email',
+            'dateStart' => 'required|date',
+            'dateEnd' => 'required|date|after_or_equal:dateStart',
         ]);
-    
-        $newReservation = new Reservation();
 
-        $newReservation->user_id = $request->user_id;
+        $newReservation = new Reservation();
+        
+        // Use the authenticated user's ID
+        $newReservation->user_id = Auth::id();
+        
         $newReservation->customerName = $request->customerName;
         $newReservation->customerNumber = $request->customerNumber;
         $newReservation->email = $request->email;
         $newReservation->dateStart = Carbon::parse($request->dateStart)->toDateTimeString();
         $newReservation->dateEnd = Carbon::parse($request->dateEnd)->toDateTimeString();
         $newReservation->statusID = 1;
-    
+
         $res = $newReservation->save();
-    
-        return $res;
+
+        return response()->json([
+            'success' => $res,
+            'message' => $res ? 'Reservation created successfully' : 'Failed to create reservation'
+        ], $res ? 201 : 500);
     }
-    
 
 
     public function getReservations(Request $request) {
         $getReservation = reservation::all();
         return $getReservation;
+    }
+
+    public function getUserReservations()
+    {
+        $user = Auth::user();
+        
+        $reservations = Reservation::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return response()->json($reservations);
     }
     
     public function getReservationDetails(Request $request)
@@ -92,7 +110,7 @@ class ReservationController extends Controller
         ->select('reservation_details.quantity', 'reservation_details.equipment_id')
         ->where('reservations.reservationNumber', $selectedReservation->reservationNumber)
         ->get();
-
+    
     $selectedReservationDateRange = [
         'dateStart' => $selectedReservation->dateStart,
         'dateEnd' => $selectedReservation->dateEnd
@@ -101,7 +119,7 @@ class ReservationController extends Controller
         ->where('dateEnd', '>=', $selectedReservationDateRange['dateStart'])
         ->where('dateStart', '<=', $selectedReservationDateRange['dateEnd'])
         ->get();
-
+    
     $approvedReservationQuantities = [];
     foreach ($approvedReservations as $approvedReservation) {
         $approvedReservationDetails = DB::table('reservations')
@@ -109,7 +127,7 @@ class ReservationController extends Controller
             ->select('reservation_details.quantity', 'reservation_details.equipment_id')
             ->where('reservations.reservationNumber', $approvedReservation->reservationNumber)
             ->get();
-
+        
         foreach ($approvedReservationDetails as $detail) {
             if (!isset($approvedReservationQuantities[$detail->equipment_id])) {
                 $approvedReservationQuantities[$detail->equipment_id] = 0;
@@ -117,10 +135,16 @@ class ReservationController extends Controller
             $approvedReservationQuantities[$detail->equipment_id] += $detail->quantity;
         }
     }
-
-    $getEquipmentQuantities = equipment_status::where('condition_id', 1)->pluck('quantity', 'equipment_id');
+    
+    $getEquipmentQuantities = DB::table('equipment_status')
+        ->join('equipments', 'equipment_status.equipment_id', '=', 'equipments.equipment_id')
+        ->where('equipment_status.condition_id', 1)
+        ->select('equipment_status.equipment_id', 'equipment_status.quantity', 'equipments.equipmentName')
+        ->get()
+        ->keyBy('equipment_id');
+    
     $totalQuantities = [];
-
+    
     foreach ($getReservationQuantities as $reservationQuantity) {
         $equipmentId = $reservationQuantity->equipment_id;
         $quantity = $reservationQuantity->quantity;
@@ -129,32 +153,41 @@ class ReservationController extends Controller
         }
         $totalQuantities[$equipmentId] += $quantity;
     }
-
+    
     foreach ($approvedReservationQuantities as $equipmentId_ => $quantity) {
         if (!isset($totalQuantities[$equipmentId_])) {
             $totalQuantities[$equipmentId_] = 0;
         }
         $totalQuantities[$equipmentId_] += $quantity;
     }
-
+    
     $errors = [];
     foreach ($totalQuantities as $equipmentId => $totalQuantity) {
-        $availableStock = isset($getEquipmentQuantities[$equipmentId]) ? $getEquipmentQuantities[$equipmentId] : 0;
-        if ($totalQuantity > $availableStock) {
-            $errors[] = "Not enough stock for equipment_id $equipmentId.";
+        if (isset($getEquipmentQuantities[$equipmentId])) {
+            $equipmentData = $getEquipmentQuantities[$equipmentId];
+            $availableStock = $equipmentData->quantity;
+            $equipmentName = $equipmentData->equipmentName;
+            if ($totalQuantity > $availableStock) {
+                $shortageAmount = $totalQuantity - $availableStock;
+                $errors[] = "Not enough stock for equipment: $equipmentName  " .
+                            "Shortage: $shortageAmount units. " .
+                            "Available: $availableStock, ";
+            }
+        } else {
+            $errors[] = "Equipment with ID $equipmentId not found.";
         }
     }
-
+    
     if (!empty($errors)) {
         return response()->json(['errors' => $errors], 400);
     }
-
+    
     $selectedReservation->statusID = 2;
     $selectedReservation->save();
-
+    
     $maxReservationNumber = DB::table('transactions_table')->max('reservation_number');
     $ReservationNumber = $maxReservationNumber ? $maxReservationNumber + 1 : 1;
-
+    
     foreach ($getReservationQuantities as $reservationQuantity) {
         DB::table('transactions_table')->insert([
             'transaction_type' => 1,
@@ -166,7 +199,7 @@ class ReservationController extends Controller
             'updated_at' => now(),
         ]);
     }
-
+    
     return response()->json(['message' => 'Reservation Approved Successfully!'], 200);
 }
 
@@ -527,11 +560,6 @@ class ReservationController extends Controller
         }
 
 
-
-
-
-        
-
         public function getStatusTable()
         {
             $statusTable = Status::all(['id', 'status']);
@@ -541,5 +569,9 @@ class ReservationController extends Controller
 
         
 
+
+
+
+        
         
 }

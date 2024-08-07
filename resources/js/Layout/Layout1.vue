@@ -4,7 +4,7 @@
         <div
             class="bg-white-100 z-50 flex items-center border-b border-yellow-400 border-b-2 ps-2.5 pt-0.5 gap-2 fixed bg-white h-16 w-screen over-flow-clip"
         >
-            <img src="../../../public/Cbea.png" alt="" class="w-10 h-10" />
+            <img src="/CBEA.png" alt="" class="w-10 h-10" />
             <span
                 class="pl-11 fixed self-center text-xl font-semibold whitespace-nowrap dark:text-white"
                 >CBEA Kitchen Equipment</span
@@ -69,13 +69,15 @@
                             >
                         </div>
 
-                        <div class="flex justify-center items-center">
+                        <div
+                            class="flex justify-center hover:bg-gray-200 rounded-md p-2.5 transition-all ease-in duration-100"
+                        >
                             <button
                                 @click="logout"
-                                class="flex flex-col items-center mb-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
+                                class="flex flex-col items-center text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-200"
                             >
                                 <i
-                                    class="pi pi-sign-out"
+                                    class="pi pi-sign-out mb-2"
                                     style="font-size: 1.5rem"
                                 ></i>
                                 Logout

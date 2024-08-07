@@ -19,19 +19,49 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="cashLogs in cashLogsDetails" :key="cashLogs.id">
-                    <td class="text-center">{{ cashLogs.id }}</td>
+                <tr v-for="cashLog in paginatedCashLogs" :key="cashLog.id">
+                    <td class="text-center">{{ cashLog.id }}</td>
                     <td class="text-center">
-                        {{ cashLogs.reservation_number }}
+                        {{ cashLog.reservation_number }}
                     </td>
                     <td class="text-center">
-                        {{ getName(cashLogs.equipment_id) }}
+                        {{ getName(cashLog.equipment_id) }}
                     </td>
-                    <td class="text-center">{{ cashLogs.quantity }}</td>
-                    <td class="text-center">{{ cashLogs.cashAmount }}</td>
+                    <td class="text-center">{{ cashLog.quantity }}</td>
+                    <td class="text-center">{{ cashLog.cashAmount }}</td>
                 </tr>
             </tbody>
         </table>
+        <div class="flex justify-start p-2">
+            <button
+                @click="currentPage = 1"
+                :disabled="currentPage === 1"
+                class="px-3 py-1 mx-1 bg-gray-200 rounded"
+            >
+                First
+            </button>
+            <button
+                v-for="page in displayedPages"
+                :key="page"
+                @click="currentPage = page"
+                :class="[
+                    'px-3 py-1 mx-1 rounded',
+                    {
+                        'bg-gray-300': currentPage === page,
+                        'bg-gray-200': currentPage !== page,
+                    },
+                ]"
+            >
+                {{ page }}
+            </button>
+            <button
+                @click="currentPage = totalPages"
+                :disabled="currentPage === totalPages"
+                class="px-3 py-1 mx-1 bg-gray-200 rounded"
+            >
+                Last
+            </button>
+        </div>
     </div>
 </template>
 
@@ -47,16 +77,44 @@ export default {
         Button,
         Message,
     },
-
     data() {
         return {
             cashLogsDetails: [],
             equipmentNameAndImage: {},
+            currentPage: 1,
+            itemsPerPage: 10,
         };
     },
     mounted() {
         this.getterCashLogs();
         this.getEquipmentNameAndImage();
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.cashLogsDetails.length / this.itemsPerPage);
+        },
+        paginatedCashLogs() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = this.currentPage * this.itemsPerPage;
+            return this.cashLogsDetails.slice(start, end);
+        },
+        displayedPages() {
+            const pages = [];
+            let startPage = Math.max(1, this.currentPage - 2);
+            let endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+            if (this.currentPage <= 3) {
+                endPage = Math.min(5, this.totalPages);
+            } else if (this.currentPage > this.totalPages - 3) {
+                startPage = Math.max(1, this.totalPages - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            return pages;
+        },
     },
     methods: {
         getterCashLogs() {

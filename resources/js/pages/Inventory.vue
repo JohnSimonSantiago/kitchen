@@ -6,9 +6,9 @@
             <!-- Middle Section -->
             <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
                 <div
-                    class="flex space-x-5 border items-center rounded-md border-gray-400"
+                    class="flex border items-center rounded-md border-gray-400"
                 >
-                    <div class="p-2.5 flex gap-4">
+                    <div class="p-2.5 flex space-x-2">
                         <router-link to="/editstock">
                             <Button
                                 class="border border-yellow-500 p-2 hover:bg-yellow-400 hover:text-white"
@@ -30,7 +30,7 @@
                             <InputText
                                 v-model="searchTerm"
                                 placeholder="Search"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 pl-10"
+                                class="bg-gray-50 mr-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-50 pl-10"
                             />
                         </IconField>
                     </div>
@@ -135,10 +135,10 @@
 
 <script>
 import EquipmentCard from "../Cards/EquipmentCard.vue";
-import CreateEquipment from "@/componentinventory/CreateEquipment.vue";
-import EditEquipment from "@/componentinventory/EditEquipment.vue";
-import DeleteEquipment from "@/componentinventory/DeleteEquipment.vue";
-import CreateCategory from "@/componentinventory/CreateCategory.vue";
+import CreateEquipment from "@/componentInventory/CreateEquipment.vue";
+import EditEquipment from "@/componentInventory/EditEquipment.vue";
+import DeleteEquipment from "@/componentInventory/DeleteEquipment.vue";
+import CreateCategory from "@/componentInventory/CreateCategory.vue";
 import Message from "primevue/message";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
@@ -181,9 +181,6 @@ export default {
     },
     computed: {
         filteredEquipments() {
-            console.log("Selected Category:", this.selectedCategory);
-            console.log("Search Term:", this.searchTerm);
-
             let filteredList = this.equipments.filter((equipment) => {
                 let matchesCategory =
                     !this.selectedCategory ||

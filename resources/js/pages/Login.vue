@@ -7,7 +7,7 @@
                 href="#"
                 class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white gap-1"
             >
-                <img src="../../../public/Cbea.png" alt="" class="w-10 h-10" />
+            <img src="/CBEA.png" alt="" class="w-10 h-10" />
                 CBEA Kitchen Equipment
             </a>
             <div
