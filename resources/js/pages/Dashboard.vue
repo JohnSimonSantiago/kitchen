@@ -100,11 +100,6 @@
                             ></ReplacementTable>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <CashTable></CashTable>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -115,7 +110,7 @@
 import axios from "axios";
 import TransactionTable from "../component/TransactionTable.vue";
 import ReplacementTable from "../component/ReplacementTable.vue";
-import CashTable from "../component/CashTable.vue";
+
 import Calendar from "./Calendar.vue";
 
 export default {
@@ -123,7 +118,6 @@ export default {
         TransactionTable,
         ReplacementTable,
         Calendar,
-        CashTable,
     },
     data() {
         return {

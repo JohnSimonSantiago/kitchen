@@ -8,27 +8,41 @@
                     class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
                 >
                     <th scope="col" class="text-center px-6 py-3">
-                        Cash Log Number
+                        Replacement Number
                     </th>
                     <th scope="col" class="text-center px-6 py-3">
                         Reservation Number
                     </th>
                     <th scope="col" class="text-center px-6 py-3">Equipment</th>
                     <th scope="col" class="text-center px-6 py-3">Quantity</th>
-                    <th scope="col" class="text-center px-6 py-3">Amount</th>
+                    <th scope="col" class="text-center px-6 py-3">Status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="cashLog in paginatedCashLogs" :key="cashLog.id">
-                    <td class="text-center">{{ cashLog.id }}</td>
+                <tr
+                    v-for="replacement in paginatedReplacements"
+                    :key="replacement.id"
+                >
+                    <td class="text-center">{{ replacement.id }}</td>
                     <td class="text-center">
-                        {{ cashLog.reservation_number }}
+                        {{ replacement.reservationNumber }}
                     </td>
                     <td class="text-center">
-                        {{ getName(cashLog.equipment_id) }}
+                        {{ getName(replacement.equipment_id) }}
                     </td>
-                    <td class="text-center">{{ cashLog.quantity }}</td>
-                    <td class="text-center">{{ cashLog.cashAmount }}</td>
+                    <td class="text-center">{{ replacement.quantity }}</td>
+                    <td class="text-center">
+                        <div class="flex justify-center">
+                            <Message
+                                :closable="false"
+                                :severity="
+                                    getStatusSeverity(replacement.status)
+                                "
+                            >
+                                {{ getStatusType(replacement.status) }}
+                            </Message>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -67,36 +81,36 @@
 
 <script>
 import axios from "axios";
-import Modal from "../component/Modal.vue";
-import Button from "primevue/button";
 import Message from "primevue/message";
 
 export default {
-    components: {
-        Modal,
-        Button,
-        Message,
-    },
     data() {
         return {
-            cashLogsDetails: [],
+            replacementDetails: [],
+            filteredReplacements: [],
             equipmentNameAndImage: {},
+            selectedStatus: "",
             currentPage: 1,
             itemsPerPage: 10,
         };
     },
+    components: {
+        Message,
+    },
     mounted() {
-        this.getterCashLogs();
+        this.getterReplacementDetails();
         this.getEquipmentNameAndImage();
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.cashLogsDetails.length / this.itemsPerPage);
+            return Math.ceil(
+                this.filteredReplacements.length / this.itemsPerPage
+            );
         },
-        paginatedCashLogs() {
+        paginatedReplacements() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = this.currentPage * this.itemsPerPage;
-            return this.cashLogsDetails.slice(start, end);
+            return this.filteredReplacements.slice(start, end);
         },
         displayedPages() {
             const pages = [];
@@ -117,14 +131,15 @@ export default {
         },
     },
     methods: {
-        getterCashLogs() {
+        getterReplacementDetails() {
             axios
-                .get("/get-cash-logs")
+                .get("/get-replacement-all")
                 .then(({ data }) => {
-                    this.cashLogsDetails = data.reverse(); // Reverse the array for LIFO order
+                    this.replacementDetails = data.reverse(); // Reverse the array for LIFO order
+                    this.filterReplacements();
                 })
                 .catch((error) => {
-                    console.error("Error fetching cash logs details:", error);
+                    console.error("Error fetching replacement details:", error);
                 });
         },
         getEquipmentNameAndImage() {
@@ -142,6 +157,16 @@ export default {
                     console.error("Error fetching equipment data:", error);
                 });
         },
+        getStatusSeverity(status) {
+            switch (status) {
+                case 0:
+                    return "warn";
+                case 1:
+                    return "success";
+                default:
+                    return "info";
+            }
+        },
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
@@ -149,6 +174,27 @@ export default {
             } else {
                 return "Unknown";
             }
+        },
+        getStatusType(status) {
+            switch (status) {
+                case 0:
+                    return "Pending";
+                case 1:
+                    return "Replaced";
+                default:
+                    return "Unknown";
+            }
+        },
+        filterReplacements() {
+            if (this.selectedStatus === "") {
+                this.filteredReplacements = this.replacementDetails;
+            } else {
+                this.filteredReplacements = this.replacementDetails.filter(
+                    (replacement) =>
+                        replacement.status === parseInt(this.selectedStatus)
+                );
+            }
+            this.currentPage = 1;
         },
     },
 };

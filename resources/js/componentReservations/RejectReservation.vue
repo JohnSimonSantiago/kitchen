@@ -33,12 +33,16 @@
             <Button
                 type="button"
                 label="Cancel"
+                icon="pi pi-thumbs-down-fill"
+                class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
                 severity="secondary"
                 @click="visible = false"
             ></Button>
             <Button
                 type="button"
                 label="Reject"
+                icon="pi pi-thumbs-up-fill"
+                class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                 @click="saveAndSubmit"
             ></Button>
         </div>

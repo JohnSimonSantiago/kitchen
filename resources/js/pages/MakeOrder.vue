@@ -52,9 +52,11 @@
                     >
                         <AddItemToReservationCard
                             :equipmentDetails="equipment"
+                            :quantity="
+                                getQuantityInReservation(equipment.equipment_id)
+                            "
                             @clicked="submitEquipmentOrder"
                             @remove="removeEquipmentOrder"
-                            @refreshOrders="getterReservationOrder"
                         />
                     </div>
                     <div
@@ -135,7 +137,7 @@ export default {
         this.reservationNumber = this.$route.params.reservationNumber;
         this.getterEquipment();
         this.getterReservationOrder();
-        this.getterMaxPossibleOrder();
+
         this.getterCategoryList();
     },
 
@@ -144,7 +146,7 @@ export default {
             equipments: [],
             showCardDetails: null,
             reservationOrder: [],
-            maxPossibleOrder: [],
+
             searchTerm: "",
             categoryList: [],
             selectedCategory: "",
@@ -160,6 +162,25 @@ export default {
         },
     },
     methods: {
+        getQuantityInReservation(equipmentId) {
+            const order = this.reservationOrder.find(
+                (order) => order.equipment_id === equipmentId
+            );
+            return order ? order.quantity : 0;
+        },
+        removeEquipmentOrder(data) {
+            const { equipmentDetails, quantity } = data;
+            axios
+                .post("/remove-equipment-order", {
+                    equipment_id: equipmentDetails.equipment_id,
+                    reservationNumber: this.reservationNumber,
+                    quantity,
+                })
+                .then(({ data }) => {
+                    this.getterReservationOrder();
+                    this.$emit("success");
+                });
+        },
         getterCategoryList() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categoryList = data;
@@ -181,9 +202,11 @@ export default {
                 .then(({ data }) => {
                     this.id = "";
                     this.quantity = "";
+                    this.getterReservationOrder(); // Refresh the reservation order
                     this.$emit("success");
                 });
         },
+
         removeEquipmentOrder(data) {
             const { equipmentDetails, quantity } = data;
             axios
@@ -195,15 +218,11 @@ export default {
                 .then(({ data }) => {
                     this.id = "";
                     this.quantity = "";
+                    this.getterReservationOrder(); // Refresh the reservation order
                     this.$emit("success");
                 });
         },
-        getterMaxPossibleOrder() {
-            axios.get("/get-max-possible-order").then(({ data }) => {
-                this.maxPossibleOrder = data;
-                console.log(this.maxPossibleOrder);
-            });
-        },
+
         getterReservationOrder() {
             axios
                 .get("/get-reservation-orders", {

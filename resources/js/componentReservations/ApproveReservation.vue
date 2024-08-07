@@ -21,10 +21,18 @@
             approved</Message
         >
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Cancel" @click="closeDialog"></Button>
+            <Button
+                type="button"
+                icon="pi pi-thumbs-down-fill"
+                class="border border-red-500 p-2 hover:bg-red-600 hover:text-white"
+                label="Cancel"
+                @click="closeDialog"
+            ></Button>
 
             <Button
                 type="button"
+                icon="pi pi-thumbs-up-fill"
+                class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                 label="Approve"
                 @click="saveAndSubmit"
             ></Button>

@@ -11,7 +11,7 @@
         header="Create Reservation"
         :style="{ width: '40rem' }"
     >
-        <form class="">
+        <form class="" @submit.prevent="saveAndSubmit">
             <div class="gap-6 mb-6 flex items-center justify-center">
                 <div>
                     <div class="">
@@ -37,15 +37,24 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >Customer Contact Number</label
                         >
-
-                        <input
-                            v-model="customerNumber"
-                            type="text"
-                            id="customer_number"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="9-digit Phone Number"
-                            required
-                        />
+                        <div class="flex">
+                            <span
+                                class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                            >
+                                +639
+                            </span>
+                            <input
+                                v-model="customerNumber"
+                                type="text"
+                                id="customer_number"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="9-digit Phone Number"
+                                required
+                            />
+                        </div>
+                        <Message v-if="showPhoneError" severity="error"
+                            >Invalid format</Message
+                        >
                     </div>
                     <div>
                         <label
@@ -53,15 +62,17 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >Email</label
                         >
-
                         <input
                             v-model="email"
-                            type="text"
+                            type="email"
                             id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="sample@sample.com"
                             required
                         />
+                        <Message v-if="showEmailError" severity="error"
+                            >Invalid format</Message
+                        >
                     </div>
                 </div>
 
@@ -80,29 +91,26 @@
                     severity="secondary"
                     @click="visible = false"
                 ></Button>
-                <Button
-                    type="button"
-                    label="Submit"
-                    @click="saveAndSubmit"
-                ></Button>
+                <Button type="submit" label="Submit"></Button>
             </div>
         </form>
     </Dialog>
     <Toast />
 </template>
-
 <script>
 import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
 import axios from "axios";
+import Message from "primevue/message";
 
 export default {
     components: {
         Calendar,
         Dialog,
         Button,
+        Message,
         Toast,
     },
     data() {
@@ -112,13 +120,19 @@ export default {
             customerNumber: null,
             email: null,
             selectedRange: null,
+            showPhoneError: false,
+            showEmailError: false,
         };
     },
-
     methods: {
         saveAndSubmit() {
-            this.submitReservation();
-            this.visible = false;
+            this.showPhoneError = !this.isValidPhoneNumber();
+            this.showEmailError = !this.isValidEmail();
+
+            if (!this.showPhoneError && !this.showEmailError) {
+                this.submitReservation();
+                this.visible = false;
+            }
         },
         submitReservation() {
             const { customerName, customerNumber, email, selectedRange } = this;
@@ -127,7 +141,6 @@ export default {
 
             axios
                 .post("/submit-reservation", {
-                    user_id: 1, // Automatically set the user_id to 1
                     customerName,
                     customerNumber,
                     email,
@@ -152,6 +165,17 @@ export default {
                     });
                     console.error("Error submitting reservation:", error);
                 });
+        },
+        isValidPhoneNumber() {
+            return (
+                this.customerNumber &&
+                this.customerNumber.length === 9 &&
+                /^\d+$/.test(this.customerNumber)
+            );
+        },
+        isValidEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return this.email && emailRegex.test(this.email);
         },
     },
 };

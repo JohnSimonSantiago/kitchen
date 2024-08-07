@@ -6,11 +6,11 @@
             <!-- Middle Section -->
             <div class="flex-1 mt-4 flex flex-col p-5 bg-gray-50">
                 <div
-                    class="flex space-x-5 border items-center rounded-md border-gray-400"
+                    class="flex border items-center rounded-md border-gray-400"
                 >
                     <div class="p-2.5 flex gap-4">
                         <CreateReservation
-                            @success="getterReservation"
+                            @success="onReservationCreated"
                         ></CreateReservation>
                     </div>
                     <div>
@@ -33,6 +33,7 @@
                 <div class="my-2 gap-5">
                     <ReservationTableAll
                         ref="reservationTable"
+                        :reservations="reservations"
                         @clicked="seeReservationDetails"
                         @clickedReplacement="seeReplacementDetails"
                         @reservationSelected="handleReservationSelected"
@@ -63,19 +64,31 @@
                     <div class="bg-gray-300 rounded-md px-4 py-2">
                         <div class="my-5">
                             <div v-if="isReservationDetails">
-                                <div
-                                    v-for="order in reservationOrder"
-                                    :key="order.id"
-                                >
-                                    <OrderCard :orderDetails="order" />
+                                <div v-if="reservationOrder.length > 0">
+                                    <div
+                                        v-for="order in reservationOrder"
+                                        :key="order.id"
+                                    >
+                                        <OrderCard :orderDetails="order" />
+                                    </div>
+                                </div>
+                                <div v-else class="text-center py-2">
+                                    <Message :closable="false" severity="warn">
+                                        Currently no orders placed.
+                                    </Message>
                                 </div>
                             </div>
                             <div v-if="!isReservationDetails">
-                                <div
-                                    v-for="order in replacementDetails"
-                                    :key="order.id"
-                                >
-                                    <OrderCard :orderDetails="order" />
+                                <div v-if="replacementDetails.length > 0">
+                                    <div
+                                        v-for="order in replacementDetails"
+                                        :key="order.id"
+                                    >
+                                        <OrderCard :orderDetails="order" />
+                                    </div>
+                                </div>
+                                <div v-else class="text-center py-4">
+                                    Currently no Orders placed
                                 </div>
                             </div>
                         </div>
@@ -198,6 +211,9 @@ export default {
         };
     },
     methods: {
+        onReservationCreated() {
+            this.getterReservation();
+        },
         filterReservations() {
             this.$refs.reservationTable.filterByStatus(this.selectedStatus);
         },
@@ -223,7 +239,12 @@ export default {
         },
         getterReservation() {
             axios.get("/get-reservations").then(({ data }) => {
-                this.reservations = data;
+                this.reservations = data.reverse();
+                if (this.$refs.reservationTable) {
+                    this.$refs.reservationTable.updateReservations(
+                        this.reservations
+                    );
+                }
             });
         },
         handleReservationSelected(reservationNumber) {

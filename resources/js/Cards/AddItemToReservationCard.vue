@@ -41,7 +41,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import Toast from "primevue/toast";
 import Button from "primevue/button";
@@ -51,17 +50,9 @@ export default {
         Toast,
         Button,
     },
-    data() {
-        return {
-            maxPossibleOrder: [],
-        };
-    },
-    mounted() {
-        this.reservationNumber = this.$route.params.reservationNumber;
-        this.getterMaxPossibleOrder();
-    },
 
-    props: ["equipmentDetails"],
+    props: ["equipmentDetails", "quantity"],
+
     methods: {
         addItem() {
             this.$emit("clicked", {
@@ -76,31 +67,28 @@ export default {
                 life: 1000,
             });
         },
+
         removeItem() {
-            this.$emit("remove", {
-                equipmentDetails: this.equipmentDetails,
-                quantity: 1,
-            });
-            this.$emit("refreshOrders");
-            this.$toast.add({
-                severity: "success",
-                summary: "Success!",
-                detail: "Item removed from reservation.",
-                life: 1000,
-            });
-        },
-        getterMaxPossibleOrder() {
-            const reservationNumber = this.reservationNumber;
-            return axios
-                .get(
-                    `/get-max-possible-order?reservationNumber=${reservationNumber}`
-                )
-                .then(({ data }) => {
-                    this.maxPossibleOrder = data;
-                })
-                .catch((error) => {
-                    console.error("Error fetching max possible order:", error);
+            if (this.quantity > 0) {
+                this.$emit("remove", {
+                    equipmentDetails: this.equipmentDetails,
+                    quantity: 1,
                 });
+                this.$emit("refreshOrders");
+                this.$toast.add({
+                    severity: "success",
+                    summary: "Success!",
+                    detail: "Item removed from reservation.",
+                    life: 1000,
+                });
+            } else {
+                this.$toast.add({
+                    severity: "warn",
+                    summary: "Warning!",
+                    detail: "Cannot remove item. Quantity is already 0.",
+                    life: 1000,
+                });
+            }
         },
     },
 };
