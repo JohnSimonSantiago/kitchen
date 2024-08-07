@@ -54,7 +54,7 @@
                     icon="pi pi-thumbs-up-fill"
                     class="border border-green-500 p-2 hover:bg-green-600 hover:text-white"
                     label="Receive"
-                    @click="receiveReservation"
+                    @click="saveAndReceive"
                 />
             </div>
         </div>
@@ -161,6 +161,10 @@ export default {
             this.visible = false;
             this.currentStep = 1;
             this.resetQuantities(); // Reset quantities when closing dialog
+        },
+        saveAndReceive() {
+            this.closeDialog();
+            this.receiveReservation();
         },
         receiveReservation() {
             axios

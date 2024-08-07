@@ -8,41 +8,24 @@
                     class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
                 >
                     <th scope="col" class="text-center px-6 py-3">
-                        Replacement Number
+                        Category <br />Name
                     </th>
-                    <th scope="col" class="text-center px-6 py-3">
-                        Reservation Number
-                    </th>
-                    <th scope="col" class="text-center px-6 py-3">Equipment</th>
-                    <th scope="col" class="text-center px-6 py-3">Quantity</th>
-                    <th scope="col" class="text-center px-6 py-3">Status</th>
+                    <th scope="col" class="text-center px-6 py-3">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr
-                    v-for="replacement in paginatedReplacements"
-                    :key="replacement.id"
-                >
-                    <td class="text-center">{{ replacement.id }}</td>
+                <tr v-for="category in paginatedCategories" :key="category.id">
                     <td class="text-center">
-                        {{ replacement.reservationNumber }}
+                        {{ category.category }}
                     </td>
                     <td class="text-center">
-                        {{ getName(replacement.equipment_id) }}
+                        <button
+                            class="bg-yellow-400 px-4 py-2 rounded-lg text-white hover:bg-yellow-500"
+                        >
+                            Edit
+                        </button>
                     </td>
-                    <td class="text-center">{{ replacement.quantity }}</td>
-                    <td class="text-center">
-                        <div class="flex justify-center">
-                            <Message
-                                :closable="false"
-                                :severity="
-                                    getStatusSeverity(replacement.status)
-                                "
-                            >
-                                {{ getStatusType(replacement.status) }}
-                            </Message>
-                        </div>
-                    </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -86,10 +69,8 @@ import Message from "primevue/message";
 export default {
     data() {
         return {
-            replacementDetails: [],
-            filteredReplacements: [],
-            equipmentNameAndImage: {},
-            selectedStatus: "",
+            categories: [],
+
             currentPage: 1,
             itemsPerPage: 10,
         };
@@ -99,18 +80,15 @@ export default {
     },
     mounted() {
         this.getterReplacementDetails();
-        this.getEquipmentNameAndImage();
     },
     computed: {
         totalPages() {
-            return Math.ceil(
-                this.filteredReplacements.length / this.itemsPerPage
-            );
+            return Math.ceil(this.categories.length / this.itemsPerPage);
         },
-        paginatedReplacements() {
+        paginatedCategories() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = this.currentPage * this.itemsPerPage;
-            return this.filteredReplacements.slice(start, end);
+            return this.categories.slice(start, end);
         },
         displayedPages() {
             const pages = [];
@@ -133,40 +111,15 @@ export default {
     methods: {
         getterReplacementDetails() {
             axios
-                .get("/get-replacement-all")
+                .get("/get-categories")
                 .then(({ data }) => {
-                    this.replacementDetails = data.reverse(); // Reverse the array for LIFO order
-                    this.filterReplacements();
+                    this.categories = data.reverse(); // Reverse the array for LIFO order
                 })
                 .catch((error) => {
                     console.error("Error fetching replacement details:", error);
                 });
         },
-        getEquipmentNameAndImage() {
-            axios
-                .get("/get-equipment-name-and-image")
-                .then(({ data }) => {
-                    data.forEach((equipment) => {
-                        this.equipmentNameAndImage[equipment.equipment_id] = {
-                            name: equipment.equipmentName,
-                            imageSrc: equipment.image,
-                        };
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error fetching equipment data:", error);
-                });
-        },
-        getStatusSeverity(status) {
-            switch (status) {
-                case 0:
-                    return "warn";
-                case 1:
-                    return "success";
-                default:
-                    return "info";
-            }
-        },
+
         getName(equipment_id) {
             const equipment = this.equipmentNameAndImage[equipment_id];
             if (equipment) {
@@ -174,27 +127,6 @@ export default {
             } else {
                 return "Unknown";
             }
-        },
-        getStatusType(status) {
-            switch (status) {
-                case 0:
-                    return "Pending";
-                case 1:
-                    return "Replaced";
-                default:
-                    return "Unknown";
-            }
-        },
-        filterReplacements() {
-            if (this.selectedStatus === "") {
-                this.filteredReplacements = this.replacementDetails;
-            } else {
-                this.filteredReplacements = this.replacementDetails.filter(
-                    (replacement) =>
-                        replacement.status === parseInt(this.selectedStatus)
-                );
-            }
-            this.currentPage = 1;
         },
     },
 };

@@ -51,6 +51,7 @@ Route::get('/get-equipment-status-quantity', [EquipmentController::class, 'getEq
 
 Route::post("/submit-category", [CategoryController::class, 'submitCategory'])->name('submitCategory');
 Route::get("/get-categories", [CategoryController::class, 'getCategories']);
+Route::post("/update-category", [CategoryController::class, 'updateCategory']);
 
 Route::get("/get-conditions", [ConditionController::class, 'getConditions']);
 
@@ -66,9 +67,7 @@ Route::post("/reject-reservation", [ReservationController::class, "rejectReserva
 Route::post("/receive-reservation", [ReservationController::class, "receiveReservation"]);
 Route::post("/receive-reservation-incomplete", [ReservationController::class, "receiveReservationIncomplete"]);
 Route::post("/return-reservation", [ReservationController::class, "returnReservation"]);
-Route::post("/return-reservation-change-condition", [ReservationController::class, "returnReservationChangeCondition"]);
 Route::post("/submit-replacement-reservation", [ReservationController::class, "SubmitReplacementReservation"]);
-Route::post("/return-reservation-incomplete", [ReservationController::class, "returnReservationIncomplete"]);
 Route::get("/get-status-table", [ReservationController::class, "getStatusTable"]);
 Route::get("/get-transactions", [TransactionsController::class, 'getTransactions']);
 
